@@ -2,292 +2,1722 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>Stirling Half — Training Companion</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0B4527">
-<link rel="icon" href="icons/favicon.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B3B24">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Stirling Half">
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-  :root{
-    --bg: #FFFFFF;
-    --panel: #F5F9F4;
-    --panel-2: #E9F2E6;
-    --line: #D3E2CE;
-    --ink: #122015;
-    --ink-dim: #4E6553;
-    --ink-faint: #8CA391;
-    --green: #16793F;
-    --green-dim: #BEE0C7;
-    --green-deep: #0B4527;
-    --green-soft: #E3F3E6;
-    --danger: #B4453B;
-    --header-text: rgba(255,255,255,0.82);
-    --radius: 16px;
-    --font-display: 'Fraunces', serif;
-    --font-body: 'Inter', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
+  :root {
+    --bg: #F5F8F5;
+    --card: #FFFFFF;
+    --card-subtle: #EBF3EC;
+    --card-hover: #E3EFE5;
+    --line: #D5E4D8;
+    --line-subtle: #E3ECE4;
+    
+    /* Stirling Scottish Palette */
+    --stirling-green: #0B3B24;
+    --stirling-emerald: #14633B;
+    --stirling-bright: #1E8E54;
+    --stirling-light: #E2F4E9;
+    --stirling-mist: #D0E9D9;
+    
+    --thistle-purple: #793A60;
+    --thistle-soft: #F6EAF1;
+    --thistle-line: #E8CFDF;
+    
+    --highland-gold: #C98A1E;
+    --gold-soft: #FEF7EA;
+    --gold-line: #F4DFB8;
+    
+    --ink: #112317;
+    --ink-dim: #3E5445;
+    --ink-faint: #789080;
+    --ink-ghost: #A6BBAE;
+    
+    --danger: #B83B32;
+    --danger-soft: #FDEEEE;
+    
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 9999px;
+    
+    --shadow-sm: 0 2px 6px rgba(11, 59, 36, 0.05);
+    --shadow-md: 0 4px 14px rgba(11, 59, 36, 0.08);
+    --shadow-lg: 0 10px 28px rgba(11, 59, 36, 0.12);
+    
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-tap-highlight-color:transparent;}
-  body{padding-bottom:84px;min-height:100vh;}
-
-  ::selection{background:var(--green-dim);color:var(--ink);}
-
-  button{font-family:inherit;}
-
-  .app{max-width:480px;margin:0 auto;position:relative;}
-
-  /* ---------- Header ---------- */
-  .topbar{
-    padding:22px 20px 16px;
-    background:linear-gradient(155deg, #0B4527 0%, #135C34 100%);
-    border-bottom:1px solid var(--line);
-    position:sticky; top:0; z-index:5;
-    color:#FFFFFF;
-  }
-  .eyebrow{
-    font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
-    color:#BEE0C7; margin:0 0 6px;
-  }
-  .title{
-    font-family:var(--font-display); font-weight:600; font-size:28px; margin:0; line-height:1.05;
-    letter-spacing:-0.01em; color:#FFFFFF;
-  }
-  .title em{font-style:italic; color:#BEE0C7; font-weight:400;}
-  .subtitle{color:var(--header-text); font-size:13.5px; margin:6px 0 0;}
-
-  /* ---------- Tabs content ---------- */
-  .view{padding:18px 18px 8px; display:none; animation:fadeIn .25s ease;}
-  .view.active{display:block;}
-  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
-
-  .card{
-    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-    padding:16px; margin-bottom:14px;
-  }
-  .card h3{font-family:var(--font-display); font-size:17px; margin:0 0 10px; font-weight:600;}
-
-  /* ---------- Countdown / hero ---------- */
-  .hero{
-    display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
-    background:linear-gradient(155deg, #0B4527 0%, #1B6B3E 100%);
-    border:1px solid var(--green-deep); border-radius:var(--radius); padding:18px; margin-bottom:14px;
-    color:#FFFFFF;
-  }
-  .hero-num{font-family:var(--font-mono); font-size:42px; font-weight:600; color:#FFFFFF; line-height:1;}
-  .hero-label{font-size:12px; color:#BEE0C7; margin-top:4px;}
-  .hero-right{text-align:right; font-size:12.5px; color:#BEE0C7; line-height:1.5;}
-  .hero-right b{color:#FFFFFF; font-weight:600;}
-
-  /* ---------- Week spotlight ---------- */
-  .week-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2px;}
-  .week-tag{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);}
-  .week-dates{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);}
-  .week-title{font-family:var(--font-display); font-size:20px; font-weight:600; margin:2px 0 12px;}
-
-  .ring-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
-  .ring{width:52px; height:52px; flex-shrink:0;}
-  .ring-text{font-size:13px; color:var(--ink-dim);}
-  .ring-text b{color:var(--ink); font-family:var(--font-mono); font-size:14px;}
-
-  .sess-list{display:flex; flex-direction:column; gap:8px;}
-  .sess{
-    display:flex; align-items:center; gap:12px; padding:11px 12px;
-    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
-    cursor:pointer; user-select:none; transition:background .15s, border-color .15s;
-  }
-  .sess.done{background:var(--green-soft); border-color:var(--green-dim);}
-  .sess.race{background:#DCEAE1; border-color:var(--green-deep);}
-  .sess-check{
-    width:22px; height:22px; border-radius:50%; border:2px solid var(--ink-faint); flex-shrink:0;
-    display:flex; align-items:center; justify-content:center; transition:all .15s;
-  }
-  .sess.done .sess-check{background:var(--green); border-color:var(--green);}
-  .sess.race .sess-check{background:var(--green-deep); border-color:var(--green-deep);}
-  .sess-check svg{width:13px; height:13px; opacity:0; transition:opacity .15s; color:#FFFFFF;}
-  .sess.done .sess-check svg, .sess.race .sess-check svg{opacity:1;}
-  .sess-body{flex:1; min-width:0;}
-  .sess-day{font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);}
-  .sess-name{font-size:14.5px; font-weight:500;}
-  .sess-dur{font-family:var(--font-mono); font-size:13px; color:var(--ink-dim); flex-shrink:0;}
-
-  .phase-note{font-size:13px; color:var(--ink-dim); line-height:1.55; margin-top:2px;}
-
-  .stat-row{display:flex; gap:10px;}
-  .stat{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center;}
-  .stat-n{font-family:var(--font-mono); font-size:20px; font-weight:600; color:var(--green);}
-  .stat-l{font-size:10.5px; color:var(--ink-dim); margin-top:2px; line-height:1.3;}
-
-  /* ---------- Route (path) ---------- */
-  .route-wrap{position:relative; padding-left:34px;}
-  .route-line{position:absolute; left:14px; top:6px; bottom:6px; width:2px; background:var(--line);}
-  .route-item{position:relative; margin-bottom:6px;}
-  .route-dot{
-    position:absolute; left:-34px; top:14px; width:24px; height:24px; border-radius:50%;
-    background:var(--panel); border:2px solid var(--line); z-index:1;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-mono); font-size:9px; color:var(--ink-faint);
-  }
-  .route-dot.partial{border-color:var(--green); color:var(--green);}
-  .route-dot.full{background:var(--green); border-color:var(--green); color:#FFFFFF; font-weight:700;}
-  .route-dot.race{background:var(--green-deep); border-color:var(--green-deep); color:#FFFFFF;}
-  .route-dot.here::after{
-    content:''; position:absolute; inset:-5px; border-radius:50%; border:1.5px dashed var(--green);
-  }
-  .route-row{
-    display:flex; justify-content:space-between; align-items:center; gap:10px;
-    padding:12px 14px; background:var(--panel); border:1px solid var(--line); border-radius:12px;
-    cursor:pointer;
-  }
-  .route-row-l{min-width:0;}
-  .route-w{font-family:var(--font-mono); font-size:11px; color:var(--ink-faint);}
-  .route-d{font-size:14px; font-weight:500; margin-top:1px;}
-  .route-r{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-dim); text-align:right; white-space:nowrap;}
-  .route-detail{
-    margin-top:6px; padding:14px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
-  }
-  .checkpoint-note{
-    margin-top:10px; padding:10px 12px; background:var(--green-soft); border:1px solid var(--green-dim);
-    border-radius:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.5;
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #082115; /* Outer background framing */
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.45;
+    overflow-x: hidden;
   }
 
-  /* ---------- Lift ---------- */
-  .lift-day{margin-bottom:14px;}
-  .lift-day-h{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
-  .lift-day-tag{font-family:var(--font-mono); font-size:11px; color:var(--green);}
-  table.ex{width:100%; border-collapse:collapse; font-size:12.5px;}
-  table.ex th{text-align:left; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); padding:0 6px 6px 0; font-weight:500;}
-  table.ex td{padding:7px 6px 7px 0; border-top:1px solid var(--line); vertical-align:top;}
-  table.ex td.ex-name{font-weight:500;}
-  table.ex td.ex-sets{font-family:var(--font-mono); color:var(--ink-dim); white-space:nowrap;}
-  table.ex td.ex-note{color:var(--ink-faint); font-size:11.5px;}
-
-  /* ---------- Fuel ---------- */
-  .recipe-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .recipe{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:11px;}
-  .recipe h4{font-family:var(--font-display); font-size:14px; margin:0 0 6px; font-weight:600;}
-  .recipe p{font-size:11.5px; color:var(--ink-dim); margin:0 0 6px; line-height:1.45;}
-  .recipe .use{font-size:11px; color:var(--green);}
-
-  /* ---------- Kit / checklists ---------- */
-  .chk{display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-top:1px solid var(--line); cursor:pointer;}
-  .chk:first-child{border-top:none;}
-  .chk-box{width:18px; height:18px; border-radius:5px; border:2px solid var(--ink-faint); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center;}
-  .chk.on .chk-box{background:var(--green); border-color:var(--green);}
-  .chk-box svg{width:11px; height:11px; opacity:0; color:#FFFFFF;}
-  .chk.on .chk-box svg{opacity:1;}
-  .chk-text{font-size:13.5px; line-height:1.4;}
-  .chk.on .chk-text{color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--ink-faint);}
-
-  .strategy-item{display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--line); font-size:12.5px; line-height:1.5; color:var(--ink-dim);}
-  .strategy-item:first-child{border-top:none;}
-  .strategy-item b{color:var(--green-deep); font-family:var(--font-mono); font-size:11.5px; flex-shrink:0; width:64px;}
-
-  .qref{margin:0; padding:0; list-style:none; counter-reset:qref;}
-  .qref li{counter-increment:qref; display:flex; gap:10px; padding:7px 0; border-top:1px solid var(--line); font-size:13px; color:var(--ink-dim); line-height:1.4;}
-  .qref li:first-child{border-top:none;}
-  .qref li::before{content:counter(qref); font-family:var(--font-mono); color:var(--green); font-weight:600; flex-shrink:0; width:16px;}
-
-  .prose{font-size:13px; color:var(--ink-dim); line-height:1.6;}
-  .prose b{color:var(--ink);}
-
-  .reset-link{
-    display:block; text-align:center; margin:20px auto 4px; font-size:11.5px; color:var(--ink-faint);
-    background:none; border:none; text-decoration:underline; text-underline-offset:2px;
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
   }
-  .footnote{font-size:10.5px; color:var(--ink-faint); text-align:center; line-height:1.5; margin:6px 0 4px; padding:0 10px;}
 
-  /* ---------- Bottom nav ---------- */
-  .navbar{
-    position:fixed; left:0; right:0; bottom:0; z-index:10;
-    background:rgba(255,255,255,0.92); backdrop-filter:blur(10px);
-    border-top:1px solid var(--line);
-    display:flex; justify-content:center;
-    padding-bottom:env(safe-area-inset-bottom);
+  /* iPhone-framed App Container */
+  .iphone-shell {
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 50px rgba(0,0,0,0.35);
+    padding-bottom: calc(82px + var(--safe-bottom));
   }
-  .navbar-inner{max-width:480px; width:100%; display:flex;}
-  .navbtn{
-    flex:1; background:none; border:none; padding:10px 4px 8px; display:flex; flex-direction:column;
-    align-items:center; gap:3px; color:var(--ink-faint); cursor:pointer;
+
+  /* iOS Status Bar header */
+  .status-header {
+    background: var(--stirling-green);
+    color: #FFFFFF;
+    padding: calc(var(--safe-top) + 12px) 16px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    background-image: radial-gradient(circle at 90% 10%, rgba(201, 138, 30, 0.18) 0%, transparent 60%),
+                      linear-gradient(165deg, #09311E 0%, #0F4A2E 100%);
   }
-  .navbtn svg{width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.6;}
-  .navbtn span{font-size:10px; font-family:var(--font-mono);}
-  .navbtn.active{color:var(--green);}
 
-  .loading{text-align:center; padding:40px 20px; color:var(--ink-faint); font-size:13px;}
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
 
-  @media (min-width:481px){
-    .app{border-left:1px solid var(--line); border-right:1px solid var(--line); min-height:100vh;}
+  .eyebrow-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #D2EDDB;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .thistle-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--highland-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--highland-gold);
+  }
+
+  .quick-today-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: rgba(255,255,255,0.15);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    color: #FFFFFF;
+  }
+
+  .header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .header-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+  }
+
+  .header-title em {
+    font-style: italic;
+    color: #C0E9CB;
+    font-weight: 400;
+  }
+
+  .header-subtitle {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 4px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Sound & Haptic toggle */
+  .sound-toggle-btn {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-pill);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .sound-toggle-btn.muted { opacity: 0.55; }
+  .sound-toggle-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+  /* Views container */
+  .content-view {
+    display: none;
+    padding: 16px 16px 24px;
+    animation: slideUpFade 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .content-view.active { display: block; }
+
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards & Panels */
+  .stirling-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+
+  .stirling-card.castle-hero {
+    background: linear-gradient(145deg, #093420 0%, #155B36 60%, #1E7547 100%);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: #FFFFFF;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .hero-castle-art {
+    position: absolute;
+    right: -10px;
+    bottom: -15px;
+    width: 140px;
+    height: 120px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .castle-hero .card-title { color: #FFFFFF; }
+
+  /* Countdown Clock */
+  .countdown-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .count-box {
+    background: rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-md);
+    padding: 8px 4px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .count-num {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1;
+  }
+
+  .count-lbl {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #C0E9CB;
+    margin-top: 4px;
+    font-family: var(--font-mono);
+  }
+
+  /* Interactive Week Switcher Banner */
+  .week-navigator-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 4px 6px;
+    margin-bottom: 14px;
+  }
+
+  .week-nav-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--stirling-green);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: transform 0.1s ease, background 0.15s;
+  }
+  .week-nav-btn:active { transform: scale(0.92); }
+  .week-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .week-nav-label {
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .week-nav-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--stirling-green);
+  }
+
+  .week-nav-sub {
+    font-size: 10.5px;
+    font-family: var(--font-mono);
+    color: var(--ink-faint);
+  }
+
+  /* Today's Mission Action Box */
+  .today-action-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--stirling-emerald);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .today-action-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--stirling-emerald), var(--highland-gold));
+  }
+
+  .today-top-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--stirling-emerald);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .today-action-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+
+  .today-action-desc {
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin: 0 0 12px;
+  }
+
+  .today-btn-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-stirling-primary {
+    flex: 1;
+    background: var(--stirling-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(11, 59, 36, 0.2);
+    transition: all 0.15s ease;
+  }
+  .btn-stirling-primary:active { transform: scale(0.97); }
+
+  .btn-stirling-secondary {
+    background: var(--card-subtle);
+    color: var(--stirling-green);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Interactive Session Cards */
+  .sess-interactive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .sess-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sess-card:hover {
+    border-color: var(--stirling-bright);
+    background: var(--card-hover);
+  }
+
+  .sess-card:active { transform: scale(0.985); }
+
+  .sess-card.completed {
+    background: var(--stirling-light);
+    border-color: var(--stirling-mist);
+  }
+
+  .sess-card.is-race {
+    background: linear-gradient(135deg, #E8F5ED 0%, #D4EEDB 100%);
+    border-color: var(--stirling-emerald);
+    border-width: 1.5px;
+  }
+
+  .sess-tactile-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--ink-ghost);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .sess-card.completed .sess-tactile-check {
+    background: var(--stirling-bright);
+    border-color: var(--stirling-bright);
+    transform: scale(1.05);
+  }
+
+  .sess-card.is-race .sess-tactile-check {
+    background: var(--stirling-green);
+    border-color: var(--stirling-green);
+  }
+
+  .sess-tactile-check svg {
+    width: 15px;
+    height: 15px;
+    stroke: #FFFFFF;
+    stroke-width: 3;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s ease;
+  }
+
+  .sess-card.completed .sess-tactile-check svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .sess-info-col { flex: 1; min-width: 0; }
+
+  .sess-day-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+  .sess-card.completed .sess-day-tag { color: var(--stirling-emerald); }
+
+  .sess-title-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sess-dur-pill {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    color: var(--stirling-green);
+    flex-shrink: 0;
+  }
+  .sess-card.completed .sess-dur-pill {
+    background: var(--stirling-emerald);
+    color: #FFFFFF;
+    border-color: var(--stirling-emerald);
+  }
+
+  /* Highland Progress Ring Component */
+  .ring-summary-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+  }
+
+  .ring-chart-svg {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    transform: rotate(-90deg);
+  }
+
+  .ring-chart-bg { fill: none; stroke: var(--line); stroke-width: 5; }
+  .ring-chart-fill {
+    fill: none;
+    stroke: var(--stirling-bright);
+    stroke-width: 5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.4s ease;
+  }
+
+  .ring-text-wrap { flex: 1; }
+  .ring-count-bold {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ring-subtext {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 1px;
+  }
+
+  /* Interactive Stirling Journey Landmarks */
+  .milestone-stepper {
+    position: relative;
+    padding: 10px 0 4px;
+  }
+
+  .milestone-track {
+    position: absolute;
+    top: 26px;
+    left: 14px;
+    right: 14px;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    z-index: 1;
+  }
+
+  .milestone-track-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--stirling-bright), var(--highland-gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .milestone-nodes {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+  }
+
+  .milestone-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .node-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 2px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .milestone-node.passed .node-icon {
+    background: var(--stirling-emerald);
+    border-color: var(--stirling-emerald);
+    color: #FFFFFF;
+  }
+  .milestone-node.current .node-icon {
+    background: var(--highland-gold);
+    border-color: #FFFFFF;
+    box-shadow: 0 0 0 3px var(--highland-gold);
+    transform: scale(1.15);
+  }
+
+  .node-label {
+    font-size: 9.5px;
+    font-family: var(--font-mono);
+    color: var(--ink-faint);
+    margin-top: 5px;
+    text-align: center;
+  }
+  .milestone-node.current .node-label {
+    color: var(--stirling-green);
+    font-weight: 700;
+  }
+
+  /* Bento Stats Grid */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .bento-stat {
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    text-align: center;
+  }
+
+  .bento-num {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--stirling-emerald);
+    line-height: 1.1;
+  }
+
+  .bento-lbl {
+    font-size: 11px;
+    color: var(--ink-dim);
+    margin-top: 3px;
+    line-height: 1.25;
+  }
+
+  /* Segmented Control / Filter Pills */
+  .segmented-filter-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .segmented-filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-pill {
+    padding: 6px 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .filter-pill.active {
+    background: var(--stirling-green);
+    color: #FFFFFF;
+    border-color: var(--stirling-green);
+  }
+
+  /* Route Vertical Journey */
+  .route-tree {
+    position: relative;
+    padding-left: 36px;
+  }
+
+  .route-tree-spine {
+    position: absolute;
+    left: 15px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .route-week-item {
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .route-badge-node {
+    position: absolute;
+    left: -36px;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 2px solid var(--line);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    transition: all 0.2s;
+  }
+  .route-badge-node.full {
+    background: var(--stirling-bright);
+    border-color: var(--stirling-bright);
+    color: #FFFFFF;
+  }
+  .route-badge-node.partial {
+    border-color: var(--stirling-bright);
+    color: var(--stirling-bright);
+    font-weight: 700;
+  }
+  .route-badge-node.is-checkpoint {
+    border-color: var(--highland-gold);
+    color: var(--highland-gold);
+    box-shadow: 0 0 0 2px var(--gold-line);
+  }
+  .route-badge-node.is-race-badge {
+    background: var(--stirling-green);
+    border-color: var(--highland-gold);
+    color: #FFFFFF;
+  }
+  .route-badge-node.current-week-halo::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px dashed var(--stirling-emerald);
+    animation: spinSlow 12s linear infinite;
+  }
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+  .route-item-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .route-item-card:hover { border-color: var(--stirling-emerald); }
+  .route-item-card.is-expanded {
+    border-color: var(--stirling-emerald);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .route-item-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .route-week-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .route-week-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 1px;
+  }
+
+  .route-run-badges {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--stirling-green);
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .route-accordion-drawer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .checkpoint-badge-box {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold-line);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: #784E07;
+    line-height: 1.45;
+  }
+
+  /* Lift Workout Logger & Rest Timer */
+  .lift-split-pills {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .lift-split-btn {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lift-split-btn.active {
+    background: var(--stirling-green);
+    color: #FFFFFF;
+    border-color: var(--stirling-green);
+    box-shadow: var(--shadow-sm);
+  }
+  .lift-split-btn .split-day {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+  }
+  .lift-split-btn.active .split-day { color: #C0E9CB; }
+  .lift-split-btn .split-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* Rest Timer Bar */
+  .rest-timer-bar {
+    background: linear-gradient(145deg, #11281B, #1B3E2A);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .timer-display {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 0.05em;
+  }
+
+  .timer-preset-btns {
+    display: flex;
+    gap: 5px;
+  }
+
+  .timer-pill-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-pill);
+    color: #FFFFFF;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .timer-pill-btn:active { background: rgba(255,255,255,0.3); }
+
+  .timer-control-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--highland-gold);
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Exercise Interactive List */
+  .exercise-item-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .ex-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .ex-name-strong {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .ex-target-scheme {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--stirling-emerald);
+    background: var(--stirling-light);
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  .ex-tip-text {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 4px 0 8px;
+  }
+
+  .ex-sets-tracker {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .set-check-btn {
+    flex: 1;
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px 4px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--ink-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.15s;
+  }
+  .set-check-btn.done {
+    background: var(--stirling-emerald);
+    color: #FFFFFF;
+    border-color: var(--stirling-emerald);
+  }
+
+  /* Fuel Calculator & Recipe Hub */
+  .fuel-calc-box {
+    background: linear-gradient(145deg, #11281B, #1B3F2B);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    color: #FFFFFF;
+    margin-bottom: 14px;
+  }
+
+  .calc-slider-wrap {
+    margin: 12px 0 10px;
+  }
+
+  .range-slider-stirling {
+    width: 100%;
+    accent-color: var(--highland-gold);
+  }
+
+  .calc-result-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .calc-carb-val {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFD175;
+  }
+
+  .recipe-search-input {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 9px 16px;
+    font-size: 13.5px;
+    font-family: inherit;
+    margin-bottom: 12px;
+    outline: none;
+  }
+  .recipe-search-input:focus { border-color: var(--stirling-emerald); }
+
+  .recipe-interactive-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: transform 0.15s ease;
+  }
+
+  .recipe-name-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--stirling-green);
+  }
+
+  .recipe-purpose-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    background: var(--stirling-light);
+    color: var(--stirling-emerald);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 6px;
+  }
+
+  .recipe-ingr-text {
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Kit & 21.1 km Interactive Stepper */
+  .strategy-step-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .strat-km-badge {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: var(--stirling-green);
+    padding: 4px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .strat-desc {
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.45;
+  }
+
+  /* Interactive Checklists */
+  .interactive-chk-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line-subtle);
+    cursor: pointer;
+    user-select: none;
+  }
+  .interactive-chk-row:first-child { border-top: none; }
+
+  .chk-tactile-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--ink-ghost);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    transition: all 0.15s ease;
+  }
+
+  .interactive-chk-row.checked .chk-tactile-box {
+    background: var(--stirling-emerald);
+    border-color: var(--stirling-emerald);
+  }
+
+  .chk-tactile-box svg {
+    width: 13px;
+    height: 13px;
+    stroke: #FFFFFF;
+    stroke-width: 3;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.15s ease;
+  }
+  .interactive-chk-row.checked .chk-tactile-box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .chk-item-label {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .interactive-chk-row.checked .chk-item-label {
+    color: var(--ink-faint);
+    text-decoration: line-through;
+  }
+
+  /* Troubleshooter Accordion */
+  .trouble-pill-btn {
+    width: 100%;
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    text-align: left;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .trouble-pill-btn.open {
+    background: var(--stirling-light);
+    border-color: var(--stirling-emerald);
+    color: var(--stirling-green);
+  }
+  .trouble-content-box {
+    padding: 8px 12px 12px;
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+    border-left: 2px solid var(--stirling-emerald);
+    margin-bottom: 8px;
+    margin-left: 8px;
+  }
+
+  /* Golden Rules Swipe/Deck */
+  .golden-rule-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--card-subtle);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--ink);
+    align-items: baseline;
+  }
+
+  .rule-index-bubble {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--stirling-emerald);
+    background: #FFFFFF;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* Bottom Floating iOS Tab Bar */
+  .ios-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .tab-bar-island {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 440px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 6px calc(6px + var(--safe-bottom));
+  }
+
+  .tab-item-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: var(--ink-ghost);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-item-btn:active { transform: scale(0.92); }
+
+  .tab-item-btn.active {
+    color: var(--stirling-green);
+  }
+
+  .tab-item-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tab-item-label {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Confetti Canvas */
+  #celebrationCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .reset-link-stirling {
+    display: block;
+    text-align: center;
+    margin: 20px auto 4px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .footnote-stirling {
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: center;
+    line-height: 1.45;
+    margin: 8px 0 16px;
+    padding: 0 10px;
   }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <div class="topbar">
-    <p class="eyebrow">Stirling Half Marathon · 16 May 2027</p>
-    <h1 class="title">Route to <em>Stirling</em></h1>
-    <p class="subtitle" id="headerSub">Loading your log…</p>
-  </div>
+<canvas id="celebrationCanvas"></canvas>
 
-  <!-- HOME -->
-  <div class="view" id="view-home">
-    <div class="loading" id="homeLoading">Setting out the route…</div>
-    <div id="homeContent" style="display:none;"></div>
-  </div>
+<div class="iphone-shell">
 
-  <!-- ROUTE -->
-  <div class="view" id="view-route">
-    <div id="routeContent"></div>
-  </div>
+  <!-- TOP STATUS & STIRLING HEADER -->
+  <header class="status-header">
+    <div class="status-row">
+      <div class="eyebrow-badge">
+        <span class="thistle-dot"></span>
+        <span>Stirling 2027 · 21.1 KM</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="quick-today-badge" id="todayPillDate">Sun 16 May 2027</span>
+        <button class="sound-toggle-btn" id="soundToggle" title="Toggle audio feedback">
+          <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="header-main">
+      <div>
+        <h1 class="header-title">Route to <em>Stirling</em></h1>
+        <p class="header-subtitle" id="headerSubtitle">Loading training log…</p>
+      </div>
+    </div>
+  </header>
 
-  <!-- LIFT -->
-  <div class="view" id="view-lift"></div>
+  <!-- VIEW 1: TODAY (HOME DASHBOARD) -->
+  <main class="content-view active" id="view-home">
+    
+    <!-- Stirling Castle Countdown Hero -->
+    <div class="stirling-card castle-hero">
+      <svg class="hero-castle-art" viewBox="0 0 100 80" fill="currentColor">
+        <path d="M10 70 L10 40 L20 40 L20 50 L30 50 L30 30 L45 30 L45 20 L55 20 L55 30 L70 30 L70 50 L80 50 L80 40 L90 40 L90 70 Z"/>
+      </svg>
+      <div class="card-header-flex" style="margin-bottom:4px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:#C0E9CB; text-transform:uppercase; letter-spacing:0.1em;">
+          Race Day Countdown
+        </div>
+        <div style="font-size:11px; font-weight:700; color:#FFD175; font-family:var(--font-mono);">
+          16 MAY 2027
+        </div>
+      </div>
+      <div class="countdown-strip">
+        <div class="count-box"><div class="count-num" id="cdDays">--</div><div class="count-lbl">Days</div></div>
+        <div class="count-box"><div class="count-num" id="cdHours">--</div><div class="count-lbl">Hours</div></div>
+        <div class="count-box"><div class="count-num" id="cdMins">--</div><div class="count-lbl">Mins</div></div>
+        <div class="count-box"><div class="count-num" id="cdSecs">--</div><div class="count-lbl">Secs</div></div>
+      </div>
+    </div>
 
-  <!-- FUEL -->
-  <div class="view" id="view-fuel"></div>
-
-  <!-- KIT -->
-  <div class="view" id="view-kit"></div>
-
-  <div class="navbar">
-    <div class="navbar-inner">
-      <button class="navbtn active" data-tab="home">
-        <svg viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" stroke-linejoin="round"/></svg>
-        <span>today</span>
+    <!-- Interactive Week Navigator -->
+    <div class="week-navigator-bar">
+      <button class="week-nav-btn" id="prevWeekBtn" title="Previous week">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <button class="navbtn" data-tab="route">
-        <svg viewBox="0 0 24 24"><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M5 17c0-6 3-6 7-9s3-3 7-3" stroke-linecap="round"/></svg>
-        <span>route</span>
-      </button>
-      <button class="navbtn" data-tab="lift">
-        <svg viewBox="0 0 24 24"><path d="M4 10v4M2 9v6M20 10v4M22 9v6M7 12h10" stroke-linecap="round"/><rect x="6" y="8" width="2.4" height="8" rx="1"/><rect x="15.6" y="8" width="2.4" height="8" rx="1"/></svg>
-        <span>lift</span>
-      </button>
-      <button class="navbtn" data-tab="fuel">
-        <svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 0 16 0z"/><path d="M2 10h20"/><path d="M6 10c0-3 1-5 2-6M18 10c0-3-1-5-2-6" stroke-linecap="round"/></svg>
-        <span>fuel</span>
-      </button>
-      <button class="navbtn" data-tab="kit">
-        <svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="13" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9 12h6" stroke-linecap="round"/></svg>
-        <span>kit</span>
+      <div class="week-nav-label" id="currentWeekNavLabel">
+        <div class="week-nav-title" id="weekNavTitleText">Week 1 of 38</div>
+        <div class="week-nav-sub" id="weekNavDatesText">24–30 Aug 2026</div>
+      </div>
+      <button class="week-nav-btn" id="nextWeekBtn" title="Next week">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </div>
-  </div>
+
+    <!-- Active Week Summary & Sessions -->
+    <div class="stirling-card">
+      <div class="card-header-flex">
+        <h2 class="card-title">This Week's Route</h2>
+        <span class="ex-target-scheme" id="activePhaseBadge">Habit & Comfort</span>
+      </div>
+
+      <!-- Ring + Stats -->
+      <div class="ring-summary-box">
+        <svg class="ring-chart-svg" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="19" class="ring-chart-bg" />
+          <circle cx="24" cy="24" r="19" class="ring-chart-fill" id="homeProgressRingCircle"
+            stroke-dasharray="119.38" stroke-dashoffset="119.38" />
+        </svg>
+        <div class="ring-text-wrap">
+          <div class="ring-count-bold" id="weekCompletionText">0/5 Sessions</div>
+          <div class="ring-subtext" id="weekMotivationMsg">Tap each session as you complete it</div>
+        </div>
+      </div>
+
+      <!-- Sessions List -->
+      <div class="sess-interactive-list" id="homeSessionsList"></div>
+      
+      <p style="font-size:12.5px; color:var(--ink-dim); margin:12px 0 0; line-height:1.45;" id="homePhaseNote"></p>
+    </div>
+
+    <!-- Stirling Milestone Progress -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="font-size:16px; margin-bottom:8px;">Stirling Landmark Journey</h3>
+      <div class="milestone-stepper">
+        <div class="milestone-track">
+          <div class="milestone-track-fill" id="milestoneTrackFill" style="width:5%;"></div>
+        </div>
+        <div class="milestone-nodes">
+          <div class="milestone-node passed" data-target-week="1">
+            <div class="node-icon">🏃</div>
+            <div class="node-label">Start</div>
+          </div>
+          <div class="milestone-node" data-target-week="9">
+            <div class="node-icon">🏞️</div>
+            <div class="node-label">Forth</div>
+          </div>
+          <div class="milestone-node" data-target-week="19">
+            <div class="node-icon">⛰️</div>
+            <div class="node-label">Ochils</div>
+          </div>
+          <div class="milestone-node" data-target-week="27">
+            <div class="node-icon">🗡️</div>
+            <div class="node-label">Wallace</div>
+          </div>
+          <div class="milestone-node" data-target-week="38">
+            <div class="node-icon">🏰</div>
+            <div class="node-label">Castle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bento Overview -->
+    <div class="bento-grid">
+      <div class="bento-stat">
+        <div class="bento-num" id="bentoTotalLogged">0/190</div>
+        <div class="bento-lbl">Sessions Logged<br>to date</div>
+      </div>
+      <div class="bento-stat">
+        <div class="bento-num" id="bentoLongRuns">0</div>
+        <div class="bento-lbl">Saturday Long Runs<br>completed</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- VIEW 2: ROUTE (FULL 38 WEEKS) -->
+  <main class="content-view" id="view-route">
+    
+    <div class="stirling-card" style="margin-bottom:12px;">
+      <h2 class="card-title">38-Week Journey to Stirling</h2>
+      <p style="font-size:13px; color:var(--ink-dim); margin:4px 0 10px;">
+        From 24 August 2026 to race morning on 16 May 2027. Filter by training phase or tap any week for session details.
+      </p>
+      
+      <!-- Phase Filter Pills -->
+      <div class="segmented-filter-bar">
+        <button class="filter-pill active" data-phase-filter="all">All (38 Wks)</button>
+        <button class="filter-pill" data-phase-filter="p1">W1–9 Habit</button>
+        <button class="filter-pill" data-phase-filter="p2">W10–19 Build</button>
+        <button class="filter-pill" data-phase-filter="p3">W20–32 Endur</button>
+        <button class="filter-pill" data-phase-filter="p4">W33–36 Peak</button>
+        <button class="filter-pill" data-phase-filter="p5">W37–38 Taper</button>
+        <button class="filter-pill" data-phase-filter="checkpoints">🏁 Checkpoints</button>
+      </div>
+    </div>
+
+    <!-- Tree list -->
+    <div class="route-tree">
+      <div class="route-tree-spine"></div>
+      <div id="fullRouteContainer"></div>
+    </div>
+
+  </main>
+
+  <!-- VIEW 3: LIFT (STRENGTH COMPANION) -->
+  <main class="content-view" id="view-lift">
+    
+    <div class="stirling-card">
+      <div class="card-header-flex">
+        <h2 class="card-title">Liftwsarah Split</h2>
+        <span class="ex-target-scheme">Runner Adapted</span>
+      </div>
+      <p style="font-size:13px; color:var(--ink-dim); margin:0 0 10px; line-height:1.5;">
+        Four training days become two fixed anchors: <b>Upper One (Wed)</b> and <b>Lower One (Sun)</b> to protect Saturday's long run. Tuesday & Thursday second exposures are optional accessory work only when fresh.
+      </p>
+      <div class="checkpoint-badge-box">
+        <b>Guideline:</b> 2–3 sets per exercise, 1–2 reps in reserve, mostly 6–10 reps. Add reps over time; once every set reaches top of range with good form, add a little load.
+      </div>
+    </div>
+
+    <!-- Split Selector -->
+    <div class="lift-split-pills" id="liftSplitSelector">
+      <div class="lift-split-btn active" data-split-idx="0">
+        <div class="split-day">Wed · Anchor</div>
+        <div class="split-name">Upper One</div>
+      </div>
+      <div class="lift-split-btn" data-split-idx="1">
+        <div class="split-day">Sun · Anchor</div>
+        <div class="split-name">Lower One</div>
+      </div>
+      <div class="lift-split-btn" data-split-idx="2">
+        <div class="split-day">Tue/Thu · Optional</div>
+        <div class="split-name">Upper Two</div>
+      </div>
+      <div class="lift-split-btn" data-split-idx="3">
+        <div class="split-day">Tue/Thu · Optional</div>
+        <div class="split-name">Lower Two</div>
+      </div>
+    </div>
+
+    <!-- Interactive Gym Rest Timer -->
+    <div class="rest-timer-bar">
+      <div>
+        <div style="font-size:10px; font-family:var(--font-mono); color:#C0E9CB; text-transform:uppercase;">Rest Interval Timer</div>
+        <div class="timer-display" id="restTimerDisplay">01:00</div>
+      </div>
+      <div class="timer-preset-btns">
+        <button class="timer-pill-btn" data-sec="30">30s</button>
+        <button class="timer-pill-btn" data-sec="60">60s</button>
+        <button class="timer-pill-btn" data-sec="90">90s</button>
+      </div>
+      <button class="timer-control-btn" id="timerPlayBtn" title="Start Rest Timer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+
+    <!-- Active Split Exercises -->
+    <div id="liftExercisesList"></div>
+
+    <p class="footnote-stirling">
+      Exercise selections are an original menu built to make the supplied liftwsarah split framework usable alongside this running plan — not a reproduction of any paid programme.
+    </p>
+
+  </main>
+
+  <!-- VIEW 4: FUEL (NUTRITION & RECIPES) -->
+  <main class="content-view" id="view-fuel">
+    
+    <!-- Interactive Fuel & Carb Calculator -->
+    <div class="fuel-calc-box">
+      <div style="font-family:var(--font-mono); font-size:10.5px; color:#C0E9CB; text-transform:uppercase; letter-spacing:0.08em;">
+        Interactive Fuel Planner
+      </div>
+      <h3 style="font-family:var(--font-display); font-size:18px; margin:2px 0 8px; color:#FFFFFF;">
+        Long-Run Carb Target
+      </h3>
+      <p style="font-size:12.5px; color:rgba(255,255,255,0.85); margin:0;">
+        Select your planned Saturday long run duration:
+      </p>
+
+      <div class="calc-slider-wrap">
+        <input type="range" min="30" max="150" step="5" value="75" class="range-slider-stirling" id="fuelDurationSlider">
+      </div>
+
+      <div class="calc-result-badge">
+        <div>
+          <span style="font-weight:700;" id="fuelDurationLabel">75 min</span> run:
+          <span id="fuelAdviceSummary" style="color:#C0E9CB; display:block; font-size:11.5px; margin-top:2px;">Practise taking carbs</span>
+        </div>
+        <div class="calc-carb-val" id="fuelCarbTarget">30–45g carbs</div>
+      </div>
+    </div>
+
+    <!-- Pre-Run Fuel Guide -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:6px;">Before You Run</h3>
+      <p style="font-size:13px; color:var(--ink-dim); margin:0 0 8px;">
+        Banana; toast with honey or jam; half a bagel; small cereal bowl; yoghurt and fruit. Allow more digestion time before longer runs.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+        <span class="ex-target-scheme">🍌 Banana (30 min prior)</span>
+        <span class="ex-target-scheme">🍞 Jam Toast (1–2h prior)</span>
+        <span class="ex-target-scheme">🥯 Half Bagel (2h prior)</span>
+      </div>
+    </div>
+
+    <!-- Recipe Search & Categories -->
+    <div class="stirling-card" style="padding-bottom:10px;">
+      <h3 class="card-title" style="margin-bottom:8px;">12 Easy Runner Recipes</h3>
+      <input type="text" placeholder="🔍 Search ingredients, oats, chicken, pasta..." class="recipe-search-input" id="recipeSearch">
+      <div id="recipeCardGrid"></div>
+    </div>
+
+  </main>
+
+  <!-- VIEW 5: KIT & RACE STRATEGY -->
+  <main class="content-view" id="view-kit">
+    
+    <!-- 21.1 km Stirling Course Strategy -->
+    <div class="stirling-card">
+      <div class="card-header-flex">
+        <h2 class="card-title">21.1 km Race Strategy</h2>
+        <span class="ex-target-scheme">Stirling Pacing</span>
+      </div>
+      <p style="font-size:13px; color:var(--ink-dim); margin:0 0 10px;">
+        Divide the half marathon into distinct mental checkpoints:
+      </p>
+      <div id="strategyStepsList"></div>
+    </div>
+
+    <!-- Checklists -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:8px;">This Week's Checklist</h3>
+      <div id="kitWeeklyContainer"></div>
+    </div>
+
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:8px;">Long-Run Packing Bag</h3>
+      <div id="kitLongrunContainer"></div>
+    </div>
+
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:8px;">Race-Week Checklist</h3>
+      <div id="kitRaceweekContainer"></div>
+    </div>
+
+    <!-- Race Morning -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:6px;">Race Morning Protocol</h3>
+      <p style="font-size:13px; color:var(--ink-dim); line-height:1.55; margin:0;">
+        Wake with plenty of time. Eat your familiar carbohydrate-rich breakfast. Sip fluids rather than over-drinking. Arrive early enough for the toilet queue and a calm walk to the start. <b>Start conservatively.</b> If you feel amazing at 5 km, ignore that feeling and keep the effort easy.
+      </p>
+    </div>
+
+    <!-- Interactive Troubleshooter -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:6px;">When It Doesn't Go To Plan</h3>
+      <p style="font-size:12.5px; color:var(--ink-dim); margin:0 0 10px;">Tap your current situation for the recovery protocol:</p>
+      
+      <button class="trouble-pill-btn" data-trouble="missed1">
+        <span>Missed one session?</span>
+        <span>▾</span>
+      </button>
+      <div class="trouble-content-box" id="trouble-missed1" style="display:none;">
+        Carry straight on. Do not double up tomorrow. One missed run has zero impact on your 38-week trajectory.
+      </div>
+
+      <button class="trouble-pill-btn" data-trouble="missedWk">
+        <span>Missed a whole week?</span>
+        <span>▾</span>
+      </button>
+      <div class="trouble-content-box" id="trouble-missedWk" style="display:none;">
+        Repeat the previous week instead of progressing. Let your body resume rhythm smoothly.
+      </div>
+
+      <button class="trouble-pill-btn" data-trouble="ill">
+        <span>Illness or injury niggle?</span>
+        <span>▾</span>
+      </button>
+      <div class="trouble-content-box" id="trouble-ill" style="display:none;">
+        Recover first. Rest is training. Resuming at 100% health beats grinding at 60% with an aggravating tendon.
+      </div>
+
+      <button class="trouble-pill-btn" data-trouble="tired">
+        <span>Exhausted from work & life?</span>
+        <span>▾</span>
+      </button>
+      <div class="trouble-content-box" id="trouble-tired" style="display:none;">
+        Do the minimum effective version: keep Saturday's long run, one weekday run, one short 20-minute strength session. That is a successful week. <b>Never cram missed sessions</b>.
+      </div>
+    </div>
+
+    <!-- 10 Rules -->
+    <div class="stirling-card">
+      <h3 class="card-title" style="margin-bottom:10px;">Only 10 Things to Remember</h3>
+      <div id="goldenRulesContainer"></div>
+    </div>
+
+    <button class="reset-link-stirling" id="resetAllBtn">Reset All Logged Progress</button>
+    <div class="footnote-stirling">
+      Original training companion built from the Stirling Half 2027 pack. Strength framework adapted from liftwsarah; not an official programme, and no paid programme or cookbook content is reproduced.
+    </div>
+
+  </main>
+
+  <!-- iOS FLOATING BOTTOM NAVIGATION BAR -->
+  <nav class="ios-tab-bar">
+    <div class="tab-bar-island">
+      <button class="tab-item-btn active" data-tab="home" id="tabHomeBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="tab-item-label">Today</span>
+      </button>
+      <button class="tab-item-btn" data-tab="route" id="tabRouteBtn">
+        <svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H12"/></svg>
+        <span class="tab-item-label">Route</span>
+      </button>
+      <button class="tab-item-btn" data-tab="lift" id="tabLiftBtn">
+        <svg viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg>
+        <span class="tab-item-label">Lift</span>
+      </button>
+      <button class="tab-item-btn" data-tab="fuel" id="tabFuelBtn">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+        <span class="tab-item-label">Fuel</span>
+      </button>
+      <button class="tab-item-btn" data-tab="kit" id="tabKitBtn">
+        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
+        <span class="tab-item-label">Kit</span>
+      </button>
+    </div>
+  </nav>
+
 </div>
 
 <script>
-/* ================= DATA ================= */
+/* ================= CORE DATA ================= */
 const START_DATE = new Date('2026-08-24T00:00:00');
-const RACE_DATE = new Date('2027-05-16T00:00:00');
+const RACE_DATE = new Date('2027-05-16T09:00:00');
 
 const WEEKS = [
  {n:1, dates:'24–30 Aug 2026', tue:'20–25 min', thu:'20–25 min', sat:'30 min'},
@@ -331,16 +1761,17 @@ const WEEKS = [
 ];
 
 const PHASES = [
- {max:9, text:'Weeks 1–9 · habit and comfort, not speed. Use run/walk as needed.'},
- {max:19, text:'Weeks 10–19 · building time on feet. Keep almost all running easy.'},
- {max:32, text:'Weeks 20–32 · endurance becomes the focus. Start practising fuelling on long runs.'},
- {max:36, text:"Weeks 33–36 · peak endurance. Don't race your training runs."},
- {max:38, text:'Weeks 37–38 · taper. Reduce volume, keep a little easy running so legs feel fresh.'},
+ {max:9, name:'Phase 1 · Habit & Comfort', text:'Weeks 1–9 · habit and comfort, not speed. Use run/walk as needed.'},
+ {max:19, name:'Phase 2 · Building Aerobic Base', text:'Weeks 10–19 · building time on feet. Keep almost all running easy.'},
+ {max:32, name:'Phase 3 · Endurance & Fuelling', text:'Weeks 20–32 · endurance becomes the focus. Start practising fuelling on long runs.'},
+ {max:36, name:'Phase 4 · Peak Endurance', text:"Weeks 33–36 · peak endurance. Don't race your training runs."},
+ {max:38, name:'Phase 5 · Stirling Taper', text:'Weeks 37–38 · taper. Reduce volume, keep a little easy running so legs feel fresh.'},
 ];
 function phaseFor(n){ return PHASES.find(p=>n<=p.max).text; }
+function phaseNameFor(n){ return PHASES.find(p=>n<=p.max).name; }
 
 const LIFT_DAYS = [
- {tag:'Wed · every week', title:'Day 1 — Upper One', rows:[
+ {tag:'Wed · Anchor (every week)', title:'Day 1 — Upper One', rows:[
    ['Dumbbell or machine chest press','2–3 × 6–10','Stop 1–2 reps before failure'],
    ['Chest-supported row','2–3 × 6–10','Keep torso still, pull elbows back'],
    ['Dumbbell lateral raise','2–3 × 8–10','Light enough to control throughout'],
@@ -348,7 +1779,7 @@ const LIFT_DAYS = [
    ['Cable triceps pressdown','2 × 6–10','Keep shoulders quiet'],
    ['Dead bug','2 × 8–10/side','Slow and controlled'],
  ]},
- {tag:'Sun · every week', title:'Day 2 — Lower One', rows:[
+ {tag:'Sun · Anchor (every week)', title:'Day 2 — Lower One', rows:[
    ['Squat or leg press','2–3 × 6–10','Whichever you can perform confidently'],
    ['Romanian deadlift','2–3 × 6–10','Hinge, keep weights close'],
    ['Walking or reverse lunge','2 × 6–10/leg','Use support if needed'],
@@ -393,8 +1824,25 @@ const RECIPES = [
 const WEEKLY_CHK = ['2–3 runs completed','Long run completed or sensibly modified','Strength completed','At least one proper rest day','Hydration kept sensible','Any niggles monitored','One enjoyable, non-training thing done'];
 const LONGRUN_CHK = ['Phone','Water','Fuel once needed','Keys/card','Weather-appropriate layer','Comfortable socks','Anti-chafe product if useful','Route planned'];
 const RACEWEEK_CHK = ['Check race instructions and start information','Test race outfit during training','Have breakfast foods ready','Have familiar fuel ready','Charge phone/watch','Plan travel and parking/public transport','Lay everything out the night before','Do not cram training'];
-const STRATEGY = [['0–5 km','Deliberately restrained.'],['5–10 km','Settle into a sustainable rhythm.'],['10–15 km','Fuel and keep moving efficiently.'],['15–18 km','Expect it to feel harder — shorten the goal to the next km.'],['18–21.1 km','If you have energy, gradually increase effort. Finish with your friend.']];
-const QREF = ['Three runs most weeks.','Saturday is the key long run.','Most running is easy.','Strength supports running — it should not wreck your legs.','Build gradually.','Practise fuelling before race day.','Rest is training.','You are allowed to walk.','You do not need perfect weeks.','The goal is to arrive healthy enough to enjoy the day.'];
+const STRATEGY = [
+ ['0–5 km','Deliberately restrained. Let adrenaline pass and settle.'],
+ ['5–10 km','Settle into a sustainable rhythm. Relax shoulders and breathing.'],
+ ['10–15 km','Fuel and keep moving efficiently. Take fluid at stations.'],
+ ['15–18 km','Expect it to feel harder — shorten the goal to the next km.'],
+ ['18–21.1 km','If you have energy, gradually increase effort. Finish strong towards Stirling Castle.']
+];
+const QREF = [
+ 'Three runs most weeks.',
+ 'Saturday is the key long run.',
+ 'Most running is easy.',
+ 'Strength supports running — it should not wreck your legs.',
+ 'Build gradually.',
+ 'Practise fuelling before race day.',
+ 'Rest is training.',
+ 'You are allowed to walk.',
+ 'You do not need perfect weeks.',
+ 'The goal is to arrive healthy enough to enjoy the day.'
+];
 
 const SESSIONS = [
  {key:'tue', day:'Tue', label:'Easy run'},
@@ -404,309 +1852,612 @@ const SESSIONS = [
  {key:'sun', day:'Sun', label:'Lift — Lower One'},
 ];
 
-/* ================= STATE ================= */
-let STATE = { log:{}, weeklyChk:{}, longrunChk:{}, raceweekChk:{} };
-let expandedWeek = null;
+/* ================= STATE & AUDIO ================= */
+let STATE = {
+ log: {},
+ weeklyChk: {},
+ longrunChk: {},
+ raceweekChk: {},
+ liftSets: {},
+ soundEnabled: true
+};
+
+let currentViewingWeek = 1;
+let selectedLiftSplit = 0;
+let expandedRouteWeek = null;
+let activePhaseFilter = 'all';
+
+// Audio Synthesizer for tactile feedback
+let audioCtx = null;
+function getAudioCtx(){
+  if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
+
+function playSound(type){
+  if (!STATE.soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === 'check') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(580, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.linearRampToValueAtTime(0, now + 0.12);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } else if (type === 'uncheck') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(700, now);
+      osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.linearRampToValueAtTime(0, now + 0.1);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    } else if (type === 'celebrate') {
+      // Fanfare chord
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(freq, now + (i * 0.06));
+        g.gain.setValueAtTime(0.1, now + (i * 0.06));
+        g.gain.exponentialRampToValueAtTime(0.001, now + (i * 0.06) + 0.4);
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.start(now + (i * 0.06));
+        o.stop(now + (i * 0.06) + 0.45);
+      });
+    } else if (type === 'timerBeep') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(880, now);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.linearRampToValueAtTime(0, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    }
+  } catch(e) {}
+}
+
+function triggerHaptic(type = 20) {
+  if ('vibrate' in navigator) {
+    try { navigator.vibrate(type); } catch(e){}
+  }
+}
+
+/* ================= STORAGE ================= */
+const STORAGE_KEY = 'stirling-half-state-v2';
 let saveTimer = null;
 
 function getWeekLog(n){
-  if(!STATE.log[n]) STATE.log[n] = {tue:false,wed:false,thu:false,sat:false,sun:false};
+  if (!STATE.log[n]) STATE.log[n] = {tue:false, wed:false, thu:false, sat:false, sun:false};
   return STATE.log[n];
 }
-function getChk(list, key, len){
-  if(!STATE[key][list]) STATE[key][list] = new Array(len).fill(false);
-  return STATE[key][list];
+function getChk(category, key, len){
+  if (!STATE[category]) STATE[category] = {};
+  if (!STATE[category][key]) STATE[category][key] = new Array(len).fill(false);
+  return STATE[category][key];
 }
-
-const STORAGE_KEY = 'stirling-half-state';
-const hasClaudeStorage = typeof window.storage !== 'undefined' && window.storage !== null;
 
 function scheduleSave(){
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(async ()=>{
-    const json = JSON.stringify(STATE);
-    try{
-      if(hasClaudeStorage){ await window.storage.set(STORAGE_KEY, json); }
-      else { localStorage.setItem(STORAGE_KEY, json); }
-    }catch(e){ console.error('save failed', e); }
-  }, 250);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
+    } catch(e) {}
+  }, 200);
 }
 
-async function loadState(){
-  try{
-    if(hasClaudeStorage){
-      const res = await window.storage.get(STORAGE_KEY);
-      if(res && res.value){ STATE = Object.assign({log:{},weeklyChk:{},longrunChk:{},raceweekChk:{}}, JSON.parse(res.value)); }
-    } else {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(raw){ STATE = Object.assign({log:{},weeklyChk:{},longrunChk:{},raceweekChk:{}}, JSON.parse(raw)); }
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('stirling-half-state');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      STATE = Object.assign(STATE, parsed);
     }
-  }catch(e){ /* no saved state yet — defaults stand */ }
+  } catch(e){}
 }
 
 /* ================= HELPERS ================= */
-function currentWeekIndex(){
+function currentRealWeekIndex(){
   const diffDays = Math.floor((Date.now() - START_DATE.getTime()) / 86400000);
-  const idx = Math.floor(diffDays/7) + 1;
+  const idx = Math.floor(diffDays / 7) + 1;
   return Math.min(38, Math.max(1, idx));
 }
-function daysUntilRace(){
-  return Math.max(0, Math.ceil((RACE_DATE.getTime() - Date.now())/86400000));
-}
+
 function weekCompletionCount(n){
   const l = getWeekLog(n);
-  return SESSIONS.filter(s=>l[s.key]).length;
+  return SESSIONS.filter(s => l[s.key]).length;
 }
-function checkSvg(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>'; }
 
-/* ================= RENDER: HOME ================= */
+function checkSvg(){
+  return `<svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>`;
+}
+
+/* ================= CELEBRATION PARTICLES ================= */
+function fireConfetti(){
+  const canvas = document.getElementById('celebrationCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#0B3B24', '#1E8E54', '#D99B26', '#793A60', '#C0E9CB', '#FFFFFF'];
+
+  for (let i = 0; i < 70; i++) {
+    particles.push({
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      vx: (Math.random() - 0.5) * 16,
+      vy: (Math.random() - 0.7) * 18,
+      size: Math.random() * 8 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1,
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 10
+    });
+  }
+
+  playSound('celebrate');
+  triggerHaptic([40, 60, 100]);
+
+  let frame = 0;
+  function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.4; // gravity
+      p.alpha -= 0.015;
+      p.rotation += p.vRot;
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+        ctx.restore();
+      }
+    });
+
+    if (alive && frame < 90) {
+      frame++;
+      requestAnimationFrame(animate);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+/* ================= CLOCK & COUNTDOWN ================= */
+function updateCountdown(){
+  const now = new Date();
+  const diff = RACE_DATE.getTime() - now.getTime();
+  if (diff <= 0) {
+    document.getElementById('cdDays').textContent = '00';
+    document.getElementById('cdHours').textContent = '00';
+    document.getElementById('cdMins').textContent = '00';
+    document.getElementById('cdSecs').textContent = '00';
+    return;
+  }
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('cdDays').textContent = days < 10 ? '0' + days : days;
+  document.getElementById('cdHours').textContent = hours < 10 ? '0' + hours : hours;
+  document.getElementById('cdMins').textContent = mins < 10 ? '0' + mins : mins;
+  document.getElementById('cdSecs').textContent = secs < 10 ? '0' + secs : secs;
+}
+
+/* ================= RENDER: TODAY (HOME) ================= */
 function renderHome(){
-  const wk = currentWeekIndex();
-  const w = WEEKS[wk-1];
+  const realWk = currentRealWeekIndex();
+  const wk = currentViewingWeek;
+  const w = WEEKS[wk - 1];
   const done = weekCompletionCount(wk);
-  const pct = Math.round(done/5*100);
-  const r = 20, c = 2*Math.PI*r;
-  const offset = c - (pct/100)*c;
+  const pct = Math.round((done / 5) * 100);
 
-  let totalDone=0, totalPossible=0;
-  for(let i=1;i<=wk;i++){ totalDone += weekCompletionCount(i); totalPossible += 5; }
-  let longRunsDone=0;
-  for(let i=1;i<=38;i++){ if(getWeekLog(i).sat) longRunsDone++; }
+  // Week Navigator text
+  document.getElementById('weekNavTitleText').textContent = `Week ${wk} of 38`;
+  document.getElementById('weekNavDatesText').textContent = w.dates + (wk === realWk ? ' (Current Week)' : '');
+  document.getElementById('prevWeekBtn').disabled = wk <= 1;
+  document.getElementById('nextWeekBtn').disabled = wk >= 38;
 
-  const el = document.getElementById('homeContent');
-  el.innerHTML = `
-    <div class="hero">
-      <div>
-        <div class="hero-num">${daysUntilRace()}</div>
-        <div class="hero-label">days to Stirling</div>
-      </div>
-      <div class="hero-right">Race day<br><b>Sun 16 May 2027</b><br>21.1 km</div>
-    </div>
+  // Phase badge & note
+  document.getElementById('activePhaseBadge').textContent = phaseNameFor(wk);
+  document.getElementById('homePhaseNote').textContent = phaseFor(wk);
 
-    <div class="card">
-      <div class="week-head"><span class="week-tag">WEEK ${wk} / 38</span><span class="week-dates">${w.dates}</span></div>
-      <div class="week-title">This week's route</div>
-      <div class="ring-row">
-        <svg class="ring" viewBox="0 0 48 48">
-          <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"/>
-          <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--green)" stroke-width="5"
-            stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${offset}"
-            transform="rotate(-90 24 24)"/>
-        </svg>
-        <div class="ring-text"><b>${done}/5</b> sessions logged this week</div>
-      </div>
-      <div class="sess-list" id="homeSessList"></div>
-      <p class="phase-note">${phaseFor(wk)}</p>
-    </div>
+  // Progress Ring
+  const circle = document.getElementById('homeProgressRingCircle');
+  const circumference = 2 * Math.PI * 19; // ~119.38
+  const offset = circumference - (done / 5) * circumference;
+  circle.style.strokeDashoffset = offset;
 
-    <div class="stat-row">
-      <div class="stat"><div class="stat-n">${totalDone}/${totalPossible}</div><div class="stat-l">sessions logged<br>to date</div></div>
-      <div class="stat"><div class="stat-n">${longRunsDone}</div><div class="stat-l">long runs<br>completed</div></div>
-      <div class="stat"><div class="stat-n">${38-wk+1}</div><div class="stat-l">weeks<br>remaining</div></div>
-    </div>
-  `;
-  renderSessList(document.getElementById('homeSessList'), wk);
-  document.getElementById('headerSub').textContent = `Week ${wk} of 38 · ${w.race ? 'race week!' : done+"/5 done this week"}`;
-}
+  document.getElementById('weekCompletionText').textContent = `${done}/5 Logged`;
+  document.getElementById('weekMotivationMsg').textContent = 
+    done === 5 ? '🎉 All 5 sessions done! Crushing it.' :
+    done === 0 ? 'Ready for this week’s route?' :
+    `${5 - done} session${5 - done > 1 ? 's' : ''} left to complete week ${wk}`;
 
-function renderSessList(container, wk){
-  const w = WEEKS[wk-1];
+  // Render Session Cards
+  const sessListEl = document.getElementById('homeSessionsList');
   const l = getWeekLog(wk);
-  container.innerHTML = SESSIONS.map(s=>{
-    const on = l[s.key];
-    const dur = s.key==='sat' ? w.sat : (s.key==='wed'||s.key==='sun') ? '' : w[s.key];
-    const isRace = w.race && s.key==='sat';
-    return `<div class="sess ${on?'done':''} ${isRace?'race':''}" data-wk="${wk}" data-key="${s.key}">
-      <div class="sess-check">${checkSvg()}</div>
-      <div class="sess-body">
-        <div class="sess-day">${s.day}</div>
-        <div class="sess-name">${isRace ? 'Race day — 21.1 km' : s.label}</div>
+
+  sessListEl.innerHTML = SESSIONS.map(s => {
+    const isDone = l[s.key];
+    const dur = s.key === 'sat' ? w.sat : (s.key === 'wed' || s.key === 'sun') ? 'Strength' : w[s.key];
+    const isRace = w.race && s.key === 'sat';
+    return `
+      <div class="sess-card ${isDone ? 'completed' : ''} ${isRace ? 'is-race' : ''}" data-wk="${wk}" data-key="${s.key}">
+        <div class="sess-tactile-check">${checkSvg()}</div>
+        <div class="sess-info-col">
+          <div class="sess-day-tag">${s.day}</div>
+          <div class="sess-title-text">${isRace ? '🏁 Stirling Half Marathon (21.1 km)' : s.label}</div>
+        </div>
+        <div class="sess-dur-pill">${dur}</div>
       </div>
-      <div class="sess-dur">${dur}</div>
-    </div>`;
+    `;
   }).join('');
-  container.querySelectorAll('.sess').forEach(elm=>{
-    elm.addEventListener('click', ()=>{
-      const wk2 = +elm.dataset.wk, key = elm.dataset.key;
-      const log = getWeekLog(wk2);
-      log[key] = !log[key];
+
+  // Attach click listener with audio & tactile check
+  sessListEl.querySelectorAll('.sess-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const wkNum = +card.dataset.wk;
+      const key = card.dataset.key;
+      const log = getWeekLog(wkNum);
+      const wasDone = log[key];
+      log[key] = !wasDone;
       scheduleSave();
+
+      if (!wasDone) {
+        playSound('check');
+        triggerHaptic(25);
+        if (weekCompletionCount(wkNum) === 5) {
+          fireConfetti();
+        }
+      } else {
+        playSound('uncheck');
+        triggerHaptic(15);
+      }
+
       renderHome();
-      if(document.getElementById('view-route').classList.contains('active')) renderRoute();
+      if (document.getElementById('view-route').classList.contains('active')) {
+        renderRoute();
+      }
     });
   });
+
+  // Stirling Milestone Progress Bar calculation
+  const totalCompletedWeeks = WEEKS.filter(item => weekCompletionCount(item.n) === 5).length;
+  const progressPct = Math.max(5, Math.min(100, Math.round((wk / 38) * 100)));
+  document.getElementById('milestoneTrackFill').style.width = progressPct + '%';
+
+  // Highlight milestone nodes
+  document.querySelectorAll('.milestone-node').forEach(node => {
+    const targetWk = +node.dataset.targetWeek;
+    node.classList.remove('current', 'passed');
+    if (wk === targetWk) {
+      node.classList.add('current');
+    } else if (wk > targetWk) {
+      node.classList.add('passed');
+    }
+  });
+
+  // Bento Stats
+  let totalLogged = 0;
+  let longRunsDone = 0;
+  for (let i = 1; i <= 38; i++) {
+    totalLogged += weekCompletionCount(i);
+    if (getWeekLog(i).sat) longRunsDone++;
+  }
+  document.getElementById('bentoTotalLogged').textContent = `${totalLogged}/190`;
+  document.getElementById('bentoLongRuns').textContent = `${longRunsDone}/38`;
+
+  // Header Subtitle
+  document.getElementById('headerSubtitle').textContent = `Week ${wk} of 38 · ${w.race ? 'Race Week!' : done + '/5 done this week'}`;
 }
 
 /* ================= RENDER: ROUTE ================= */
 function renderRoute(){
-  const wk = currentWeekIndex();
-  const el = document.getElementById('routeContent');
-  el.innerHTML = `
-    <div class="card" style="margin-bottom:16px;">
-      <h3>The full route</h3>
-      <p class="phase-note" style="margin-top:0;">38 weeks from 24 Aug 2026 to race day. Tap any week to open its sessions.</p>
-    </div>
-    <div class="route-wrap"><div class="route-line"></div><div id="routeList"></div></div>
-  `;
-  const list = document.getElementById('routeList');
-  list.innerHTML = WEEKS.map(w=>{
+  const realWk = currentRealWeekIndex();
+  const container = document.getElementById('fullRouteContainer');
+
+  let filtered = WEEKS;
+  if (activePhaseFilter === 'p1') filtered = WEEKS.filter(w => w.n <= 9);
+  else if (activePhaseFilter === 'p2') filtered = WEEKS.filter(w => w.n >= 10 && w.n <= 19);
+  else if (activePhaseFilter === 'p3') filtered = WEEKS.filter(w => w.n >= 20 && w.n <= 32);
+  else if (activePhaseFilter === 'p4') filtered = WEEKS.filter(w => w.n >= 33 && w.n <= 36);
+  else if (activePhaseFilter === 'p5') filtered = WEEKS.filter(w => w.n >= 37 && w.n <= 38);
+  else if (activePhaseFilter === 'checkpoints') filtered = WEEKS.filter(w => w.checkpoint || w.race);
+
+  container.innerHTML = filtered.map(w => {
     const done = weekCompletionCount(w.n);
-    const dotClass = w.race ? 'race' : done===5 ? 'full' : done>0 ? 'partial' : '';
-    const hereClass = w.n===wk ? 'here' : '';
-    const expanded = expandedWeek===w.n;
-    return `<div class="route-item">
-      <div class="route-dot ${dotClass} ${hereClass}">${w.race?'🏁':w.n}</div>
-      <div class="route-row" data-wk="${w.n}">
-        <div class="route-row-l">
-          <div class="route-w">WEEK ${w.n} · ${w.dates}</div>
-          <div class="route-d">${w.race ? 'Race day · 21.1 km' : `${done}/5 logged`}</div>
+    const isCurrent = w.n === realWk;
+    const isExpanded = expandedRouteWeek === w.n;
+    
+    let badgeClass = '';
+    if (w.race) badgeClass = 'is-race-badge';
+    else if (done === 5) badgeClass = 'full';
+    else if (done > 0) badgeClass = 'partial';
+    else if (w.checkpoint) badgeClass = 'is-checkpoint';
+
+    const haloClass = isCurrent ? 'current-week-halo' : '';
+
+    return `
+      <div class="route-week-item">
+        <div class="route-badge-node ${badgeClass} ${haloClass}">
+          ${w.race ? '🏁' : w.checkpoint ? '★' : w.n}
         </div>
-        <div class="route-r">${w.tue.replace(' min','′')} / ${w.thu.replace(' min','′')} / ${w.race?'RACE':w.sat.replace(' min','′')}</div>
+        <div class="route-item-card ${isExpanded ? 'is-expanded' : ''}" data-wk="${w.n}">
+          <div class="route-item-summary">
+            <div>
+              <div class="route-week-num">
+                <span>WEEK ${w.n}</span>
+                ${w.checkpoint ? '<span style="color:var(--highland-gold);">• CHECKPOINT</span>' : ''}
+              </div>
+              <div class="route-week-name">${w.dates}</div>
+            </div>
+            <div class="route-run-badges">
+              ${w.race ? '21.1 km RACE' : `${w.tue.replace(' min','′')} / ${w.thu.replace(' min','′')} / ${w.sat.replace(' min','′')}`}
+              <div style="font-size:10px; font-weight:500; color:var(--ink-faint); margin-top:2px;">
+                ${done}/5 logged
+              </div>
+            </div>
+          </div>
+          ${isExpanded ? `
+            <div class="route-accordion-drawer">
+              <p style="font-size:12.5px; color:var(--ink-dim); margin:0 0 10px;">${phaseFor(w.n)}</p>
+              <div class="sess-interactive-list" id="routeDrawerSessList-${w.n}"></div>
+              ${w.checkpoint ? `
+                <div class="checkpoint-badge-box">
+                  <b>Checkpoint Week:</b> If fatigue is accumulating, repeat this week instead of progressing. The Saturday long run is your priority session.
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
+        </div>
       </div>
-      ${expanded ? routeDetailHtml(w) : ''}
-    </div>`;
+    `;
   }).join('');
 
-  list.querySelectorAll('.route-row').forEach(row=>{
-    row.addEventListener('click', ()=>{
-      const n = +row.dataset.wk;
-      expandedWeek = expandedWeek===n ? null : n;
+  // Attach card toggle
+  container.querySelectorAll('.route-item-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      // Don't collapse if clicking a session check
+      if (e.target.closest('.sess-card')) return;
+      const n = +card.dataset.wk;
+      expandedRouteWeek = expandedRouteWeek === n ? null : n;
       renderRoute();
-      if(expandedWeek){
-        setTimeout(()=>{
-          const list2 = document.getElementById('routeList');
-          list2.querySelector(`[data-wk="${expandedWeek}"]`).closest('.route-item')
-            .scrollIntoView({behavior:'smooth', block:'center'});
-        }, 30);
-      }
     });
   });
-  // sessions inside expanded detail
-  const detail = list.querySelector('.route-detail');
-  if(detail){ renderSessList(detail.querySelector('.sess-list'), expandedWeek); }
-}
 
-function routeDetailHtml(w){
-  return `<div class="route-detail">
-    <p class="phase-note" style="margin-top:0; margin-bottom:10px;">${phaseFor(w.n)}</p>
-    <div class="sess-list"></div>
-    ${w.checkpoint ? `<div class="checkpoint-note">Checkpoint — if fatigue is accumulating, repeat this week instead of progressing. The long run is the priority session.</div>` : ''}
-  </div>`;
+  // Render session list inside expanded drawer
+  if (expandedRouteWeek) {
+    const drawerList = document.getElementById(`routeDrawerSessList-${expandedRouteWeek}`);
+    if (drawerList) {
+      const w = WEEKS[expandedRouteWeek - 1];
+      const l = getWeekLog(expandedRouteWeek);
+      drawerList.innerHTML = SESSIONS.map(s => {
+        const isDone = l[s.key];
+        const dur = s.key === 'sat' ? w.sat : (s.key === 'wed' || s.key === 'sun') ? 'Strength' : w[s.key];
+        return `
+          <div class="sess-card ${isDone ? 'completed' : ''}" data-wk="${expandedRouteWeek}" data-key="${s.key}">
+            <div class="sess-tactile-check">${checkSvg()}</div>
+            <div class="sess-info-col">
+              <div class="sess-day-tag">${s.day}</div>
+              <div class="sess-title-text">${s.label}</div>
+            </div>
+            <div class="sess-dur-pill">${dur}</div>
+          </div>
+        `;
+      }).join('');
+
+      drawerList.querySelectorAll('.sess-card').forEach(sc => {
+        sc.addEventListener('click', () => {
+          const wkNum = +sc.dataset.wk;
+          const key = sc.dataset.key;
+          const log = getWeekLog(wkNum);
+          log[key] = !log[key];
+          scheduleSave();
+          playSound(log[key] ? 'check' : 'uncheck');
+          triggerHaptic(20);
+          renderRoute();
+          renderHome();
+        });
+      });
+    }
+  }
 }
 
 /* ================= RENDER: LIFT ================= */
 function renderLift(){
-  const el = document.getElementById('view-lift');
-  el.innerHTML = `
-    <div class="card">
-      <h3>Liftwsarah split, compressed</h3>
-      <p class="prose">Four training days become two fixed sessions a week — <b>Upper One on Wednesday</b>, <b>Lower One on Sunday</b> — so Saturday's long run stays protected. The second exposures are optional accessory work on Tue/Thu, only when recovery is good.</p>
-      <p class="prose" style="margin-top:8px;">2–3 sets per exercise, 1–2 reps in reserve, mostly 6–10 reps. Add reps over time; once every set reaches the top of the range with good form, add a little load and drop back to 6–8. During heavy running weeks, holding the weight steady is a win.</p>
-    </div>
-    ${LIFT_DAYS.map(d=>`
-      <div class="card lift-day">
-        <div class="lift-day-h">
-          <h3 style="margin:0;">${d.title}</h3>
-        </div>
-        <div class="lift-day-tag" style="margin-bottom:8px;">${d.tag}</div>
-        <table class="ex">
-          <tr><th>Exercise</th><th>Sets</th><th>Notes</th></tr>
-          ${d.rows.map(r=>`<tr><td class="ex-name">${r[0]}</td><td class="ex-sets">${r[1]}</td><td class="ex-note">${r[2]}</td></tr>`).join('')}
-        </table>
-      </div>
-    `).join('')}
-    <div class="footnote">Exercise selections are an original menu built to make the supplied liftwsarah split framework usable alongside this running plan — not a reproduction of any paid programme.</div>
-  `;
-}
+  const split = LIFT_DAYS[selectedLiftSplit];
+  const listEl = document.getElementById('liftExercisesList');
 
-/* ================= RENDER: FUEL ================= */
-function renderFuel(){
-  const el = document.getElementById('view-fuel');
-  el.innerHTML = `
-    <div class="card">
-      <h3>Long-run fuelling</h3>
-      <p class="prose">Once long runs reach roughly 75–90 minutes, practise taking carbohydrate during the run — a gel, sports drink, banana, jelly sweets or a small jam sandwich. Start with what your stomach tolerates, and use the same approach every time. Don't try anything new on race morning.</p>
-    </div>
-    <div class="card">
-      <h3>Before you run</h3>
-      <p class="prose">Banana; toast with honey or jam; half a bagel; small cereal bowl; yoghurt and fruit. Allow more digestion time before longer runs.</p>
-    </div>
-    <div class="card">
-      <h3>Easy runner recipes</h3>
-      <div class="recipe-grid">
-        ${RECIPES.map(r=>`<div class="recipe"><h4>${r[0]}</h4><p>${r[1]}</p><div class="use">${r[2]}</div></div>`).join('')}
-      </div>
-    </div>
-  `;
-}
-
-/* ================= RENDER: KIT ================= */
-function renderKit(){
-  const wk = currentWeekIndex();
-  const el = document.getElementById('view-kit');
-  el.innerHTML = `
-    <div class="card">
-      <h3>This week's checklist</h3>
-      <div id="kitWeekly"></div>
-    </div>
-    <div class="card">
-      <h3>Long-run packing</h3>
-      <div id="kitLongrun"></div>
-    </div>
-    <div class="card">
-      <h3>Race-week checklist</h3>
-      <div id="kitRaceweek"></div>
-    </div>
-    <div class="card">
-      <h3>21.1 km strategy</h3>
-      ${STRATEGY.map(s=>`<div class="strategy-item"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}
-    </div>
-    <div class="card">
-      <h3>Race morning</h3>
-      <p class="prose">Wake with plenty of time. Eat your familiar carbohydrate-rich breakfast. Sip fluids rather than over-drinking. Arrive early enough for the toilet queue and a calm walk to the start. <b>Start conservatively.</b> If you feel amazing at 5 km, ignore that feeling and keep the effort easy.</p>
-    </div>
-    <div class="card">
-      <h3>When it doesn't go to plan</h3>
-      <p class="prose">Missed one session? Carry on. Missed a week? Repeat the previous week. Ill or injured? Recover first. Exhausted from work? Do the minimum effective version: keep Saturday's long run, one weekday run, one short 20-minute strength session. That's a successful week. <b>Never cram missed sessions</b> — resume the plan and keep moving forward.</p>
-    </div>
-    <div class="card">
-      <h3>Only 10 things to remember</h3>
-      <ol class="qref">${QREF.map(q=>`<li>${q}</li>`).join('')}</ol>
-    </div>
-    <button class="reset-link" id="resetBtn">Reset all logged progress</button>
-    <div class="footnote">Original training companion built from the Stirling Half 2027 pack. Strength framework adapted from liftwsarah; not an official programme, and no paid programme or cookbook content is reproduced.</div>
-  `;
-  renderChecklist(document.getElementById('kitWeekly'), WEEKLY_CHK, getChk('weeklyChk', wk, WEEKLY_CHK.length), ()=>{});
-  renderChecklist(document.getElementById('kitLongrun'), LONGRUN_CHK, getChk('longrunChk', 'main', LONGRUN_CHK.length), ()=>{});
-  renderChecklist(document.getElementById('kitRaceweek'), RACEWEEK_CHK, getChk('raceweekChk', 'main', RACEWEEK_CHK.length), ()=>{});
-
-  document.getElementById('resetBtn').addEventListener('click', async ()=>{
-    if(confirm('Clear all logged sessions and checklists? This cannot be undone.')){
-      STATE = { log:{}, weeklyChk:{}, longrunChk:{}, raceweekChk:{} };
-      scheduleSave();
-      renderAll();
-    }
+  // Update split buttons
+  document.querySelectorAll('.lift-split-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === selectedLiftSplit);
   });
-}
 
-function renderChecklist(container, items, arr, onChange){
-  container.innerHTML = items.map((txt,i)=>`
-    <div class="chk ${arr[i]?'on':''}" data-i="${i}">
-      <div class="chk-box">${checkSvg()}</div>
-      <div class="chk-text">${txt}</div>
-    </div>`).join('');
-  container.querySelectorAll('.chk').forEach(c=>{
-    c.addEventListener('click', ()=>{
-      const i = +c.dataset.i;
-      arr[i] = !arr[i];
+  listEl.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+      <h3 style="font-family:var(--font-display); font-size:16px; margin:0;">${split.title}</h3>
+      <span style="font-size:11px; font-family:var(--font-mono); color:var(--stirling-emerald);">${split.tag}</span>
+    </div>
+    ${split.rows.map((row, rowIdx) => {
+      const savedKey = `lift-${selectedLiftSplit}-${rowIdx}`;
+      const setsDone = STATE.liftSets[savedKey] || [false, false, false];
+      return `
+        <div class="exercise-item-card">
+          <div class="ex-header-row">
+            <div class="ex-name-strong">${row[0]}</div>
+            <div class="ex-target-scheme">${row[1]}</div>
+          </div>
+          <div class="ex-tip-text">💡 ${row[2]}</div>
+          <div class="ex-sets-tracker">
+            <button class="set-check-btn ${setsDone[0] ? 'done' : ''}" data-key="${savedKey}" data-set="0">Set 1 ${setsDone[0]?'✓':''}</button>
+            <button class="set-check-btn ${setsDone[1] ? 'done' : ''}" data-key="${savedKey}" data-set="1">Set 2 ${setsDone[1]?'✓':''}</button>
+            <button class="set-check-btn ${setsDone[2] ? 'done' : ''}" data-key="${savedKey}" data-set="2">Set 3 ${setsDone[2]?'✓':''}</button>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+
+  // Attach set toggles
+  listEl.querySelectorAll('.set-check-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      const setIdx = +btn.dataset.set;
+      if (!STATE.liftSets[key]) STATE.liftSets[key] = [false, false, false];
+      STATE.liftSets[key][setIdx] = !STATE.liftSets[key][setIdx];
       scheduleSave();
-      c.classList.toggle('on');
+      playSound(STATE.liftSets[key][setIdx] ? 'check' : 'uncheck');
+      triggerHaptic(15);
+      renderLift();
     });
   });
 }
 
-/* ================= NAV ================= */
-function renderAll(){
+// Gym Rest Timer
+let restInterval = null;
+let restRemaining = 60;
+let restIsRunning = false;
+
+function updateTimerDisplay(){
+  const mins = Math.floor(restRemaining / 60);
+  const secs = restRemaining % 60;
+  document.getElementById('restTimerDisplay').textContent = 
+    `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+}
+
+function startRestTimer(seconds){
+  clearInterval(restInterval);
+  restRemaining = seconds;
+  restIsRunning = true;
+  updateTimerDisplay();
+  document.getElementById('timerPlayBtn').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
+
+  restInterval = setInterval(() => {
+    restRemaining--;
+    updateTimerDisplay();
+    if (restRemaining <= 0) {
+      clearInterval(restInterval);
+      restIsRunning = false;
+      document.getElementById('timerPlayBtn').innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      playSound('timerBeep');
+      triggerHaptic([100, 80, 100, 80, 150]);
+    }
+  }, 1000);
+}
+
+/* ================= RENDER: FUEL ================= */
+function renderFuel(){
+  const search = (document.getElementById('recipeSearch').value || '').toLowerCase().trim();
+  const grid = document.getElementById('recipeCardGrid');
+
+  const filtered = RECIPES.filter(r => {
+    return !search || r[0].toLowerCase().includes(search) || r[1].toLowerCase().includes(search) || r[2].toLowerCase().includes(search);
+  });
+
+  grid.innerHTML = filtered.map(r => `
+    <div class="recipe-interactive-card">
+      <h4 class="recipe-name-title">${r[0]}</h4>
+      <div class="recipe-purpose-badge">🍽️ ${r[2]}</div>
+      <p class="recipe-ingr-text">${r[1]}</p>
+    </div>
+  `).join('');
+}
+
+function updateFuelCalculator(){
+  const slider = document.getElementById('fuelDurationSlider');
+  const dur = +slider.value;
+  document.getElementById('fuelDurationLabel').textContent = `${dur} min`;
+
+  const adviceEl = document.getElementById('fuelAdviceSummary');
+  const targetEl = document.getElementById('fuelCarbTarget');
+
+  if (dur < 60) {
+    adviceEl.textContent = 'Water only; carbs not strictly needed';
+    targetEl.textContent = '0–15g carbs';
+  } else if (dur <= 75) {
+    adviceEl.textContent = 'Practise 1 small gel or chews midway';
+    targetEl.textContent = '20–30g carbs';
+  } else if (dur <= 100) {
+    adviceEl.textContent = 'Take fuel every 35–45 min + sip water';
+    targetEl.textContent = '30–50g / hr';
+  } else {
+    adviceEl.textContent = 'Simulate full race fuelling strategy';
+    targetEl.textContent = '45–60g / hr';
+  }
+}
+
+/* ================= RENDER: KIT & RACE ================= */
+function renderKit(){
+  const realWk = currentRealWeekIndex();
+
+  // 21.1 km Course Strategy
+  document.getElementById('strategyStepsList').innerHTML = STRATEGY.map(s => `
+    <div class="strategy-step-card">
+      <div class="strat-km-badge">${s[0]}</div>
+      <div class="strat-desc">${s[1]}</div>
+    </div>
+  `).join('');
+
+  // Checklists
+  renderChecklist(document.getElementById('kitWeeklyContainer'), WEEKLY_CHK, getChk('weeklyChk', realWk, WEEKLY_CHK.length));
+  renderChecklist(document.getElementById('kitLongrunContainer'), LONGRUN_CHK, getChk('longrunChk', 'main', LONGRUN_CHK.length));
+  renderChecklist(document.getElementById('kitRaceweekContainer'), RACEWEEK_CHK, getChk('raceweekChk', 'main', RACEWEEK_CHK.length));
+
+  // 10 Golden Rules
+  document.getElementById('goldenRulesContainer').innerHTML = QREF.map((q, i) => `
+    <div class="golden-rule-item">
+      <div class="rule-index-bubble">${i + 1}</div>
+      <div style="line-height:1.4;">${q}</div>
+    </div>
+  `).join('');
+}
+
+function renderChecklist(container, items, arr){
+  container.innerHTML = items.map((txt, i) => `
+    <div class="interactive-chk-row ${arr[i] ? 'checked' : ''}" data-idx="${i}">
+      <div class="chk-tactile-box">${checkSvg()}</div>
+      <div class="chk-item-label">${txt}</div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.interactive-chk-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const idx = +row.dataset.idx;
+      arr[idx] = !arr[idx];
+      scheduleSave();
+      playSound(arr[idx] ? 'check' : 'uncheck');
+      triggerHaptic(15);
+      row.classList.toggle('checked');
+    });
+  });
+}
+
+/* ================= EVENT LISTENERS & NAVIGATION ================= */
+function renderAllViews(){
   renderHome();
   renderRoute();
   renderLift();
@@ -714,25 +2465,139 @@ function renderAll(){
   renderKit();
 }
 
-document.querySelectorAll('.navbtn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+// Tab navigation
+document.querySelectorAll('.tab-item-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-item-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.content-view').forEach(v => v.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('view-'+btn.dataset.tab).classList.add('active');
-    window.scrollTo(0,0);
+    
+    const tabName = btn.dataset.tab;
+    const view = document.getElementById('view-' + tabName);
+    if (view) {
+      view.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    triggerHaptic(12);
   });
 });
-document.getElementById('view-home').classList.add('active');
 
-/* ================= INIT ================= */
-(async function init(){
-  await loadState();
-  document.getElementById('homeLoading').style.display = 'none';
-  document.getElementById('homeContent').style.display = 'block';
-  renderAll();
+// Sound Toggle
+document.getElementById('soundToggle').addEventListener('click', () => {
+  STATE.soundEnabled = !STATE.soundEnabled;
+  scheduleSave();
+  document.getElementById('soundToggle').classList.toggle('muted', !STATE.soundEnabled);
+  triggerHaptic(15);
+});
+
+// Week Navigator Buttons
+document.getElementById('prevWeekBtn').addEventListener('click', () => {
+  if (currentViewingWeek > 1) {
+    currentViewingWeek--;
+    renderHome();
+    triggerHaptic(15);
+  }
+});
+document.getElementById('nextWeekBtn').addEventListener('click', () => {
+  if (currentViewingWeek < 38) {
+    currentViewingWeek++;
+    renderHome();
+    triggerHaptic(15);
+  }
+});
+
+// Milestone node jumping
+document.querySelectorAll('.milestone-node').forEach(node => {
+  node.addEventListener('click', () => {
+    currentViewingWeek = +node.dataset.targetWeek;
+    renderHome();
+    triggerHaptic(20);
+  });
+});
+
+// Route Filter Pills
+document.querySelectorAll('[data-phase-filter]').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('[data-phase-filter]').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activePhaseFilter = pill.dataset.phaseFilter;
+    renderRoute();
+    triggerHaptic(15);
+  });
+});
+
+// Lift Split Selector
+document.querySelectorAll('.lift-split-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedLiftSplit = +btn.dataset.splitIdx;
+    renderLift();
+    triggerHaptic(15);
+  });
+});
+
+// Gym Timer Controls
+document.getElementById('timerPlayBtn').addEventListener('click', () => {
+  if (restIsRunning) {
+    clearInterval(restInterval);
+    restIsRunning = false;
+    document.getElementById('timerPlayBtn').innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+  } else {
+    startRestTimer(restRemaining || 60);
+  }
+});
+
+document.querySelectorAll('.timer-pill-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    startRestTimer(+btn.dataset.sec);
+    triggerHaptic(15);
+  });
+});
+
+// Fuel Slider & Search
+document.getElementById('fuelDurationSlider').addEventListener('input', updateFuelCalculator);
+document.getElementById('recipeSearch').addEventListener('input', renderFuel);
+
+// Troubleshooter accordions
+document.querySelectorAll('.trouble-pill-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.trouble;
+    const box = document.getElementById('trouble-' + key);
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.classList.toggle('open', !isOpen);
+    triggerHaptic(12);
+  });
+});
+
+// Reset Button
+document.getElementById('resetAllBtn').addEventListener('click', () => {
+  if (confirm('Clear all logged workouts, sets, and checklists? This cannot be undone.')) {
+    STATE = { log: {}, weeklyChk: {}, longrunChk: {}, raceweekChk: {}, liftSets: {}, soundEnabled: true };
+    scheduleSave();
+    renderAllViews();
+    playSound('uncheck');
+  }
+});
+
+/* ================= INITIALIZATION ================= */
+(function init(){
+  loadState();
+  currentViewingWeek = currentRealWeekIndex();
+  
+  if (!STATE.soundEnabled) {
+    document.getElementById('soundToggle').classList.add('muted');
+  }
+
+  // Live countdown ticker
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Initial renders
+  renderAllViews();
+  updateFuelCalculator();
 })();
 
+// Service Worker for offline capability
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(()=>{});
