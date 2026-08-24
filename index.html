@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stirling Half — Training Companion</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B4527">
+<link rel="icon" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stirling Half">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #FFFFFF;
+    --panel: #F5F9F4;
+    --panel-2: #E9F2E6;
+    --line: #D3E2CE;
+    --ink: #122015;
+    --ink-dim: #4E6553;
+    --ink-faint: #8CA391;
+    --green: #16793F;
+    --green-dim: #BEE0C7;
+    --green-deep: #0B4527;
+    --green-soft: #E3F3E6;
+    --danger: #B4453B;
+    --header-text: rgba(255,255,255,0.82);
+    --radius: 16px;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-tap-highlight-color:transparent;}
+  body{padding-bottom:84px;min-height:100vh;}
+
+  ::selection{background:var(--green-dim);color:var(--ink);}
+
+  button{font-family:inherit;}
+
+  .app{max-width:480px;margin:0 auto;position:relative;}
+
+  /* ---------- Header ---------- */
+  .topbar{
+    padding:22px 20px 16px;
+    background:linear-gradient(155deg, #0B4527 0%, #135C34 100%);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:5;
+    color:#FFFFFF;
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:#BEE0C7; margin:0 0 6px;
+  }
+  .title{
+    font-family:var(--font-display); font-weight:600; font-size:28px; margin:0; line-height:1.05;
+    letter-spacing:-0.01em; color:#FFFFFF;
+  }
+  .title em{font-style:italic; color:#BEE0C7; font-weight:400;}
+  .subtitle{color:var(--header-text); font-size:13.5px; margin:6px 0 0;}
+
+  /* ---------- Tabs content ---------- */
+  .view{padding:18px 18px 8px; display:none; animation:fadeIn .25s ease;}
+  .view.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:14px;
+  }
+  .card h3{font-family:var(--font-display); font-size:17px; margin:0 0 10px; font-weight:600;}
+
+  /* ---------- Countdown / hero ---------- */
+  .hero{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
+    background:linear-gradient(155deg, #0B4527 0%, #1B6B3E 100%);
+    border:1px solid var(--green-deep); border-radius:var(--radius); padding:18px; margin-bottom:14px;
+    color:#FFFFFF;
+  }
+  .hero-num{font-family:var(--font-mono); font-size:42px; font-weight:600; color:#FFFFFF; line-height:1;}
+  .hero-label{font-size:12px; color:#BEE0C7; margin-top:4px;}
+  .hero-right{text-align:right; font-size:12.5px; color:#BEE0C7; line-height:1.5;}
+  .hero-right b{color:#FFFFFF; font-weight:600;}
+
+  /* ---------- Week spotlight ---------- */
+  .week-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2px;}
+  .week-tag{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);}
+  .week-dates{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);}
+  .week-title{font-family:var(--font-display); font-size:20px; font-weight:600; margin:2px 0 12px;}
+
+  .ring-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .ring{width:52px; height:52px; flex-shrink:0;}
+  .ring-text{font-size:13px; color:var(--ink-dim);}
+  .ring-text b{color:var(--ink); font-family:var(--font-mono); font-size:14px;}
+
+  .sess-list{display:flex; flex-direction:column; gap:8px;}
+  .sess{
+    display:flex; align-items:center; gap:12px; padding:11px 12px;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    cursor:pointer; user-select:none; transition:background .15s, border-color .15s;
+  }
+  .sess.done{background:var(--green-soft); border-color:var(--green-dim);}
+  .sess.race{background:#DCEAE1; border-color:var(--green-deep);}
+  .sess-check{
+    width:22px; height:22px; border-radius:50%; border:2px solid var(--ink-faint); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; transition:all .15s;
+  }
+  .sess.done .sess-check{background:var(--green); border-color:var(--green);}
+  .sess.race .sess-check{background:var(--green-deep); border-color:var(--green-deep);}
+  .sess-check svg{width:13px; height:13px; opacity:0; transition:opacity .15s; color:#FFFFFF;}
+  .sess.done .sess-check svg, .sess.race .sess-check svg{opacity:1;}
+  .sess-body{flex:1; min-width:0;}
+  .sess-day{font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);}
+  .sess-name{font-size:14.5px; font-weight:500;}
+  .sess-dur{font-family:var(--font-mono); font-size:13px; color:var(--ink-dim); flex-shrink:0;}
+
+  .phase-note{font-size:13px; color:var(--ink-dim); line-height:1.55; margin-top:2px;}
+
+  .stat-row{display:flex; gap:10px;}
+  .stat{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center;}
+  .stat-n{font-family:var(--font-mono); font-size:20px; font-weight:600; color:var(--green);}
+  .stat-l{font-size:10.5px; color:var(--ink-dim); margin-top:2px; line-height:1.3;}
+
+  /* ---------- Route (path) ---------- */
+  .route-wrap{position:relative; padding-left:34px;}
+  .route-line{position:absolute; left:14px; top:6px; bottom:6px; width:2px; background:var(--line);}
+  .route-item{position:relative; margin-bottom:6px;}
+  .route-dot{
+    position:absolute; left:-34px; top:14px; width:24px; height:24px; border-radius:50%;
+    background:var(--panel); border:2px solid var(--line); z-index:1;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:9px; color:var(--ink-faint);
+  }
+  .route-dot.partial{border-color:var(--green); color:var(--green);}
+  .route-dot.full{background:var(--green); border-color:var(--green); color:#FFFFFF; font-weight:700;}
+  .route-dot.race{background:var(--green-deep); border-color:var(--green-deep); color:#FFFFFF;}
+  .route-dot.here::after{
+    content:''; position:absolute; inset:-5px; border-radius:50%; border:1.5px dashed var(--green);
+  }
+  .route-row{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:12px 14px; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    cursor:pointer;
+  }
+  .route-row-l{min-width:0;}
+  .route-w{font-family:var(--font-mono); font-size:11px; color:var(--ink-faint);}
+  .route-d{font-size:14px; font-weight:500; margin-top:1px;}
+  .route-r{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-dim); text-align:right; white-space:nowrap;}
+  .route-detail{
+    margin-top:6px; padding:14px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+  }
+  .checkpoint-note{
+    margin-top:10px; padding:10px 12px; background:var(--green-soft); border:1px solid var(--green-dim);
+    border-radius:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.5;
+  }
+
+  /* ---------- Lift ---------- */
+  .lift-day{margin-bottom:14px;}
+  .lift-day-h{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .lift-day-tag{font-family:var(--font-mono); font-size:11px; color:var(--green);}
+  table.ex{width:100%; border-collapse:collapse; font-size:12.5px;}
+  table.ex th{text-align:left; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); padding:0 6px 6px 0; font-weight:500;}
+  table.ex td{padding:7px 6px 7px 0; border-top:1px solid var(--line); vertical-align:top;}
+  table.ex td.ex-name{font-weight:500;}
+  table.ex td.ex-sets{font-family:var(--font-mono); color:var(--ink-dim); white-space:nowrap;}
+  table.ex td.ex-note{color:var(--ink-faint); font-size:11.5px;}
+
+  /* ---------- Fuel ---------- */
+  .recipe-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .recipe{background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:11px;}
+  .recipe h4{font-family:var(--font-display); font-size:14px; margin:0 0 6px; font-weight:600;}
+  .recipe p{font-size:11.5px; color:var(--ink-dim); margin:0 0 6px; line-height:1.45;}
+  .recipe .use{font-size:11px; color:var(--green);}
+
+  /* ---------- Kit / checklists ---------- */
+  .chk{display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-top:1px solid var(--line); cursor:pointer;}
+  .chk:first-child{border-top:none;}
+  .chk-box{width:18px; height:18px; border-radius:5px; border:2px solid var(--ink-faint); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center;}
+  .chk.on .chk-box{background:var(--green); border-color:var(--green);}
+  .chk-box svg{width:11px; height:11px; opacity:0; color:#FFFFFF;}
+  .chk.on .chk-box svg{opacity:1;}
+  .chk-text{font-size:13.5px; line-height:1.4;}
+  .chk.on .chk-text{color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--ink-faint);}
+
+  .strategy-item{display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--line); font-size:12.5px; line-height:1.5; color:var(--ink-dim);}
+  .strategy-item:first-child{border-top:none;}
+  .strategy-item b{color:var(--green-deep); font-family:var(--font-mono); font-size:11.5px; flex-shrink:0; width:64px;}
+
+  .qref{margin:0; padding:0; list-style:none; counter-reset:qref;}
+  .qref li{counter-increment:qref; display:flex; gap:10px; padding:7px 0; border-top:1px solid var(--line); font-size:13px; color:var(--ink-dim); line-height:1.4;}
+  .qref li:first-child{border-top:none;}
+  .qref li::before{content:counter(qref); font-family:var(--font-mono); color:var(--green); font-weight:600; flex-shrink:0; width:16px;}
+
+  .prose{font-size:13px; color:var(--ink-dim); line-height:1.6;}
+  .prose b{color:var(--ink);}
+
+  .reset-link{
+    display:block; text-align:center; margin:20px auto 4px; font-size:11.5px; color:var(--ink-faint);
+    background:none; border:none; text-decoration:underline; text-underline-offset:2px;
+  }
+  .footnote{font-size:10.5px; color:var(--ink-faint); text-align:center; line-height:1.5; margin:6px 0 4px; padding:0 10px;}
+
+  /* ---------- Bottom nav ---------- */
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:10;
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    display:flex; justify-content:center;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .navbar-inner{max-width:480px; width:100%; display:flex;}
+  .navbtn{
+    flex:1; background:none; border:none; padding:10px 4px 8px; display:flex; flex-direction:column;
+    align-items:center; gap:3px; color:var(--ink-faint); cursor:pointer;
+  }
+  .navbtn svg{width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.6;}
+  .navbtn span{font-size:10px; font-family:var(--font-mono);}
+  .navbtn.active{color:var(--green);}
+
+  .loading{text-align:center; padding:40px 20px; color:var(--ink-faint); font-size:13px;}
+
+  @media (min-width:481px){
+    .app{border-left:1px solid var(--line); border-right:1px solid var(--line); min-height:100vh;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <p class="eyebrow">Stirling Half Marathon · 16 May 2027</p>
+    <h1 class="title">Route to <em>Stirling</em></h1>
+    <p class="subtitle" id="headerSub">Loading your log…</p>
+  </div>
+
+  <!-- HOME -->
+  <div class="view" id="view-home">
+    <div class="loading" id="homeLoading">Setting out the route…</div>
+    <div id="homeContent" style="display:none;"></div>
+  </div>
+
+  <!-- ROUTE -->
+  <div class="view" id="view-route">
+    <div id="routeContent"></div>
+  </div>
+
+  <!-- LIFT -->
+  <div class="view" id="view-lift"></div>
+
+  <!-- FUEL -->
+  <div class="view" id="view-fuel"></div>
+
+  <!-- KIT -->
+  <div class="view" id="view-kit"></div>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <button class="navbtn active" data-tab="home">
+        <svg viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" stroke-linejoin="round"/></svg>
+        <span>today</span>
+      </button>
+      <button class="navbtn" data-tab="route">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M5 17c0-6 3-6 7-9s3-3 7-3" stroke-linecap="round"/></svg>
+        <span>route</span>
+      </button>
+      <button class="navbtn" data-tab="lift">
+        <svg viewBox="0 0 24 24"><path d="M4 10v4M2 9v6M20 10v4M22 9v6M7 12h10" stroke-linecap="round"/><rect x="6" y="8" width="2.4" height="8" rx="1"/><rect x="15.6" y="8" width="2.4" height="8" rx="1"/></svg>
+        <span>lift</span>
+      </button>
+      <button class="navbtn" data-tab="fuel">
+        <svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 0 16 0z"/><path d="M2 10h20"/><path d="M6 10c0-3 1-5 2-6M18 10c0-3-1-5-2-6" stroke-linecap="round"/></svg>
+        <span>fuel</span>
+      </button>
+      <button class="navbtn" data-tab="kit">
+        <svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="13" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9 12h6" stroke-linecap="round"/></svg>
+        <span>kit</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const START_DATE = new Date('2026-08-24T00:00:00');
+const RACE_DATE = new Date('2027-05-16T00:00:00');
+
+const WEEKS = [
+ {n:1, dates:'24–30 Aug 2026', tue:'20–25 min', thu:'20–25 min', sat:'30 min'},
+ {n:2, dates:'31 Aug–6 Sep 2026', tue:'25 min', thu:'25 min', sat:'35 min'},
+ {n:3, dates:'7–13 Sep 2026', tue:'25–30 min', thu:'25–30 min', sat:'40 min'},
+ {n:4, dates:'14–20 Sep 2026', tue:'30 min', thu:'25–30 min', sat:'45 min'},
+ {n:5, dates:'21–27 Sep 2026', tue:'30 min', thu:'30 min', sat:'50 min'},
+ {n:6, dates:'28 Sep–4 Oct 2026', tue:'30–35 min', thu:'30 min', sat:'55 min'},
+ {n:7, dates:'5–11 Oct 2026', tue:'35 min', thu:'30 min', sat:'60 min'},
+ {n:8, dates:'12–18 Oct 2026', tue:'30 min', thu:'30 min', sat:'50 min'},
+ {n:9, dates:'19–25 Oct 2026', tue:'35 min', thu:'35 min', sat:'65 min', checkpoint:true},
+ {n:10, dates:'26 Oct–1 Nov 2026', tue:'35 min', thu:'30 min', sat:'60 min'},
+ {n:11, dates:'2–8 Nov 2026', tue:'40 min', thu:'30 min', sat:'70 min'},
+ {n:12, dates:'9–15 Nov 2026', tue:'35 min', thu:'35 min', sat:'60 min'},
+ {n:13, dates:'16–22 Nov 2026', tue:'40 min', thu:'35 min', sat:'75 min'},
+ {n:14, dates:'23–29 Nov 2026', tue:'40 min', thu:'35 min', sat:'80 min'},
+ {n:15, dates:'30 Nov–6 Dec 2026', tue:'35 min', thu:'40 min', sat:'65 min'},
+ {n:16, dates:'7–13 Dec 2026', tue:'45 min', thu:'35 min', sat:'85 min'},
+ {n:17, dates:'14–20 Dec 2026', tue:'40 min', thu:'40 min', sat:'90 min'},
+ {n:18, dates:'21–27 Dec 2026', tue:'30 min', thu:'30 min', sat:'60 min'},
+ {n:19, dates:'28 Dec 2026–3 Jan 2027', tue:'35 min', thu:'30 min', sat:'70 min', checkpoint:true},
+ {n:20, dates:'4–10 Jan 2027', tue:'40 min', thu:'35 min', sat:'80 min'},
+ {n:21, dates:'11–17 Jan 2027', tue:'45 min', thu:'35 min', sat:'90 min'},
+ {n:22, dates:'18–24 Jan 2027', tue:'40 min', thu:'40 min', sat:'75 min'},
+ {n:23, dates:'25–31 Jan 2027', tue:'45 min', thu:'40 min', sat:'95 min'},
+ {n:24, dates:'1–7 Feb 2027', tue:'45 min', thu:'40 min', sat:'100 min'},
+ {n:25, dates:'8–14 Feb 2027', tue:'40 min', thu:'35 min', sat:'80 min'},
+ {n:26, dates:'15–21 Feb 2027', tue:'45 min', thu:'40 min', sat:'105 min'},
+ {n:27, dates:'22–28 Feb 2027', tue:'45 min', thu:'45 min', sat:'90 min', checkpoint:true},
+ {n:28, dates:'1–7 Mar 2027', tue:'45 min', thu:'40 min', sat:'110 min'},
+ {n:29, dates:'8–14 Mar 2027', tue:'50 min', thu:'40 min', sat:'95 min'},
+ {n:30, dates:'15–21 Mar 2027', tue:'45 min', thu:'45 min', sat:'120 min'},
+ {n:31, dates:'22–28 Mar 2027', tue:'50 min', thu:'40 min', sat:'100 min'},
+ {n:32, dates:'29 Mar–4 Apr 2027', tue:'45 min', thu:'45 min', sat:'125 min'},
+ {n:33, dates:'5–11 Apr 2027', tue:'50 min', thu:'45 min', sat:'105 min'},
+ {n:34, dates:'12–18 Apr 2027', tue:'50 min', thu:'45 min', sat:'135 min'},
+ {n:35, dates:'19–25 Apr 2027', tue:'45 min', thu:'40 min', sat:'100 min'},
+ {n:36, dates:'26 Apr–2 May 2027', tue:'40 min', thu:'35 min', sat:'120 min', checkpoint:true},
+ {n:37, dates:'3–9 May 2027', tue:'35 min', thu:'30 min', sat:'75 min'},
+ {n:38, dates:'10–16 May 2027', tue:'25 min', thu:'20 min', sat:'RACE · 21.1 km', race:true},
+];
+
+const PHASES = [
+ {max:9, text:'Weeks 1–9 · habit and comfort, not speed. Use run/walk as needed.'},
+ {max:19, text:'Weeks 10–19 · building time on feet. Keep almost all running easy.'},
+ {max:32, text:'Weeks 20–32 · endurance becomes the focus. Start practising fuelling on long runs.'},
+ {max:36, text:"Weeks 33–36 · peak endurance. Don't race your training runs."},
+ {max:38, text:'Weeks 37–38 · taper. Reduce volume, keep a little easy running so legs feel fresh.'},
+];
+function phaseFor(n){ return PHASES.find(p=>n<=p.max).text; }
+
+const LIFT_DAYS = [
+ {tag:'Wed · every week', title:'Day 1 — Upper One', rows:[
+   ['Dumbbell or machine chest press','2–3 × 6–10','Stop 1–2 reps before failure'],
+   ['Chest-supported row','2–3 × 6–10','Keep torso still, pull elbows back'],
+   ['Dumbbell lateral raise','2–3 × 8–10','Light enough to control throughout'],
+   ['Incline dumbbell curl','2 × 6–10','Full comfortable range'],
+   ['Cable triceps pressdown','2 × 6–10','Keep shoulders quiet'],
+   ['Dead bug','2 × 8–10/side','Slow and controlled'],
+ ]},
+ {tag:'Sun · every week', title:'Day 2 — Lower One', rows:[
+   ['Squat or leg press','2–3 × 6–10','Whichever you can perform confidently'],
+   ['Romanian deadlift','2–3 × 6–10','Hinge, keep weights close'],
+   ['Walking or reverse lunge','2 × 6–10/leg','Use support if needed'],
+   ['Seated or lying leg curl','2 × 6–10','Controlled lowering'],
+   ['Standing calf raise','2–3 × 8–10','Pause at the top'],
+   ['Adductor machine','2 × 8–10','Controlled, no bouncing'],
+ ]},
+ {tag:'Tue/Thu · optional, only if recovered', title:'Day 3 — Upper Two', rows:[
+   ['Lat pulldown','2–3 × 6–10','Pull toward upper chest'],
+   ['Incline dumbbell press','2–3 × 6–10','Keep shoulder blades stable'],
+   ['Seated cable row','2 × 6–10','Smooth pull and return'],
+   ['Cable or dumbbell lateral raise','2 × 8–10','Avoid swinging'],
+   ['Hammer curl','2 × 6–10','Neutral grip'],
+   ['Overhead cable triceps extension','2 × 6–10','Elbows comfortably forward'],
+   ['Pallof press','2 × 8–10/side','Resist rotation'],
+ ]},
+ {tag:'Tue/Thu · optional, only if recovered', title:'Day 4 — Lower Two', rows:[
+   ['Hip thrust or glute bridge','2–3 × 6–10','Pause at lockout'],
+   ['Leg press','2–3 × 6–10','Controlled depth'],
+   ['Single-leg Romanian deadlift','2 × 6–10/leg','Use support if balance is limiting'],
+   ['Leg curl','2 × 6–10','Slow eccentric'],
+   ['Calf raise','2–3 × 8–10','Full comfortable range'],
+   ['Adductor machine','2 × 8–10','Controlled'],
+ ]},
+];
+
+const RECIPES = [
+ ['Overnight oats','50g oats, 200g Greek yoghurt, splash of milk, banana, berries, 1 tbsp peanut butter. Mix, refrigerate overnight.','Breakfast — add honey for more carbs'],
+ ['Chicken pesto pasta','Pasta, cooked chicken, pesto, cherry tomatoes, spinach, parmesan.','Post-run dinner, make 2–3 portions'],
+ ['Burrito bowl','Microwave rice, chicken, black beans, sweetcorn, peppers, salsa, avocado, yoghurt.','Fast work-night meal'],
+ ['Loaded jacket potato','Bake potato; top with tuna, sweetcorn, cheese — or beans and cheese.','High-carb, easy, filling'],
+ ['15-minute fajitas','Chicken strips, frozen peppers, seasoning, wraps, salsa, yoghurt, cheese.','Batch filling for lunch'],
+ ['Lazy curry','Microwave rice, cooked chicken, jar curry sauce, frozen spinach/peas.','Minimal chopping'],
+ ['Egg & toast plate','2–3 eggs, toast, beans, fruit, optional avocado.','Rest day or after an easy run'],
+ ['Greek yoghurt bowl','Greek yoghurt, granola, banana/berries, honey, peanut butter.','Convenient breakfast or snack'],
+ ['Tuna sweetcorn wrap','Wrap, tuna, sweetcorn, mayo/yoghurt, lettuce, hot sauce.','Ideal packed lunch'],
+ ['Noodle stir-fry','Instant noodles, frozen veg, chicken/tofu, soy sauce, sesame oil.','Keep frozen veg for emergencies'],
+ ['Pitta pizzas','Pitta, passata, mozzarella, peppers, chicken/ham, herbs; bake crisp.','Friday-night alternative'],
+ ['Jam & peanut butter toast','Toast/bagel, jam, peanut butter, banana.','Pre-run, 1–2 hrs beforehand'],
+];
+
+const WEEKLY_CHK = ['2–3 runs completed','Long run completed or sensibly modified','Strength completed','At least one proper rest day','Hydration kept sensible','Any niggles monitored','One enjoyable, non-training thing done'];
+const LONGRUN_CHK = ['Phone','Water','Fuel once needed','Keys/card','Weather-appropriate layer','Comfortable socks','Anti-chafe product if useful','Route planned'];
+const RACEWEEK_CHK = ['Check race instructions and start information','Test race outfit during training','Have breakfast foods ready','Have familiar fuel ready','Charge phone/watch','Plan travel and parking/public transport','Lay everything out the night before','Do not cram training'];
+const STRATEGY = [['0–5 km','Deliberately restrained.'],['5–10 km','Settle into a sustainable rhythm.'],['10–15 km','Fuel and keep moving efficiently.'],['15–18 km','Expect it to feel harder — shorten the goal to the next km.'],['18–21.1 km','If you have energy, gradually increase effort. Finish with your friend.']];
+const QREF = ['Three runs most weeks.','Saturday is the key long run.','Most running is easy.','Strength supports running — it should not wreck your legs.','Build gradually.','Practise fuelling before race day.','Rest is training.','You are allowed to walk.','You do not need perfect weeks.','The goal is to arrive healthy enough to enjoy the day.'];
+
+const SESSIONS = [
+ {key:'tue', day:'Tue', label:'Easy run'},
+ {key:'wed', day:'Wed', label:'Lift — Upper One'},
+ {key:'thu', day:'Thu', label:'Easy run'},
+ {key:'sat', day:'Sat', label:'Long run'},
+ {key:'sun', day:'Sun', label:'Lift — Lower One'},
+];
+
+/* ================= STATE ================= */
+let STATE = { log:{}, weeklyChk:{}, longrunChk:{}, raceweekChk:{} };
+let expandedWeek = null;
+let saveTimer = null;
+
+function getWeekLog(n){
+  if(!STATE.log[n]) STATE.log[n] = {tue:false,wed:false,thu:false,sat:false,sun:false};
+  return STATE.log[n];
+}
+function getChk(list, key, len){
+  if(!STATE[key][list]) STATE[key][list] = new Array(len).fill(false);
+  return STATE[key][list];
+}
+
+const STORAGE_KEY = 'stirling-half-state';
+const hasClaudeStorage = typeof window.storage !== 'undefined' && window.storage !== null;
+
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    const json = JSON.stringify(STATE);
+    try{
+      if(hasClaudeStorage){ await window.storage.set(STORAGE_KEY, json); }
+      else { localStorage.setItem(STORAGE_KEY, json); }
+    }catch(e){ console.error('save failed', e); }
+  }, 250);
+}
+
+async function loadState(){
+  try{
+    if(hasClaudeStorage){
+      const res = await window.storage.get(STORAGE_KEY);
+      if(res && res.value){ STATE = Object.assign({log:{},weeklyChk:{},longrunChk:{},raceweekChk:{}}, JSON.parse(res.value)); }
+    } else {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){ STATE = Object.assign({log:{},weeklyChk:{},longrunChk:{},raceweekChk:{}}, JSON.parse(raw)); }
+    }
+  }catch(e){ /* no saved state yet — defaults stand */ }
+}
+
+/* ================= HELPERS ================= */
+function currentWeekIndex(){
+  const diffDays = Math.floor((Date.now() - START_DATE.getTime()) / 86400000);
+  const idx = Math.floor(diffDays/7) + 1;
+  return Math.min(38, Math.max(1, idx));
+}
+function daysUntilRace(){
+  return Math.max(0, Math.ceil((RACE_DATE.getTime() - Date.now())/86400000));
+}
+function weekCompletionCount(n){
+  const l = getWeekLog(n);
+  return SESSIONS.filter(s=>l[s.key]).length;
+}
+function checkSvg(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>'; }
+
+/* ================= RENDER: HOME ================= */
+function renderHome(){
+  const wk = currentWeekIndex();
+  const w = WEEKS[wk-1];
+  const done = weekCompletionCount(wk);
+  const pct = Math.round(done/5*100);
+  const r = 20, c = 2*Math.PI*r;
+  const offset = c - (pct/100)*c;
+
+  let totalDone=0, totalPossible=0;
+  for(let i=1;i<=wk;i++){ totalDone += weekCompletionCount(i); totalPossible += 5; }
+  let longRunsDone=0;
+  for(let i=1;i<=38;i++){ if(getWeekLog(i).sat) longRunsDone++; }
+
+  const el = document.getElementById('homeContent');
+  el.innerHTML = `
+    <div class="hero">
+      <div>
+        <div class="hero-num">${daysUntilRace()}</div>
+        <div class="hero-label">days to Stirling</div>
+      </div>
+      <div class="hero-right">Race day<br><b>Sun 16 May 2027</b><br>21.1 km</div>
+    </div>
+
+    <div class="card">
+      <div class="week-head"><span class="week-tag">WEEK ${wk} / 38</span><span class="week-dates">${w.dates}</span></div>
+      <div class="week-title">This week's route</div>
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"/>
+          <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--green)" stroke-width="5"
+            stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${offset}"
+            transform="rotate(-90 24 24)"/>
+        </svg>
+        <div class="ring-text"><b>${done}/5</b> sessions logged this week</div>
+      </div>
+      <div class="sess-list" id="homeSessList"></div>
+      <p class="phase-note">${phaseFor(wk)}</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="stat-n">${totalDone}/${totalPossible}</div><div class="stat-l">sessions logged<br>to date</div></div>
+      <div class="stat"><div class="stat-n">${longRunsDone}</div><div class="stat-l">long runs<br>completed</div></div>
+      <div class="stat"><div class="stat-n">${38-wk+1}</div><div class="stat-l">weeks<br>remaining</div></div>
+    </div>
+  `;
+  renderSessList(document.getElementById('homeSessList'), wk);
+  document.getElementById('headerSub').textContent = `Week ${wk} of 38 · ${w.race ? 'race week!' : done+"/5 done this week"}`;
+}
+
+function renderSessList(container, wk){
+  const w = WEEKS[wk-1];
+  const l = getWeekLog(wk);
+  container.innerHTML = SESSIONS.map(s=>{
+    const on = l[s.key];
+    const dur = s.key==='sat' ? w.sat : (s.key==='wed'||s.key==='sun') ? '' : w[s.key];
+    const isRace = w.race && s.key==='sat';
+    return `<div class="sess ${on?'done':''} ${isRace?'race':''}" data-wk="${wk}" data-key="${s.key}">
+      <div class="sess-check">${checkSvg()}</div>
+      <div class="sess-body">
+        <div class="sess-day">${s.day}</div>
+        <div class="sess-name">${isRace ? 'Race day — 21.1 km' : s.label}</div>
+      </div>
+      <div class="sess-dur">${dur}</div>
+    </div>`;
+  }).join('');
+  container.querySelectorAll('.sess').forEach(elm=>{
+    elm.addEventListener('click', ()=>{
+      const wk2 = +elm.dataset.wk, key = elm.dataset.key;
+      const log = getWeekLog(wk2);
+      log[key] = !log[key];
+      scheduleSave();
+      renderHome();
+      if(document.getElementById('view-route').classList.contains('active')) renderRoute();
+    });
+  });
+}
+
+/* ================= RENDER: ROUTE ================= */
+function renderRoute(){
+  const wk = currentWeekIndex();
+  const el = document.getElementById('routeContent');
+  el.innerHTML = `
+    <div class="card" style="margin-bottom:16px;">
+      <h3>The full route</h3>
+      <p class="phase-note" style="margin-top:0;">38 weeks from 24 Aug 2026 to race day. Tap any week to open its sessions.</p>
+    </div>
+    <div class="route-wrap"><div class="route-line"></div><div id="routeList"></div></div>
+  `;
+  const list = document.getElementById('routeList');
+  list.innerHTML = WEEKS.map(w=>{
+    const done = weekCompletionCount(w.n);
+    const dotClass = w.race ? 'race' : done===5 ? 'full' : done>0 ? 'partial' : '';
+    const hereClass = w.n===wk ? 'here' : '';
+    const expanded = expandedWeek===w.n;
+    return `<div class="route-item">
+      <div class="route-dot ${dotClass} ${hereClass}">${w.race?'🏁':w.n}</div>
+      <div class="route-row" data-wk="${w.n}">
+        <div class="route-row-l">
+          <div class="route-w">WEEK ${w.n} · ${w.dates}</div>
+          <div class="route-d">${w.race ? 'Race day · 21.1 km' : `${done}/5 logged`}</div>
+        </div>
+        <div class="route-r">${w.tue.replace(' min','′')} / ${w.thu.replace(' min','′')} / ${w.race?'RACE':w.sat.replace(' min','′')}</div>
+      </div>
+      ${expanded ? routeDetailHtml(w) : ''}
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.route-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const n = +row.dataset.wk;
+      expandedWeek = expandedWeek===n ? null : n;
+      renderRoute();
+      if(expandedWeek){
+        setTimeout(()=>{
+          const list2 = document.getElementById('routeList');
+          list2.querySelector(`[data-wk="${expandedWeek}"]`).closest('.route-item')
+            .scrollIntoView({behavior:'smooth', block:'center'});
+        }, 30);
+      }
+    });
+  });
+  // sessions inside expanded detail
+  const detail = list.querySelector('.route-detail');
+  if(detail){ renderSessList(detail.querySelector('.sess-list'), expandedWeek); }
+}
+
+function routeDetailHtml(w){
+  return `<div class="route-detail">
+    <p class="phase-note" style="margin-top:0; margin-bottom:10px;">${phaseFor(w.n)}</p>
+    <div class="sess-list"></div>
+    ${w.checkpoint ? `<div class="checkpoint-note">Checkpoint — if fatigue is accumulating, repeat this week instead of progressing. The long run is the priority session.</div>` : ''}
+  </div>`;
+}
+
+/* ================= RENDER: LIFT ================= */
+function renderLift(){
+  const el = document.getElementById('view-lift');
+  el.innerHTML = `
+    <div class="card">
+      <h3>Liftwsarah split, compressed</h3>
+      <p class="prose">Four training days become two fixed sessions a week — <b>Upper One on Wednesday</b>, <b>Lower One on Sunday</b> — so Saturday's long run stays protected. The second exposures are optional accessory work on Tue/Thu, only when recovery is good.</p>
+      <p class="prose" style="margin-top:8px;">2–3 sets per exercise, 1–2 reps in reserve, mostly 6–10 reps. Add reps over time; once every set reaches the top of the range with good form, add a little load and drop back to 6–8. During heavy running weeks, holding the weight steady is a win.</p>
+    </div>
+    ${LIFT_DAYS.map(d=>`
+      <div class="card lift-day">
+        <div class="lift-day-h">
+          <h3 style="margin:0;">${d.title}</h3>
+        </div>
+        <div class="lift-day-tag" style="margin-bottom:8px;">${d.tag}</div>
+        <table class="ex">
+          <tr><th>Exercise</th><th>Sets</th><th>Notes</th></tr>
+          ${d.rows.map(r=>`<tr><td class="ex-name">${r[0]}</td><td class="ex-sets">${r[1]}</td><td class="ex-note">${r[2]}</td></tr>`).join('')}
+        </table>
+      </div>
+    `).join('')}
+    <div class="footnote">Exercise selections are an original menu built to make the supplied liftwsarah split framework usable alongside this running plan — not a reproduction of any paid programme.</div>
+  `;
+}
+
+/* ================= RENDER: FUEL ================= */
+function renderFuel(){
+  const el = document.getElementById('view-fuel');
+  el.innerHTML = `
+    <div class="card">
+      <h3>Long-run fuelling</h3>
+      <p class="prose">Once long runs reach roughly 75–90 minutes, practise taking carbohydrate during the run — a gel, sports drink, banana, jelly sweets or a small jam sandwich. Start with what your stomach tolerates, and use the same approach every time. Don't try anything new on race morning.</p>
+    </div>
+    <div class="card">
+      <h3>Before you run</h3>
+      <p class="prose">Banana; toast with honey or jam; half a bagel; small cereal bowl; yoghurt and fruit. Allow more digestion time before longer runs.</p>
+    </div>
+    <div class="card">
+      <h3>Easy runner recipes</h3>
+      <div class="recipe-grid">
+        ${RECIPES.map(r=>`<div class="recipe"><h4>${r[0]}</h4><p>${r[1]}</p><div class="use">${r[2]}</div></div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* ================= RENDER: KIT ================= */
+function renderKit(){
+  const wk = currentWeekIndex();
+  const el = document.getElementById('view-kit');
+  el.innerHTML = `
+    <div class="card">
+      <h3>This week's checklist</h3>
+      <div id="kitWeekly"></div>
+    </div>
+    <div class="card">
+      <h3>Long-run packing</h3>
+      <div id="kitLongrun"></div>
+    </div>
+    <div class="card">
+      <h3>Race-week checklist</h3>
+      <div id="kitRaceweek"></div>
+    </div>
+    <div class="card">
+      <h3>21.1 km strategy</h3>
+      ${STRATEGY.map(s=>`<div class="strategy-item"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}
+    </div>
+    <div class="card">
+      <h3>Race morning</h3>
+      <p class="prose">Wake with plenty of time. Eat your familiar carbohydrate-rich breakfast. Sip fluids rather than over-drinking. Arrive early enough for the toilet queue and a calm walk to the start. <b>Start conservatively.</b> If you feel amazing at 5 km, ignore that feeling and keep the effort easy.</p>
+    </div>
+    <div class="card">
+      <h3>When it doesn't go to plan</h3>
+      <p class="prose">Missed one session? Carry on. Missed a week? Repeat the previous week. Ill or injured? Recover first. Exhausted from work? Do the minimum effective version: keep Saturday's long run, one weekday run, one short 20-minute strength session. That's a successful week. <b>Never cram missed sessions</b> — resume the plan and keep moving forward.</p>
+    </div>
+    <div class="card">
+      <h3>Only 10 things to remember</h3>
+      <ol class="qref">${QREF.map(q=>`<li>${q}</li>`).join('')}</ol>
+    </div>
+    <button class="reset-link" id="resetBtn">Reset all logged progress</button>
+    <div class="footnote">Original training companion built from the Stirling Half 2027 pack. Strength framework adapted from liftwsarah; not an official programme, and no paid programme or cookbook content is reproduced.</div>
+  `;
+  renderChecklist(document.getElementById('kitWeekly'), WEEKLY_CHK, getChk('weeklyChk', wk, WEEKLY_CHK.length), ()=>{});
+  renderChecklist(document.getElementById('kitLongrun'), LONGRUN_CHK, getChk('longrunChk', 'main', LONGRUN_CHK.length), ()=>{});
+  renderChecklist(document.getElementById('kitRaceweek'), RACEWEEK_CHK, getChk('raceweekChk', 'main', RACEWEEK_CHK.length), ()=>{});
+
+  document.getElementById('resetBtn').addEventListener('click', async ()=>{
+    if(confirm('Clear all logged sessions and checklists? This cannot be undone.')){
+      STATE = { log:{}, weeklyChk:{}, longrunChk:{}, raceweekChk:{} };
+      scheduleSave();
+      renderAll();
+    }
+  });
+}
+
+function renderChecklist(container, items, arr, onChange){
+  container.innerHTML = items.map((txt,i)=>`
+    <div class="chk ${arr[i]?'on':''}" data-i="${i}">
+      <div class="chk-box">${checkSvg()}</div>
+      <div class="chk-text">${txt}</div>
+    </div>`).join('');
+  container.querySelectorAll('.chk').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      const i = +c.dataset.i;
+      arr[i] = !arr[i];
+      scheduleSave();
+      c.classList.toggle('on');
+    });
+  });
+}
+
+/* ================= NAV ================= */
+function renderAll(){
+  renderHome();
+  renderRoute();
+  renderLift();
+  renderFuel();
+  renderKit();
+}
+
+document.querySelectorAll('.navbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+document.getElementById('view-home').classList.add('active');
+
+/* ================= INIT ================= */
+(async function init(){
+  await loadState();
+  document.getElementById('homeLoading').style.display = 'none';
+  document.getElementById('homeContent').style.display = 'block';
+  renderAll();
+})();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
