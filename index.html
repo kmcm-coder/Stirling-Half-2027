@@ -892,17 +892,17 @@
     background: var(--surface-subtle);
   }
 
-  .route-map-canvas {
+  .route-loop-img {
     width: 100%;
-    height: 265px;
-    transition: height 0.2s ease;
+    height: auto;
+    display: block;
+    background: var(--surface-subtle);
   }
 
-  .route-map-canvas.expanded { height: 400px; }
-
-  @media (min-width: 820px) {
-    .route-map-canvas { height: 370px; }
-    .route-map-canvas.expanded { height: 480px; }
+  .route-loop-schematic {
+    width: 100%;
+    background: linear-gradient(160deg, #EEF5F0 0%, #E3EFE7 100%);
+    padding: 14px 12px;
   }
 
   .route-map-status {
@@ -912,14 +912,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     padding: 16px;
     text-align: center;
-    background: rgba(246, 248, 246, 0.94);
+    background: rgba(246, 248, 246, 0.92);
     color: var(--ink);
     font-size: 13px;
     z-index: 3;
-    pointer-events: auto;
   }
 
   .route-map-status.hidden { display: none; }
@@ -930,6 +929,7 @@
     gap: 6px;
     margin-top: 8px;
     align-items: center;
+    justify-content: space-between;
   }
 
   .route-telemetry-bar {
@@ -1226,40 +1226,38 @@
       <div class="route-week-pair" id="weeklyRoutePairBox"></div>
     </div>
 
-    <!-- Interactive Route Map Viewer -->
+    <!-- Loop Map Preview & Google Maps Launcher -->
     <div class="card" id="routeMapCard">
       <div class="card-header-row" style="margin-bottom:8px; flex-wrap:wrap;">
         <div style="min-width:0; flex:1 1 200px;">
-          <div class="meta-line" style="margin-top:0; color:var(--stirling-emerald); font-weight:600;" id="routeMapRegionLine">Interactive Route Map</div>
+          <div class="meta-line" style="margin-top:0; color:var(--stirling-emerald); font-weight:600;" id="routeMapRegionLine">Car-Park Loop</div>
           <h3 class="section-title" style="font-size:17px; margin-top:2px;" id="routeMapTitle">Select a route</h3>
-          <div class="meta-line" id="routeMapSubLine" style="font-size:12px;">Tap any outdoor route to see its checkpoints and walking loop.</div>
+          <div class="meta-line" id="routeMapSubLine" style="font-size:12px;">Park once, run the circular loop, and finish back at your car.</div>
         </div>
-        <a class="btn btn-secondary btn-sm" id="routeOpenExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open in Maps</a>
+        <a class="btn btn-primary btn-sm" id="routeOpenExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open in Google Maps</a>
       </div>
 
-      <!-- Outdoor Google Map Stage -->
+      <!-- Outdoor Loop Image Stage -->
       <div id="routeMapOutdoorStage">
         <div class="route-map-shell">
-          <div id="routeGoogleMap" class="route-map-canvas" aria-label="Interactive running route map"></div>
+          <img id="routeLoopImg" class="route-loop-img" alt="Running loop map preview" style="display:none;" />
+          <div id="routeLoopSchematic" class="route-loop-schematic" style="display:none;"></div>
           <div id="routeMapStatusOverlay" class="route-map-status">
-            <span id="routeMapStatusText">Loading route map…</span>
-            <div id="routeMapFallbackActions" style="display:none; flex-wrap:wrap; justify-content:center; gap:8px;">
-              <button class="btn btn-secondary btn-sm" id="routeMapRetryBtn" type="button">Retry Map</button>
-              <a class="btn btn-primary btn-sm" id="routeOverlayExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open in Google Maps</a>
-            </div>
+            <span id="routeMapStatusText">Loading loop map…</span>
           </div>
         </div>
 
         <div class="route-map-controls">
-          <button class="btn btn-secondary btn-sm" id="mapGestureToggleBtn" type="button">Touch: Scroll-Safe</button>
-          <button class="btn btn-secondary btn-sm" id="mapTypeToggleBtn" type="button">Terrain</button>
-          <button class="btn btn-secondary btn-sm" id="mapExpandToggleBtn" type="button">Taller</button>
-          <button class="btn btn-ghost btn-sm" id="mapFitRouteBtn" type="button">Re-Centre</button>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-secondary btn-sm" id="mapTypeToggleBtn" type="button">Terrain</button>
+            <button class="btn btn-ghost btn-sm" id="routeMapRetryBtn" type="button">Refresh Map</button>
+          </div>
+          <span class="meta-line" id="routeParkingCue" style="margin-top:0; font-size:11.5px;">Park &amp; finish at P</span>
         </div>
 
         <div class="route-telemetry-bar">
           <div class="telemetry-cell">
-            <div class="telemetry-label">Mapped Loop</div>
+            <div class="telemetry-label">Car-Park Loop</div>
             <div class="telemetry-val tabular" id="mapTelemetryDist">—</div>
           </div>
           <div class="telemetry-cell">
@@ -1273,8 +1271,7 @@
         </div>
 
         <div class="route-stops-strip" id="routeStopsStrip"></div>
-        <div class="gmp-attr-note" id="routeMapAttributions" style="display:none;"></div>
-        <div class="gmp-attr-note">Maps &amp; routes via Google Maps Platform (<a href="https://maps.google.com/help/terms_maps/?utm_campaign=gmp_mcp_codeassist_v1_aistudio" target="_blank" rel="noopener noreferrer" style="color:var(--stirling-emerald);">Google Maps Terms</a>).</div>
+        <div class="gmp-attr-note" id="routeMapAttributions">Map imagery &amp; loop routing via Google Maps Platform (<a href="https://maps.google.com/help/terms_maps/?utm_campaign=gmp_mcp_codeassist_v1_aistudio" target="_blank" rel="noopener noreferrer" style="color:var(--stirling-emerald);">Google Maps Terms</a>).</div>
       </div>
 
       <!-- Indoor Treadmill Session Stage -->
@@ -1741,253 +1738,284 @@ const RACEWEEK_CHK = [
   'No new stretches, shoes, or heavy leg lifts in Race Week'
 ];
 
-/* ================= ROUTES CATALOGUE ================= */
+/* ================= ROUTES CATALOGUE (ALL CAR-PARK CLOSED LOOPS) ================= */
 const ROUTES = [
-  // STIRLING ROUTES (every 2 weeks on even weeks)
+  // STIRLING CAR-PARK LOOPS (every 2 weeks on even weeks)
   {
     id: 'stirling-kings-park',
     region: 'stirling',
     regionLabel: 'Stirling',
     name: 'King’s Park Perimeter Loop',
     area: 'Stirling · FK8',
-    dist: '2.2 km loop (repeat 1–3×)',
+    dist: '2.0 km car-park loop (repeat 1–2×)',
     surface: 'Smooth park tarmac · flat with castle views',
     lit: false,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'King’s Park Car Park (Victoria Pl side)',
     mapStops: [
-      'King\'s Park, Stirling, Scotland',
-      'King\'s Park Golf Club, Stirling, Scotland',
+      'Kings Park Car Park, Stirling, Scotland',
+      'Kings Park Tennis Courts, Stirling, Scotland',
       'Victoria Square, Stirling, Scotland',
-      'King\'s Park, Stirling, Scotland'
+      'Kings Park Golf Club, Stirling, Scotland',
+      'Kings Park Car Park, Stirling, Scotland'
     ],
-    facilities: 'Free street/park parking · Town cafés & toilets 5 min walk',
-    hipNote: 'Flat, wide park paths right below Stirling Castle—easy to stop early if hips tighten.',
+    facilities: 'Free park/street parking at start · Town cafés & toilets 5 min walk',
+    hipNote: 'Park right by the green, run the perimeter path, and finish back at your car.',
     weeks: [2, 6]
   },
   {
     id: 'stirling-forth-cambuskenneth',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'River Forth & Cambuskenneth Towpath',
-    area: 'Stirling Forthside · FK9',
-    dist: '4 – 8 km out-and-back',
-    surface: 'Flat riverside tarmac & footbridge',
+    name: 'Forthside & Cambuskenneth Bridges Loop',
+    area: 'Stirling Forthside · FK8',
+    dist: '6.6 km two-bridge river loop',
+    surface: 'Flat riverside tarmac & twin bridges',
     lit: false,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'Forthside Car Park, Stirling',
     mapStops: [
-      'Stirling Railway Station, Stirling, Scotland',
+      'Forthside Car Park, Stirling, Scotland',
       'Cambuskenneth Abbey, Stirling, Scotland',
-      'Stirling Railway Station, Stirling, Scotland'
+      'Ladysneuk Road, Cambuskenneth, Stirling, Scotland',
+      'Old Stirling Bridge, Stirling, Scotland',
+      'Forthside Car Park, Stirling, Scotland'
     ],
-    facilities: 'Parking near Stirling Station / Forthside · 5 min from train',
-    hipNote: 'Completely level riverside path—ideal for building aerobic confidence without hills.',
+    facilities: 'Forthside Car Park start & finish · Near cafés & Forthside shops',
+    hipNote: 'Crosses Cambuskenneth Footbridge and returns over Old Stirling Bridge straight back to your car.',
     weeks: [4, 10]
   },
   {
     id: 'stirling-airthrey-loch',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'University of Stirling Airthrey Loch Loop',
+    name: 'Airthrey Loch Campus Loop',
     area: 'Bridge of Allan / Stirling · FK9',
-    dist: '3 km loch loop (extend to 6–9 km)',
+    dist: '2.9 km loch loop (repeat 1–3×)',
     surface: 'Traffic-free campus tarmac · gentle undulation',
     lit: true,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'University of Stirling Sports Centre Car Park',
     mapStops: [
       'University of Stirling Sports Centre, Stirling, Scotland',
       'Airthrey Castle, Stirling, Scotland',
+      'Pathfoot Building, University of Stirling, Scotland',
       'Macrobert Arts Centre, Stirling, Scotland',
       'University of Stirling Sports Centre, Stirling, Scotland'
     ],
-    facilities: 'Campus parking, sports centre toilets & cafés open weekends',
-    hipNote: 'Traffic-free, calm paths around Airthrey Loch; close to the half-marathon middle miles.',
+    facilities: 'Campus car park, sports centre toilets & cafés right beside start/finish',
+    hipNote: 'Traffic-free circular loch path starting and ending right outside the Sports Centre car park.',
     weeks: [8, 14]
   },
   {
     id: 'stirling-causewayhead',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'Causewayhead & Wallace Monument Stretch',
-    area: 'Causewayhead to Bridge of Allan',
-    dist: '6 – 12 km out-and-back',
-    surface: 'Level wide pavement & cycle path',
+    name: 'Wallace Monument & Logie Kirk Loop',
+    area: 'Causewayhead · FK9',
+    dist: '4.4 km circular loop (repeat 1–2×)',
+    surface: 'Level wide pavement & quiet lane circuit',
     lit: true,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'National Wallace Monument Car Park',
     mapStops: [
-      'Causewayhead, Stirling, Scotland',
       'The National Wallace Monument Car Park, Stirling, Scotland',
-      'Bridge of Allan Railway Station, Bridge of Allan, Scotland'
+      'Logie Kirk, Stirling, Scotland',
+      'Airthrey Road, Causewayhead, Stirling, Scotland',
+      'Causewayhead, Stirling, Scotland',
+      'The National Wallace Monument Car Park, Stirling, Scotland'
     ],
-    facilities: 'Wallace Monument car park café/toilets · Bus links back to town',
-    hipNote: 'Previews the scenic middle stretch of the Stirling Half without tackling steep climbs.',
+    facilities: 'Free Wallace Monument Car Park, café & toilets right at start/finish',
+    hipNote: 'Park at Wallace Monument, circle around Logie & Causewayhead, and return directly to the car park.',
     weeks: [12, 18]
   },
   {
     id: 'stirling-castle-long-preview',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'Forth Valley & Stirling Long Preview',
-    area: 'Forthside · Causewayhead · Bridge of Allan',
-    dist: '10 – 16 km (or 25 min taper)',
+    name: 'The Peak, Causewayhead & Old Bridge Loop',
+    area: 'Forthside · Causewayhead · FK7',
+    dist: '9.1 km half-marathon preview loop (or 2×)',
     surface: 'Smooth tarmac paths & flat pavements',
     lit: false,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'The PEAK Sports Village Car Park, Forthside',
     mapStops: [
-      'Stirling Railway Station, Stirling, Scotland',
+      'The PEAK, Forthside Way, Stirling, Scotland',
       'Cambuskenneth Abbey, Stirling, Scotland',
       'Causewayhead, Stirling, Scotland',
-      'Bridge of Allan, Scotland'
+      'Old Stirling Bridge, Stirling, Scotland',
+      'The PEAK, Forthside Way, Stirling, Scotland'
     ],
-    facilities: 'Stirling Station / Thistles Centre toilets & breakfast cafés',
-    hipNote: 'Rehearses travel, pre-run breakfast timing, and gentle pacing before 16 May.',
+    facilities: 'Large free car park at The PEAK, indoor toilets & café at start/finish',
+    hipNote: 'Big circular Stirling loop from The PEAK via Cambuskenneth & Causewayhead and back via Old Bridge.',
     weeks: [16, 20, 22, 24]
   },
 
-  // PAISLEY & RENFREWSHIRE SAFE ROUTES
+  // PAISLEY & RENFREWSHIRE CAR-PARK LOOPS
   {
     id: 'paisley-barshaw',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Barshaw Park Outer Loop',
+    name: 'Barshaw Park & Golf Edge Loop',
     area: 'East Paisley · PA1',
-    dist: '1.6 km per loop (repeat 20–50 min)',
-    surface: 'Smooth traffic-free tarmac · gentle park paths',
+    dist: '4.0 km outer loop (or 1.6 km inner park loop)',
+    surface: 'Smooth traffic-free park & pavement paths',
     lit: false,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'Barshaw Park Car Park, Glasgow Road',
     mapStops: [
-      'Barshaw Park, Paisley, Scotland',
+      'Barshaw Park, Glasgow Road, Paisley PA1 3TJ, Scotland',
       'Barshaw Park Walled Garden, Paisley, Scotland',
-      'Glasgow Road, Paisley, Scotland',
-      'Barshaw Park, Paisley, Scotland'
+      'Barshaw Golf Club, Paisley, Scotland',
+      'Arkleston Road, Paisley, Scotland',
+      'Barshaw Park, Glasgow Road, Paisley PA1 3TJ, Scotland'
     ],
-    facilities: 'Car park off Glasgow Rd · Daytime toilets & walled garden café',
-    hipNote: 'Traffic-free, zero kerbs to trip on, and looping format keeps you close to your car.',
+    facilities: 'Barshaw Park car park off Glasgow Rd · Daytime toilets & walled garden café',
+    hipNote: 'Start at Barshaw Car Park; stay inside for a short 1.6 km loop or run the full 4 km circle back to your car.',
     weeks: [1, 5]
   },
   {
     id: 'paisley-white-cart',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'White Cart Walkway & Abbey Loop',
+    name: 'Lagoon, Paisley Abbey & White Cart Loop',
     area: 'Central Paisley · PA1',
-    dist: '2.5 – 4.5 km riverside loop',
+    dist: '3.2 km lit riverside town loop',
     surface: 'Wide, flat paved walkway · street-lit',
     lit: true,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'Lagoon Leisure Centre Car Park',
     mapStops: [
-      'Paisley Gilmour Street Railway Station, Paisley, Scotland',
-      'Paisley Abbey, Paisley, Scotland',
       'Lagoon Leisure Centre, Paisley, Scotland',
-      'Paisley Gilmour Street Railway Station, Paisley, Scotland'
+      'Paisley Abbey, Paisley, Scotland',
+      'Paisley Gilmour Street Railway Station, Paisley, Scotland',
+      'Seedhill Road, Paisley, Scotland',
+      'Lagoon Leisure Centre, Paisley, Scotland'
     ],
-    facilities: '5 min from Paisley Gilmour St Station · Town cafés & lit streets',
-    hipNote: 'Best winter 5:30 PM weekday choice—bright street lighting, open sightlines, totally flat.',
+    facilities: 'Lagoon Leisure Centre parking & toilets right at start/finish · Bright street lighting',
+    hipNote: 'Best winter 5:30 PM weekday loop—park at the Lagoon, circle Abbey & White Cart, and finish at your car.',
     weeks: []
   },
   {
     id: 'paisley-canal-ncn7',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Paisley–Johnstone Canal Path (NCN 7)',
-    area: 'Paisley Canal → Elderslie → Johnstone',
-    dist: '3 – 11 km out-and-back',
-    surface: 'Wide, smooth, flat traffic-free tarmac',
+    name: 'Brodie Park & Paisley Canal Loop',
+    area: 'South Paisley · PA2',
+    dist: '4.2 km park & railway-path loop (repeat 1–2×)',
+    surface: 'Flat park tarmac & smooth canal-line pavements',
     lit: false,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'Brodie Park Car Park, Park Road',
     mapStops: [
+      'Brodie Park, Park Road, Paisley, Scotland',
       'Paisley Canal Railway Station, Paisley, Scotland',
-      'Elderslie, Johnstone, Scotland',
-      'Johnstone Railway Station, Johnstone, Scotland'
+      'Neilston Road, Paisley, Scotland',
+      'Rowan Street, Paisley, Scotland',
+      'Brodie Park, Park Road, Paisley, Scotland'
     ],
-    facilities: 'Near Paisley Canal & Johnstone stations · Turn back at half-time',
-    hipNote: 'Old railway line with super-gradual grade and zero road crossings. Stick to daylight hours.',
+    facilities: 'Street parking beside Brodie Park · Easy daytime circuit',
+    hipNote: 'Circular south-Paisley loop starting & finishing at Brodie Park with gentle, hip-friendly gradients.',
     weeks: [3, 9, 15]
   },
   {
     id: 'renfrew-waterfront',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Renfrew Waterfront & Braehead Boardwalk',
+    name: 'Braehead Arena & Clyde View Loop',
     area: 'Renfrew Riverside · PA4',
-    dist: '3 – 8 km out-and-back',
-    surface: 'Flat Clyde promenade · lit near Braehead',
+    dist: '2.9 km flat lit waterfront loop (repeat 1–3×)',
+    surface: 'Flat Clyde boardwalk & smooth paths · lit',
     lit: true,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'Braehead Arena / Shopping Centre Free Car Park',
     mapStops: [
-      'Renfrew Ferry, Renfrew, Scotland',
+      'Braehead Arena, King\'s Inch Road, Renfrew, Scotland',
+      'Renfrew Riverside, Clyde View Park, Renfrew, Scotland',
       'Braehead Shopping Centre, Renfrew, Scotland',
-      'XSite Braehead, Renfrew, Scotland'
+      'Braehead Arena, King\'s Inch Road, Renfrew, Scotland'
     ],
-    facilities: 'Free Braehead parking & toilets · Bus links to Paisley',
-    hipNote: 'Pancake-flat riverside stretch with street lighting along the boardwalk.',
+    facilities: 'Free Braehead car park, indoor toilets & cafés right beside the start/finish',
+    hipNote: 'Pancake-flat circular river boardwalk loop right from the free Braehead car park—great in wet or dark weather.',
     weeks: [7, 13]
   },
   {
     id: 'renfrew-robertson-park',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Robertson Park & Inchinnan Cycleway',
+    name: 'Robertson Park & Inchinnan Road Loop',
     area: 'Renfrew · PA4',
-    dist: '1.2 km park loop or 3–6 km path',
-    surface: 'Smooth level park tarmac',
+    dist: '4.0 km circular town & park loop',
+    surface: 'Smooth level park tarmac & pavements',
     lit: true,
     treadmill: false,
     isLoop: true,
+    parkingSpot: 'Robertson Park Car Park',
     mapStops: [
       'Robertson Park, Renfrew, Scotland',
       'Renfrew Victory Baths, Renfrew, Scotland',
+      'Renfrew Leisure Centre, Renfrew, Scotland',
+      'Inchinnan Road, Renfrew, Scotland',
       'Robertson Park, Renfrew, Scotland'
     ],
-    facilities: 'Park entrance on Inchinnan Rd · Shops & parking nearby',
-    hipNote: 'Enclosed, friendly neighbourhood park for early run/walk intervals.',
+    facilities: 'Park parking on Inchinnan Rd · Shops & leisure centre nearby',
+    hipNote: 'Enclosed, friendly neighbourhood circuit starting and finishing right back at Robertson Park.',
     weeks: []
   },
   {
     id: 'erskine-boden-boo',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Erskine Harbour & Boden Boo Path',
+    name: 'Boden Boo, Erskine Harbour & Park Loop',
     area: 'Erskine · PA8',
-    dist: '3 – 8 km out-and-back',
-    surface: 'Flat riverside tarmac & smooth woodland path',
+    dist: '5.4 km riverside & quiet path loop (repeat 1–2×)',
+    surface: 'Flat Clyde tarmac & smooth woodland/town paths',
     lit: false,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'Boden Boo Car Park (under Erskine Bridge)',
     mapStops: [
-      'Boden Boo, Erskine, Scotland',
-      'Erskine Harbour, Erskine, Scotland'
+      'Boden Boo Car Park, Erskine, Scotland',
+      'Erskine Harbour, Erskine, Scotland',
+      'Bridgewater Shopping Centre, Erskine, Scotland',
+      'Bargarran Road, Erskine, Scotland',
+      'Boden Boo Car Park, Erskine, Scotland'
     ],
-    facilities: 'Free car park at Boden Boo / Erskine Harbour',
-    hipNote: 'Quiet, scenic flat Clyde path with zero steep climbs; ideal for Saturday mornings.',
+    facilities: 'Free Boden Boo car park · Bridgewater shops/café midway',
+    hipNote: 'Park at Boden Boo, run the river harbour loop through Erskine, and arrive straight back at your car.',
     weeks: [11, 17]
   },
   {
     id: 'lochwinnoch-castle-semple',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Castle Semple Loch & Lochwinnoch Path',
+    name: 'Castle Semple Loch & Village Loop',
     area: 'Lochwinnoch, Renfrewshire · PA12',
-    dist: '4 – 16 km out-and-back',
-    surface: 'Flat, smooth traffic-free lochside path',
+    dist: '4.2 km loch & village loop (repeat 2–3× for peak)',
+    surface: 'Flat lochside path & quiet village pavements',
     lit: false,
     treadmill: false,
-    isLoop: false,
+    isLoop: true,
+    parkingSpot: 'Castle Semple Visitor Centre Car Park',
     mapStops: [
       'Castle Semple Visitor Centre, Lochwinnoch, Scotland',
-      'Lochwinnoch Railway Station, Lochwinnoch, Scotland',
-      'RSPB Lochwinnoch, Lochwinnoch, Scotland'
+      'RSPB Lochwinnoch, Lochwinnoch, Scotland',
+      'Calder Street, Lochwinnoch, Scotland',
+      'Church Street, Lochwinnoch, Scotland',
+      'Castle Semple Visitor Centre, Lochwinnoch, Scotland'
     ],
-    facilities: 'Visitor Centre café, toilets & parking · 12 min train from Paisley',
-    hipNote: 'Best Renfrewshire peak-run route (Weeks 19–23): ultra-flat with café finish.',
+    facilities: 'Visitor Centre free car park, toilets & café right at start/finish',
+    hipNote: 'Peak-phase favourite: flat 4.2 km circuit finishing at your car beside the Visitor Centre café.',
     weeks: [19, 21, 23]
   },
 
@@ -2862,105 +2890,65 @@ function isQuotaError(err) {
 }
 
 let selectedMapRouteId = null;
-let mapsBootstrapPromise = null;
-let routeGoogleMap = null;
-let routeMapInfoWindow = null;
-let activeMapPolylines = [];
-let activeMapMarkers = [];
-let activeRouteViewport = null;
-let mapGestureMode = 'cooperative';
 let mapTerrainMode = false;
-let mapExpandedMode = false;
+const LOOP_IMAGE_CACHE = new Map();
 
-const PLACE_QUERY_CACHE = new Map();
-const ROUTE_COMPUTE_CACHE = new Map();
+function buildLoopSchematicSvg(route) {
+  const stops = route.mapStops || [];
+  const midStops = stops.slice(1, -1);
+  const s0 = (route.parkingSpot || stops[0] || 'Car Park').split(',')[0];
+  const m1 = (midStops[0] || 'Checkpoint 1').split(',')[0];
+  const m2 = (midStops[1] || 'Turnaround').split(',')[0];
+  const m3 = (midStops[2] || 'Return Path').split(',')[0];
 
-async function ensureGoogleMapsLoaded() {
-  if (window.google?.maps?.importLibrary) return;
-  if (mapsBootstrapPromise) return mapsBootstrapPromise;
+  function shortLbl(str, max = 22) {
+    return str.length > max ? str.slice(0, max - 1) + '…' : str;
+  }
 
-  mapsBootstrapPromise = (async () => {
-    const res = await fetch('/api/maps-config', { cache: 'no-store' });
-    const ct = res.headers.get('content-type') || '';
-    if (!res.ok || !ct.includes('application/json')) {
-      const err = new Error('STATIC_HOST_NO_CONFIG');
-      err.isStaticHost = true;
-      throw err;
-    }
-    const cfg = await res.json();
-    if (!cfg?.apiKey) {
-      const err = new Error('NO_API_KEY_CONFIGURED');
-      err.isStaticHost = true;
-      throw err;
-    }
+  return `
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+      <span style="font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--stirling-green);">CIRCULAR CAR-PARK LOOP</span>
+      <span style="font-size:11px; color:var(--ink-dim);">Open Google Maps for turn-by-turn</span>
+    </div>
+    <svg viewBox="0 0 360 190" style="width:100%; height:auto; display:block;" role="img" aria-label="Loop diagram starting and ending at ${s0}">
+      <rect x="4" y="4" width="352" height="182" rx="14" fill="#FFFFFF" stroke="#D5E0D8" />
+      <!-- Circular loop path -->
+      <path d="M 180 146 C 72 146, 52 108, 56 72 C 60 36, 120 28, 180 28 C 240 28, 300 36, 304 72 C 308 108, 288 146, 180 146 Z"
+            fill="#F3F8F5" stroke="#0B3B24" stroke-width="4" stroke-dasharray="7 4" />
+      <!-- Direction chevrons -->
+      <polygon points="88,43 97,36 93,48" fill="#14633B" />
+      <polygon points="272,43 263,36 267,48" fill="#14633B" />
+      <polygon points="242,141 251,146 240,150" fill="#14633B" />
 
-    await new Promise((resolve, reject) => {
-      ((g) => {
-        var h, a, k, p = 'The Google Maps JavaScript API', c = 'google', l = 'importLibrary', q = '__ib__', m = document, b = window;
-        b = b[c] || (b[c] = {});
-        var d = b.maps || (b.maps = {}), r = new Set(), e = new URLSearchParams(), u = () => h || (h = new Promise(async (f, n) => {
-          await (a = m.createElement('script'));
-          e.set('libraries', [...r] + '');
-          for (k in g) e.set(k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()), g[k]);
-          e.set('callback', c + '.maps.' + q);
-          a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
-          d[q] = f;
-          a.onerror = () => h = n(Error(p + ' could not load.'));
-          a.nonce = m.querySelector('script[nonce]')?.nonce || '';
-          m.head.append(a);
-        }));
-        d[l] ? console.warn(p + ' only loads once. Ignoring:', g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
-      })({
-        key: cfg.apiKey,
-        v: 'weekly',
-        language: 'en-GB',
-        region: 'GB'
-      });
+      <!-- Checkpoint 1 (Left) -->
+      <circle cx="56" cy="72" r="11" fill="#B87A14" stroke="#FFFFFF" stroke-width="2" />
+      <text x="56" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="#FFFFFF">1</text>
+      <text x="74" y="76" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="600" fill="#122117">${shortLbl(m1, 18)}</text>
 
-      window.google.maps.importLibrary('maps').then(resolve).catch(reject);
-    });
-  })().catch((err) => {
-    mapsBootstrapPromise = null;
-    throw err;
-  });
+      <!-- Checkpoint 2 (Top) -->
+      <circle cx="180" cy="28" r="11" fill="#B87A14" stroke="#FFFFFF" stroke-width="2" />
+      <text x="180" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="#FFFFFF">2</text>
+      <text x="180" y="51" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="600" fill="#122117">${shortLbl(m2, 24)}</text>
 
-  return mapsBootstrapPromise;
+      <!-- Checkpoint 3 (Right) -->
+      <circle cx="304" cy="72" r="11" fill="#B87A14" stroke="#FFFFFF" stroke-width="2" />
+      <text x="304" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="#FFFFFF">3</text>
+      <text x="286" y="76" text-anchor="end" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="600" fill="#122117">${shortLbl(m3, 18)}</text>
+
+      <!-- Car Park P (Start & Finish Bottom) -->
+      <circle cx="180" cy="146" r="13" fill="#0B3B24" stroke="#FFFFFF" stroke-width="2.5" />
+      <text x="180" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#FFFFFF">P</text>
+      <text x="180" y="174" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B3B24">Start &amp; Finish: ${shortLbl(s0, 34)}</text>
+    </svg>
+  `;
 }
 
-function clearMapOverlays() {
-  activeMapPolylines.forEach((p) => p.setMap(null));
-  activeMapPolylines = [];
-  activeMapMarkers.forEach((m) => { m.map = null; });
-  activeMapMarkers = [];
-  if (routeMapInfoWindow) routeMapInfoWindow.close();
-}
-
-function setMapOverlayStatus(text, show, showActions = false, externalUrl = '') {
+function setMapOverlayStatus(text, show) {
   const overlay = document.getElementById('routeMapStatusOverlay');
   const textEl = document.getElementById('routeMapStatusText');
-  const actionsEl = document.getElementById('routeMapFallbackActions');
-  const extOverlayLink = document.getElementById('routeOverlayExternalLink');
   if (!overlay || !textEl) return;
   textEl.textContent = text || '';
-  if (actionsEl) actionsEl.style.display = showActions ? 'flex' : 'none';
-  if (extOverlayLink && externalUrl) extOverlayLink.href = externalUrl;
   overlay.classList.toggle('hidden', !show);
-}
-
-async function resolvePlaceStop(textQuery) {
-  if (PLACE_QUERY_CACHE.has(textQuery)) return PLACE_QUERY_CACHE.get(textQuery);
-  const { Place } = await google.maps.importLibrary('places');
-  const { places } = await Place.searchByText({
-    textQuery,
-    fields: ['id', 'displayName', 'location', 'formattedAddress'],
-    language: 'en-GB',
-    region: 'GB',
-    maxResultCount: 1,
-    internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
-  });
-  const first = places && places.length ? places[0] : null;
-  if (first) PLACE_QUERY_CACHE.set(textQuery, first);
-  return first;
 }
 
 async function selectRouteForMap(routeId, scrollIntoView = false) {
@@ -2975,7 +2963,8 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
   const outdoorStage = document.getElementById('routeMapOutdoorStage');
   const tmStage = document.getElementById('routeMapTreadmillStage');
   const extLink = document.getElementById('routeOpenExternalLink');
-  const attrBox = document.getElementById('routeMapAttributions');
+  const loopImg = document.getElementById('routeLoopImg');
+  const schematicEl = document.getElementById('routeLoopSchematic');
 
   if (scrollIntoView) {
     document.getElementById('routeMapCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2985,7 +2974,7 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
     const active = btn.dataset.mapRoute === routeId;
     btn.classList.toggle('btn-primary', active);
     btn.classList.toggle('btn-ghost', !active);
-    btn.textContent = active ? 'On Map' : (btn.dataset.isTm === '1' ? 'Specs' : 'Map');
+    btn.textContent = active ? 'Showing' : (btn.dataset.isTm === '1' ? 'Specs' : 'Loop');
   });
 
   if (r.treadmill || !r.mapStops?.length) {
@@ -3000,237 +2989,85 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
   outdoorStage.style.display = 'block';
   tmStage.style.display = 'none';
 
-  const fallbackUrl = buildFallbackMapsUrl(r);
-  extLink.href = fallbackUrl;
+  const mapsDirUrl = buildFallbackMapsUrl(r);
+  extLink.href = mapsDirUrl;
   extLink.style.display = 'inline-flex';
 
+  document.getElementById('routeParkingCue').textContent = `Start & finish: ${r.parkingSpot || r.mapStops[0].split(',')[0]}`;
   document.getElementById('mapTelemetryDist').textContent = r.dist.split('(')[0].trim();
-  document.getElementById('mapTelemetryTime').textContent = 'Loading…';
+  document.getElementById('mapTelemetryTime').textContent = 'Car-park loop';
   document.getElementById('mapTelemetrySurface').textContent = r.surface;
-  document.getElementById('routeStopsStrip').innerHTML = r.mapStops.map((s, i) => `
-    <span class="stop-jump-btn" style="cursor:default;"><span class="stop-badge-num">${i === 0 ? 'S' : i + 1}</span><span>${s.split(',')[0]}</span></span>
-  `).join('');
-  attrBox.style.display = 'none';
-  attrBox.innerHTML = '';
+
+  // Render P -> 1 -> 2 -> 3 -> P checkpoint strip
+  const midStops = r.mapStops.slice(1, -1);
+  document.getElementById('routeStopsStrip').innerHTML = [
+    `<span class="stop-jump-btn" style="cursor:default;"><span class="stop-badge-num" style="background:#0B3B24;">P</span><span>${(r.parkingSpot || r.mapStops[0]).split(',')[0]}</span></span>`,
+    ...midStops.map((s, i) => `<span class="stop-jump-btn" style="cursor:default;"><span class="stop-badge-num" style="background:#B87A14;">${i + 1}</span><span>${s.split(',')[0]}</span></span>`),
+    `<span class="stop-jump-btn" style="cursor:default;"><span class="stop-badge-num" style="background:#0B3B24;">P</span><span>Finish at car</span></span>`
+  ].join('');
 
   if (activeTab !== 'routes') return;
 
-  setMapOverlayStatus(`Loading map for ${r.name}…`, true, false, fallbackUrl);
+  const maptype = mapTerrainMode ? 'terrain' : 'roadmap';
+  const cacheKey = `${r.id}:${maptype}`;
+  const cached = LOOP_IMAGE_CACHE.get(cacheKey);
+  if (cached) {
+    loopImg.src = cached.url;
+    loopImg.alt = `${r.name} car-park running loop map`;
+    loopImg.style.display = 'block';
+    schematicEl.style.display = 'none';
+    setMapOverlayStatus('', false);
+    if (cached.meters) {
+      const km = (cached.meters / 1000).toFixed(1);
+      const mins = Math.max(5, Math.round((cached.meters / 1000) * 7.75));
+      document.getElementById('mapTelemetryDist').textContent = `${km} km loop`;
+      document.getElementById('mapTelemetryTime').textContent = `~${mins} min run/walk`;
+    }
+    return;
+  }
+
+  loopImg.style.display = 'none';
+  schematicEl.style.display = 'none';
+  setMapOverlayStatus(`Loading loop map image for ${r.name}…`, true);
 
   try {
-    await ensureGoogleMapsLoaded();
-    // Allow Safari/WebKit a frame so visible #routeGoogleMap container has full layout dimensions
-    await new Promise((res) => requestAnimationFrame(res));
+    const apiUrl = `/api/static-map?stops=${encodeURIComponent(r.mapStops.join('|'))}&maptype=${maptype}`;
+    const res = await fetch(apiUrl);
+    const ct = res.headers.get('content-type') || '';
 
-    const [{ Map, InfoWindow, Polyline }, { AdvancedMarkerElement, PinElement }, { Route }, { LatLngBounds }] = await Promise.all([
-      google.maps.importLibrary('maps'),
-      google.maps.importLibrary('marker'),
-      google.maps.importLibrary('routes'),
-      google.maps.importLibrary('core')
-    ]);
-
-    if (selectedMapRouteId !== routeId) return;
-
-    const resolvedStops = [];
-    for (const q of r.mapStops) {
-      const p = await resolvePlaceStop(q);
-      if (p && p.location) resolvedStops.push({ query: q, place: p });
-    }
-
-    if (selectedMapRouteId !== routeId) return;
-    if (resolvedStops.length < 2) {
-      setMapOverlayStatus('Could not locate route checkpoints right now.', true, true, fallbackUrl);
-      document.getElementById('mapTelemetryTime').textContent = 'See Google Maps';
-      return;
-    }
-
-    if (!routeGoogleMap) {
-      routeGoogleMap = new Map(document.getElementById('routeGoogleMap'), {
-        center: resolvedStops[0].place.location,
-        zoom: 14,
-        mapId: 'DEMO_MAP_ID',
-        gestureHandling: mapGestureMode,
-        mapTypeId: mapTerrainMode ? 'terrain' : 'roadmap',
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: true,
-        internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
-      });
-      routeMapInfoWindow = new InfoWindow();
-    } else {
-      google.maps.event.trigger(routeGoogleMap, 'resize');
-    }
-
-    clearMapOverlays();
-
-    // Compute walking route (with resilient marker+bounds fallback if Routes API fails)
-    let computedRoute = ROUTE_COMPUTE_CACHE.get(routeId);
-    if (!computedRoute) {
-      try {
-        const originStop = resolvedStops[0];
-        const destStop = resolvedStops[resolvedStops.length - 1];
-        const midStops = resolvedStops.slice(1, -1);
-
-        const routeReq = {
-          origin: originStop.place.location,
-          destination: destStop.place.location,
-          intermediates: midStops.map((s) => ({ location: s.place.location })),
-          travelMode: 'WALKING',
-          fields: ['path', 'legs', 'viewport', 'distanceMeters', 'durationMillis'],
-          language: 'en-GB',
-          region: 'GB',
-          internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
-        };
-
-        const res = await Route.computeRoutes(routeReq);
-        if (res?.routes?.length) {
-          computedRoute = res.routes[0];
-          ROUTE_COMPUTE_CACHE.set(routeId, computedRoute);
-        }
-      } catch (routeErr) {
-        if (isQuotaError(routeErr)) {
-          window.dispatchEvent(new CustomEvent('gmp-quota-exceeded'));
-        }
-      }
-    }
-
-    if (selectedMapRouteId !== routeId) return;
-
-    const bounds = new LatLngBounds();
-    resolvedStops.forEach((s) => bounds.extend(s.place.location));
-
-    if (computedRoute) {
-      const lines = computedRoute.createPolylines({
-        polylineOptions: {
-          strokeColor: '#0B3B24',
-          strokeOpacity: 0.92,
-          strokeWeight: 5
-        }
-      });
-      lines.forEach((line) => line.setMap(routeGoogleMap));
-      activeMapPolylines = lines;
-
-      if (!activeMapPolylines.length && computedRoute.path?.length) {
-        const fallbackLine = new Polyline({
-          path: computedRoute.path,
-          strokeColor: '#0B3B24',
-          strokeOpacity: 0.92,
-          strokeWeight: 5,
-          map: routeGoogleMap
-        });
-        activeMapPolylines = [fallbackLine];
-      }
-
-      activeRouteViewport = computedRoute.viewport || bounds;
-      routeGoogleMap.fitBounds(activeRouteViewport, { top: 32, right: 20, bottom: 32, left: 20 });
-
-      const meters = computedRoute.distanceMeters || 0;
-      const km = (meters / 1000).toFixed(1);
-      const estRunWalkMin = Math.max(5, Math.round((meters / 1000) * 7.75));
-      document.getElementById('mapTelemetryDist').textContent = meters ? `${km} km ${r.isLoop ? 'loop' : 'path'}` : r.dist;
-      document.getElementById('mapTelemetryTime').textContent = meters ? `~${estRunWalkMin} min run/walk` : 'Walk path';
-    } else {
-      // Draw checkpoint connector polyline so map still shows the route loop cleanly
-      const line = new Polyline({
-        path: resolvedStops.map((s) => s.place.location),
-        strokeColor: '#14633B',
-        strokeOpacity: 0.78,
-        strokeWeight: 4,
-        map: routeGoogleMap
-      });
-      activeMapPolylines = [line];
-      activeRouteViewport = bounds;
-      routeGoogleMap.fitBounds(bounds, { top: 32, right: 20, bottom: 32, left: 20 });
-      document.getElementById('mapTelemetryDist').textContent = r.dist.split('(')[0].trim();
-      document.getElementById('mapTelemetryTime').textContent = 'Checkpoints shown';
-    }
-
-    const markerStops = (r.isLoop && resolvedStops.length > 2 && resolvedStops[0].place.id === resolvedStops[resolvedStops.length - 1].place.id)
-      ? resolvedStops.slice(0, -1)
-      : resolvedStops;
-
-    const stopButtonsHtml = [];
-    markerStops.forEach((s, idx) => {
-      const isStart = idx === 0;
-      const isEnd = !r.isLoop && idx === markerStops.length - 1;
-      const labelNum = isStart ? 'S' : isEnd ? 'F' : String(idx + 1);
-      const pinBg = isStart ? '#0B3B24' : isEnd ? '#B87A14' : '#14633B';
-
-      const pin = new PinElement({
-        glyphText: labelNum,
-        glyphColor: '#FFFFFF',
-        background: pinBg,
-        borderColor: '#FFFFFF'
-      });
-
-      const marker = new AdvancedMarkerElement({
-        map: routeGoogleMap,
-        position: s.place.location,
-        title: s.place.displayName || s.query
-      });
-      marker.append(pin);
-
-      const openStopInfo = () => {
-        routeGoogleMap.panTo(s.place.location);
-        const role = isStart ? (r.isLoop ? 'Start & Finish' : 'Start') : isEnd ? 'Turnaround / End' : `Checkpoint ${idx}`;
-        const addr = s.place.formattedAddress ? `<div style="font-size:12px;color:#405446;margin-top:2px;">${s.place.formattedAddress}</div>` : '';
-        routeMapInfoWindow.setHeaderContent(s.place.displayName || s.query);
-        routeMapInfoWindow.setContent(`<div style="font-size:12.5px;font-weight:600;color:#0B3B24;">${role}</div>${addr}`);
-        routeMapInfoWindow.open({ map: routeGoogleMap, anchor: marker, shouldFocus: false });
-      };
-
-      marker.addListener('click', openStopInfo);
-      activeMapMarkers.push({ marker, openStopInfo, set map(v) { marker.map = v; } });
-
-      stopButtonsHtml.push(
-        `<button class="stop-jump-btn" type="button" data-stop-idx="${idx}"><span class="stop-badge-num" style="background:${pinBg};">${labelNum}</span><span>${s.place.displayName || s.query.split(',')[0]}</span></button>`
-      );
-    });
-
-    const stopsEl = document.getElementById('routeStopsStrip');
-    stopsEl.innerHTML = stopButtonsHtml.join('');
-    stopsEl.querySelectorAll('[data-stop-idx]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const entry = activeMapMarkers[+btn.dataset.stopIdx];
-        if (entry) entry.openStopInfo();
-      });
-    });
-
-    const origLatLng = resolvedStops[0].place.location.toJSON();
-    const destLatLng = resolvedStops[resolvedStops.length - 1].place.location.toJSON();
-    const midCoords = resolvedStops.slice(1, -1).map((s) => {
-      const ll = s.place.location.toJSON();
-      return `${ll.lat},${ll.lng}`;
-    });
-    const dirUrl = new URL('https://www.google.com/maps/dir/');
-    dirUrl.searchParams.set('api', '1');
-    dirUrl.searchParams.set('travelmode', 'walking');
-    dirUrl.searchParams.set('origin', `${origLatLng.lat},${origLatLng.lng}`);
-    dirUrl.searchParams.set('destination', `${destLatLng.lat},${destLatLng.lng}`);
-    if (midCoords.length) dirUrl.searchParams.set('waypoints', midCoords.join('|'));
-    extLink.href = dirUrl.toString();
-
-    const attrTexts = [];
-    resolvedStops.forEach((s) => {
-      if (Array.isArray(s.place.attributions)) {
-        s.place.attributions.forEach((a) => { if (a?.provider) attrTexts.push(a.provider); });
-      }
-    });
-    if (attrTexts.length) {
-      attrBox.textContent = `Map & place data: ${[...new Set(attrTexts)].join(', ')}`;
-      attrBox.style.display = 'block';
-    }
-
-    setMapOverlayStatus('', false, false, dirUrl.toString());
-  } catch (err) {
-    if (isQuotaError(err)) {
+    if (res.status === 429) {
       window.dispatchEvent(new CustomEvent('gmp-quota-exceeded'));
+      throw new Error('QUOTA_EXCEEDED');
     }
-    const msg = err?.isStaticHost
-      ? 'Interactive in-app maps require the Node server (or Shared App URL). Tap below to view this walking route directly in Google Maps.'
-      : 'Unable to load route map right now. Check connection or open directly in Google Maps.';
-    setMapOverlayStatus(msg, true, true, fallbackUrl);
-    document.getElementById('mapTelemetryTime').textContent = 'Tap Open in Maps';
+    if (!res.ok || !ct.startsWith('image/')) {
+      throw new Error('STATIC_MAP_FALLBACK');
+    }
+
+    const meters = Number(res.headers.get('X-Loop-Meters') || 0);
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    LOOP_IMAGE_CACHE.set(cacheKey, { url: objUrl, meters });
+
+    if (selectedMapRouteId !== routeId) return;
+
+    loopImg.src = objUrl;
+    loopImg.alt = `${r.name} car-park running loop map`;
+    loopImg.style.display = 'block';
+    schematicEl.style.display = 'none';
+    setMapOverlayStatus('', false);
+
+    if (meters > 0) {
+      const km = (meters / 1000).toFixed(1);
+      const mins = Math.max(5, Math.round((meters / 1000) * 7.75));
+      document.getElementById('mapTelemetryDist').textContent = `${km} km loop`;
+      document.getElementById('mapTelemetryTime').textContent = `~${mins} min run/walk`;
+    }
+  } catch {
+    if (selectedMapRouteId !== routeId) return;
+    loopImg.style.display = 'none';
+    schematicEl.innerHTML = buildLoopSchematicSvg(r);
+    schematicEl.style.display = 'block';
+    setMapOverlayStatus('', false);
   }
 }
 
@@ -3261,7 +3098,7 @@ function renderRoutes() {
         <div class="meta-line" style="margin-top:0; color:#C7E3D1; font-weight:600; font-size:11.5px;">Midweek · ${w.wedDur}</div>
         <div style="font-size:14.5px; font-weight:700; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${rec.wedRoute.name}</div>
       </div>
-      <button class="coach-btn-outline" data-pick-map="${rec.wedRoute.id}" style="min-height:38px; padding:5px 10px; font-size:12px; flex-shrink:0;">${rec.wedRoute.treadmill ? 'Specs' : 'Map'}</button>
+      <button class="coach-btn-outline" data-pick-map="${rec.wedRoute.id}" style="min-height:38px; padding:5px 10px; font-size:12px; flex-shrink:0;">${rec.wedRoute.treadmill ? 'Specs' : 'Loop'}</button>
     </div>
   `;
 
@@ -3303,7 +3140,7 @@ function renderRoutes() {
     else if (activeRouteFilter === 'treadmill') fOk = r.treadmill;
     else if (activeRouteFilter === 'lit') fOk = r.lit;
 
-    const qOk = !q || r.name.toLowerCase().includes(q) || r.area.toLowerCase().includes(q) || r.surface.toLowerCase().includes(q) || r.hipNote.toLowerCase().includes(q);
+    const qOk = !q || r.name.toLowerCase().includes(q) || r.area.toLowerCase().includes(q) || r.surface.toLowerCase().includes(q) || r.hipNote.toLowerCase().includes(q) || (r.parkingSpot || '').toLowerCase().includes(q);
     return fOk && qOk;
   });
 
@@ -3328,18 +3165,19 @@ function renderRoutes() {
               <div style="font-size:15px; font-weight:600; color:var(--ink); margin-top:2px;">${r.name}</div>
             </div>
             <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
-              <button class="btn ${isOnMap ? 'btn-primary' : 'btn-ghost'} btn-sm" data-map-route="${r.id}" data-is-tm="${r.treadmill ? '1' : '0'}" style="min-height:36px; padding:4px 9px;">${isOnMap ? 'On Map' : (r.treadmill ? 'Specs' : 'Map')}</button>
+              <button class="btn ${isOnMap ? 'btn-primary' : 'btn-ghost'} btn-sm" data-map-route="${r.id}" data-is-tm="${r.treadmill ? '1' : '0'}" style="min-height:36px; padding:4px 9px;">${isOnMap ? 'Showing' : (r.treadmill ? 'Specs' : 'Loop')}</button>
               <button class="btn btn-secondary btn-sm tabular" data-log-route="${r.id}" style="min-height:36px; padding:4px 9px;">${count > 0 ? `✓ ${count}` : 'Log'}</button>
             </div>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:4px;">
-            <span style="font-size:12px; color:var(--ink-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.surface}</span>
+            <span style="font-size:12px; color:var(--ink-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.parkingSpot ? `Park: ${r.parkingSpot}` : r.surface}</span>
             <button type="button" data-expand-route="${r.id}" style="background:none; border:none; padding:4px 2px; font-size:12px; font-weight:600; color:var(--stirling-emerald); cursor:pointer; flex-shrink:0;">${isOpen ? 'Hide notes' : 'Notes & Parking'}</button>
           </div>
           ${isOpen ? `
             <div style="margin-top:6px; padding:8px 10px; background:var(--surface-subtle); border-radius:var(--radius-sm); font-size:12.5px; color:var(--ink-dim);">
               <div><strong>Hip Note:</strong> ${r.hipNote}</div>
-              <div style="margin-top:3px;"><strong>Logistics:</strong> ${r.facilities}${r.weeks.length ? ` · Wks ${r.weeks.join(', ')}` : ''}</div>
+              <div style="margin-top:3px;"><strong>Parking &amp; Facilities:</strong> ${r.facilities}${r.weeks.length ? ` · Wks ${r.weeks.join(', ')}` : ''}</div>
+              ${!r.treadmill && r.mapStops ? `<div style="margin-top:6px;"><a href="${buildFallbackMapsUrl(r)}" target="_blank" rel="noopener noreferrer" style="color:var(--stirling-emerald); font-weight:700; text-decoration:underline;">Open loop in Google Maps</a></div>` : ''}
             </div>
           ` : ''}
         </div>
@@ -3469,35 +3307,17 @@ document.getElementById('routesTreadmillToggleBtn').addEventListener('click', ()
 });
 
 document.getElementById('routeMapRetryBtn').addEventListener('click', () => {
-  if (selectedMapRouteId) void selectRouteForMap(selectedMapRouteId, false);
-});
-
-document.getElementById('mapGestureToggleBtn').addEventListener('click', () => {
-  mapGestureMode = mapGestureMode === 'cooperative' ? 'greedy' : 'cooperative';
-  document.getElementById('mapGestureToggleBtn').textContent =
-    mapGestureMode === 'cooperative' ? 'Touch: Scroll-Safe' : 'Touch: Free Pan';
-  if (routeGoogleMap) routeGoogleMap.setOptions({ gestureHandling: mapGestureMode });
+  if (selectedMapRouteId) {
+    const maptype = mapTerrainMode ? 'terrain' : 'roadmap';
+    LOOP_IMAGE_CACHE.delete(`${selectedMapRouteId}:${maptype}`);
+    void selectRouteForMap(selectedMapRouteId, false);
+  }
 });
 
 document.getElementById('mapTypeToggleBtn').addEventListener('click', () => {
   mapTerrainMode = !mapTerrainMode;
-  document.getElementById('mapTypeToggleBtn').textContent = mapTerrainMode ? 'Road' : 'Terrain';
-  if (routeGoogleMap) routeGoogleMap.setMapTypeId(mapTerrainMode ? 'terrain' : 'roadmap');
-});
-
-document.getElementById('mapExpandToggleBtn').addEventListener('click', () => {
-  mapExpandedMode = !mapExpandedMode;
-  document.getElementById('routeGoogleMap').classList.toggle('expanded', mapExpandedMode);
-  document.getElementById('mapExpandToggleBtn').textContent = mapExpandedMode ? 'Compact' : 'Taller';
-  if (routeGoogleMap) {
-    setTimeout(() => google.maps.event.trigger(routeGoogleMap, 'resize'), 220);
-  }
-});
-
-document.getElementById('mapFitRouteBtn').addEventListener('click', () => {
-  if (routeGoogleMap && activeRouteViewport) {
-    routeGoogleMap.fitBounds(activeRouteViewport, { top: 32, right: 20, bottom: 32, left: 20 });
-  }
+  document.getElementById('mapTypeToggleBtn').textContent = mapTerrainMode ? 'Road Map' : 'Terrain';
+  if (selectedMapRouteId) void selectRouteForMap(selectedMapRouteId, false);
 });
 
 document.getElementById('tmOpenCoachBtn').addEventListener('click', () => {
