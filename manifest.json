@@ -1,13 +1,13 @@
 {
   "name": "Route to Stirling — Half Marathon Trainer",
   "short_name": "Stirling Half",
-  "description": "38-week training companion for the Stirling Half Marathon, 16 May 2027.",
+  "description": "24-week beginner, hip-friendly training companion for the Stirling Half Marathon, 28 Nov 2026 to 16 May 2027.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#FFFFFF",
-  "theme_color": "#0B4527",
+  "background_color": "#F6F8F6",
+  "theme_color": "#0B3B24",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }

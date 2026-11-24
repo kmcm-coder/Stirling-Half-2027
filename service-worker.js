@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stirling-half-v1';
+const CACHE_NAME = 'stirling-half-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -24,17 +24,33 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// App shell: cache-first. Everything else (e.g. Google Fonts): network-first,
-// falling back to cache, so the app still renders offline once fonts have
-// been fetched once.
+// App shell: network-first for HTML & API bypass; never cache Google Maps Platform tiles or responses.
 self.addEventListener('fetch', (event) => {
   const req = event.request;
+  if (req.method !== 'GET') return;
   const url = new URL(req.url);
+
+  // Never cache /api/* or any Google Maps Platform domains
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.hostname.endsWith('googleapis.com') ||
+    url.hostname.endsWith('gstatic.com') ||
+    url.hostname.endsWith('google.com')
+  ) {
+    return;
+  }
+
   const isSameOrigin = url.origin === self.location.origin;
 
   if (isSameOrigin) {
     event.respondWith(
-      caches.match(req).then((cached) => cached || fetch(req))
+      fetch(req)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          return res;
+        })
+        .catch(() => caches.match(req))
     );
   } else {
     event.respondWith(

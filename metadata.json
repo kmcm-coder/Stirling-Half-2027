@@ -1,6 +1,6 @@
 {
   "name": "Route to Stirling",
-  "description": "38-week training companion for the Stirling Half Marathon, 16 May 2027.",
+  "description": "24-week beginner, hip-friendly training companion for the Stirling Half Marathon (28 Nov 2026 – 16 May 2027).",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

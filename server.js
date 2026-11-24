@@ -8,6 +8,18 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
+// Maps configuration endpoint (reads API key from environment; never hardcoded)
+app.get('/api/maps-config', (req, res) => {
+  const apiKey =
+    process.env.GOOGLE_MAPS_API_KEY ||
+    process.env.VITE_GOOGLE_MAPS_API_KEY ||
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    process.env.MAPS_API_KEY ||
+    '';
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({ apiKey, configured: Boolean(apiKey) });
+});
+
 // Serve static assets from project root
 app.use(express.static(__dirname));
 
