@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Route to Stirling — 24-Week Half Marathon Companion</title>
 <meta name="description" content="24-week beginner, hip-friendly training companion for the Stirling Half Marathon (28 Nov 2026 – 16 May 2027). Built for a 9–5 schedule with 2 runs, 2 strength sessions, and social flexibility.">
 <meta property="og:title" content="Route to Stirling — 24-Week Half Marathon Companion">
@@ -27,7 +27,6 @@
     --border: #D5E0D8;
     --border-subtle: #E5ECE7;
 
-    /* Stirling Scottish Heritage Palette */
     --stirling-green: #0B3B24;
     --stirling-emerald: #14633B;
     --stirling-bright: #1B7A4A;
@@ -50,11 +49,10 @@
     --ink-muted: #697D6F;
 
     --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
 
     --shadow-sm: 0 1px 3px rgba(11, 59, 36, 0.05);
-    --shadow-md: 0 4px 16px rgba(11, 59, 36, 0.07);
 
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -72,17 +70,22 @@
   html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    max-width: 100%;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.45;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: clip;
   }
 
-  button, input, select {
+  button, input, select, summary, a {
     font-family: inherit;
+    touch-action: manipulation;
   }
 
   button:focus-visible, input:focus-visible, select:focus-visible {
@@ -119,12 +122,12 @@
     text-decoration: underline;
   }
 
-  /* ================= TOP NAVIGATION BAR ================= */
+  /* ================= TOP NAVIGATION BAR (3 ZONES) ================= */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(255, 255, 255, 0.94);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
@@ -134,7 +137,7 @@
   .header-inner {
     max-width: 1120px;
     margin: 0 auto;
-    height: 50px;
+    height: 48px;
     padding: 0 14px;
     display: flex;
     align-items: center;
@@ -144,7 +147,7 @@
 
   .brand-wordmark {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 17.5px;
     font-weight: 700;
     color: var(--stirling-green);
     letter-spacing: -0.02em;
@@ -182,16 +185,9 @@
     border-bottom-color: var(--stirling-green);
   }
 
-  .header-action-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
   .header-cta-btn {
-    min-height: 38px;
-    padding: 7px 12px;
+    min-height: 36px;
+    padding: 6px 12px;
     background: var(--stirling-green);
     color: #FFFFFF;
     border: none;
@@ -208,45 +204,33 @@
     background: var(--stirling-emerald);
   }
 
-  .header-cta-btn:active {
-    transform: scale(0.98);
-  }
-
   @media (min-width: 820px) {
-    .desktop-nav {
-      display: flex;
-    }
-    .header-inner {
-      height: 60px;
-      padding: 0 24px;
-      gap: 32px;
-    }
-    .brand-wordmark {
-      font-size: 19px;
-    }
-    .header-cta-btn {
-      min-height: 40px;
-      padding: 8px 14px;
-      font-size: 13px;
-    }
+    .desktop-nav { display: flex; }
+    .header-inner { height: 58px; padding: 0 24px; gap: 32px; }
+    .brand-wordmark { font-size: 19px; }
+    .header-cta-btn { min-height: 40px; padding: 8px 14px; font-size: 13px; }
   }
 
-  /* ================= MAIN LAYOUT SHELL ================= */
+  /* ================= MAIN SHELL & ANTI-OVERFLOW CONTAINMENT ================= */
   .app-main {
     max-width: 1120px;
+    width: 100%;
     margin: 0 auto;
-    padding: 12px 12px calc(78px + var(--safe-bottom));
+    padding: 10px 12px calc(74px + var(--safe-bottom));
   }
 
   @media (min-width: 820px) {
     .app-main {
-      padding: 24px 24px 48px;
+      padding: 20px 24px 48px;
     }
   }
 
   .content-view {
     display: none;
-    animation: viewFade 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    animation: viewFade 0.16s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .content-view.active {
@@ -254,7 +238,7 @@
   }
 
   @keyframes viewFade {
-    from { opacity: 0; transform: translateY(4px); }
+    from { opacity: 0; transform: translateY(3px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -262,21 +246,27 @@
     .content-view { animation: none; }
   }
 
-  /* Two-column responsive grids on desktop */
+  /* CRITICAL: minmax(0, 1fr) stops overflowing scrollbars/tabs inside grid cells from widening mobile viewport */
   .grid-two-col {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
     align-items: start;
+    width: 100%;
+  }
+
+  .grid-two-col > * {
+    min-width: 0;
+    max-width: 100%;
   }
 
   @media (min-width: 860px) {
     .grid-two-col {
-      grid-template-columns: 1.35fr 1fr;
-      gap: 20px;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 18px;
     }
     .grid-equal-col {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
@@ -285,9 +275,18 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 18px;
+    padding: 14px;
     box-shadow: var(--shadow-sm);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  @media (min-width: 820px) {
+    .card {
+      padding: 18px;
+      margin-bottom: 16px;
+    }
   }
 
   .card-hero {
@@ -298,17 +297,16 @@
 
   .section-title {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--ink);
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.22;
     text-wrap: balance;
   }
 
   .card-hero .section-title {
     color: #FFFFFF;
-    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
   }
 
   .meta-line {
@@ -317,8 +315,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
-    margin-top: 4px;
+    gap: 5px;
+    margin-top: 3px;
   }
 
   .card-hero .meta-line {
@@ -329,102 +327,53 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 10px;
   }
 
   .hairline-divider {
     height: 1px;
     background: var(--border-subtle);
-    margin: 14px 0;
+    margin: 12px 0;
   }
 
   .callout-note {
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-radius: var(--radius-md);
-    font-size: 13px;
-    line-height: 1.45;
+    font-size: 12.5px;
+    line-height: 1.42;
   }
 
-  .callout-gold {
-    background: var(--ochil-soft);
-    border: 1px solid var(--ochil-border);
-    color: #6B4506;
-  }
-
-  .callout-thistle {
-    background: var(--thistle-soft);
-    border: 1px solid var(--thistle-border);
-    color: #5B2847;
-  }
-
-  .callout-green {
-    background: var(--stirling-tint);
-    border: 1px solid var(--border);
-    color: var(--stirling-green);
-  }
-
-  .callout-danger {
-    background: var(--danger-soft);
-    border: 1px solid var(--danger-border);
-    color: #7D211B;
-  }
+  .callout-gold { background: var(--ochil-soft); border: 1px solid var(--ochil-border); color: #6B4506; }
+  .callout-thistle { background: var(--thistle-soft); border: 1px solid var(--thistle-border); color: #5B2847; }
+  .callout-green { background: var(--stirling-tint); border: 1px solid var(--border); color: var(--stirling-green); }
+  .callout-danger { background: var(--danger-soft); border: 1px solid var(--danger-border); color: #7D211B; }
 
   /* ================= BUTTONS & CONTROLS ================= */
   .btn {
     min-height: 44px;
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: var(--radius-sm);
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     border: 1px solid transparent;
     white-space: nowrap;
     transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
   }
 
-  .btn:active {
-    transform: scale(0.98);
-  }
-
-  .btn-primary {
-    background: var(--stirling-green);
-    color: #FFFFFF;
-  }
-
-  .btn-primary:hover {
-    background: var(--stirling-emerald);
-  }
-
-  .btn-secondary {
-    background: var(--surface-subtle);
-    color: var(--ink);
-    border-color: var(--border);
-  }
-
-  .btn-secondary:hover {
-    background: var(--surface-hover);
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--stirling-emerald);
-    border-color: var(--border);
-  }
-
-  .btn-ghost:hover {
-    background: var(--surface-subtle);
-  }
-
-  .btn-sm {
-    min-height: 40px;
-    padding: 6px 12px;
-    font-size: 12.5px;
-  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--stirling-green); color: #FFFFFF; }
+  .btn-primary:hover { background: var(--stirling-emerald); }
+  .btn-secondary { background: var(--surface-subtle); color: var(--ink); border-color: var(--border); }
+  .btn-secondary:hover { background: var(--surface-hover); }
+  .btn-ghost { background: transparent; color: var(--stirling-emerald); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--surface-subtle); }
+  .btn-sm { min-height: 40px; padding: 6px 11px; font-size: 12.5px; }
 
   .icon-btn {
     min-width: 44px;
@@ -440,115 +389,141 @@
     flex-shrink: 0;
   }
 
-  .icon-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
+  .icon-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  /* ================= HERO COUNTDOWN & STATS ================= */
-  .hero-top-grid {
+  /* ================= DASHBOARD STATUS STRIP & NEXT ACTION ================= */
+  .dash-status-bar {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
-  @media (min-width: 680px) {
-    .hero-top-grid {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .countdown-strip {
+  .dash-metrics-row {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
   }
 
-  .count-cell {
-    background: rgba(255, 255, 255, 0.1);
+  .dash-metric-cell {
+    background: rgba(255, 255, 255, 0.11);
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-sm);
-    padding: 8px 6px;
-    text-align: center;
+    padding: 7px 9px;
+    min-width: 0;
   }
 
-  .count-num {
+  .dash-metric-val {
     font-family: var(--font-mono);
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
     color: #FFFFFF;
-    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .count-lbl {
-    font-family: var(--font-mono);
-    font-size: 10px;
+  .dash-metric-lbl {
+    font-size: 10.5px;
     color: #C7E3D1;
-    margin-top: 2px;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* ================= WEEK NAVIGATOR ================= */
+  .next-up-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--stirling-emerald);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .next-up-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--stirling-emerald);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .next-up-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 3px 0 4px;
+    line-height: 1.25;
+  }
+
+  .next-up-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* ================= WEEK NAVIGATOR & SESSION ROWS ================= */
   .week-nav-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding-bottom: 14px;
+    gap: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
-  .week-nav-center {
-    text-align: center;
+  .week-nav-center { text-align: center; min-width: 0; }
+  .week-nav-title { font-family: var(--font-display); font-size: 16.5px; font-weight: 600; color: var(--ink); }
+  .week-nav-dates { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-muted); margin-top: 1px; }
+
+  .week-strip {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .day-slot {
     min-width: 0;
+    padding: 6px 2px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-subtle);
+    text-align: center;
+    font-size: 10px;
   }
 
-  .week-nav-title {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--ink);
-  }
+  .day-slot.has-run { background: var(--stirling-tint); border-color: #B4D7C1; }
+  .day-slot.has-lift { background: var(--ochil-soft); border-color: var(--ochil-border); }
+  .day-slot.is-free { background: #FFFFFF; border-style: dashed; }
+  .day-slot-name { font-family: var(--font-mono); font-weight: 700; color: var(--ink); }
+  .day-slot-type { font-size: 9.5px; color: var(--ink-dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .week-nav-dates {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--ink-muted);
-    margin-top: 2px;
-  }
-
-  /* ================= SESSION ROWS ================= */
-  .session-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .session-list { display: flex; flex-direction: column; gap: 7px; }
 
   .session-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px;
+    gap: 8px;
+    padding: 10px;
     background: var(--surface-subtle);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     transition: background 0.15s ease, border-color 0.15s ease;
   }
 
-  .session-row.done {
-    background: var(--stirling-tint);
-    border-color: #B4D7C1;
-  }
-
-  .session-row.is-race {
-    background: var(--ochil-soft);
-    border-color: var(--ochil-border);
-  }
+  .session-row.done { background: var(--stirling-tint); border-color: #B4D7C1; }
+  .session-row.is-race { background: var(--ochil-soft); border-color: var(--ochil-border); }
 
   .session-check-btn {
-    width: 44px;
+    width: 40px;
     height: 44px;
     border: none;
     background: transparent;
@@ -561,8 +536,8 @@
   }
 
   .check-circle {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid #8DA394;
     background: #FFFFFF;
@@ -572,51 +547,15 @@
     transition: all 0.15s ease;
   }
 
-  .session-row.done .check-circle {
-    background: var(--stirling-bright);
-    border-color: var(--stirling-bright);
-  }
+  .session-row.done .check-circle { background: var(--stirling-bright); border-color: var(--stirling-bright); }
+  .check-circle svg { width: 13px; height: 13px; stroke: #FFFFFF; stroke-width: 3; opacity: 0; }
+  .session-row.done .check-circle svg { opacity: 1; }
 
-  .check-circle svg {
-    width: 14px;
-    height: 14px;
-    stroke: #FFFFFF;
-    stroke-width: 3;
-    opacity: 0;
-  }
-
-  .session-row.done .check-circle svg {
-    opacity: 1;
-  }
-
-  .session-body {
-    flex: 1;
-    min-width: 0;
-    cursor: pointer;
-  }
-
-  .session-meta {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    color: var(--ink-muted);
-  }
-
-  .session-row.done .session-meta {
-    color: var(--stirling-emerald);
-  }
-
-  .session-title {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-top: 1px;
-  }
-
-  .session-detail {
-    font-size: 12.5px;
-    color: var(--ink-dim);
-    margin-top: 2px;
-  }
+  .session-body { flex: 1; min-width: 0; cursor: pointer; }
+  .session-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+  .session-row.done .session-meta { color: var(--stirling-emerald); }
+  .session-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 1px; }
+  .session-detail { font-size: 12px; color: var(--ink-dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .session-action-btn {
     min-height: 40px;
@@ -632,156 +571,74 @@
     flex-shrink: 0;
   }
 
-  .session-action-btn:hover {
-    background: var(--surface-hover);
-  }
+  .session-action-btn:hover { background: var(--surface-hover); }
 
-  /* ================= 7-DAY WEEK STRIP ================= */
-  .week-strip {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 4px;
-    margin-bottom: 14px;
-  }
-
-  .day-slot {
-    min-width: 0;
-    padding: 7px 2px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-subtle);
-    background: var(--surface-subtle);
-    text-align: center;
-    font-size: 10.5px;
-  }
-
-  .day-slot.has-run {
-    background: var(--stirling-tint);
-    border-color: #B4D7C1;
-  }
-
-  .day-slot.has-lift {
-    background: var(--ochil-soft);
-    border-color: var(--ochil-border);
-  }
-
-  .day-slot.is-free {
-    background: #FFFFFF;
-    border-style: dashed;
-  }
-
-  .day-slot-name {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    color: var(--ink);
-  }
-
-  .day-slot-type {
-    font-size: 10px;
-    color: var(--ink-dim);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* ================= DAY SWAPPER PANEL ================= */
-  .swap-panel {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-subtle);
-  }
+  /* ================= DAY SWAPPER & COLLAPSIBLE DRAWERS ================= */
+  .swap-panel { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
   .swap-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
   }
 
   @media (min-width: 540px) {
-    .swap-grid {
-      grid-template-columns: 1fr 1fr;
-    }
+    .swap-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   }
 
-  .swap-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .swap-field label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ink-dim);
-  }
+  .swap-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .swap-field label { font-size: 12px; font-weight: 600; color: var(--ink-dim); }
 
   .select-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 44px;
     padding: 8px 10px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: #FFFFFF;
     color: var(--ink);
-    font-size: 13.5px;
+    font-size: 14px;
   }
 
-  /* ================= RUN/WALK INTERVAL COACH ================= */
+  .drawer-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 2px 0;
+    min-height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+  }
+
+  /* ================= RUN/WALK INTERVAL COACH (ON-DEMAND) ================= */
   .coach-panel {
     background: #0F2E1E;
     color: #FFFFFF;
     border-radius: var(--radius-lg);
-    padding: 18px;
-    margin-bottom: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
   }
 
-  .coach-phase-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: #B4DEC2;
-    letter-spacing: 0.04em;
-  }
+  .coach-phase-label { font-family: var(--font-mono); font-size: 11.5px; color: #B4DEC2; letter-spacing: 0.03em; }
+  .coach-timer-big { font-family: var(--font-mono); font-size: 38px; font-weight: 700; line-height: 1.05; margin: 4px 0; color: #FFFFFF; }
+  .coach-action-name { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: #F7D488; }
 
-  .coach-timer-big {
-    font-family: var(--font-mono);
-    font-size: 46px;
-    font-weight: 700;
-    line-height: 1.05;
-    margin: 6px 0 4px;
-    color: #FFFFFF;
-  }
+  .coach-progress-track { height: 6px; background: rgba(255, 255, 255, 0.16); border-radius: 999px; overflow: hidden; margin: 10px 0; }
+  .coach-progress-fill { height: 100%; background: #55C484; transition: width 0.25s linear; }
 
-  .coach-action-name {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 600;
-    color: #F7D488;
-  }
-
-  .coach-progress-track {
-    height: 6px;
-    background: rgba(255, 255, 255, 0.16);
-    border-radius: 999px;
-    overflow: hidden;
-    margin: 12px 0;
-  }
-
-  .coach-progress-fill {
-    height: 100%;
-    background: #55C484;
-    transition: width 0.25s linear;
-  }
-
-  .coach-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-  }
+  .coach-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 
   .coach-btn-light {
     min-height: 44px;
-    padding: 10px 16px;
+    padding: 10px 14px;
     border-radius: var(--radius-sm);
     border: none;
     background: #FFFFFF;
@@ -794,12 +651,12 @@
 
   .coach-btn-outline {
     min-height: 44px;
-    padding: 10px 14px;
+    padding: 10px 12px;
     border-radius: var(--radius-sm);
     border: 1px solid rgba(255, 255, 255, 0.28);
     background: rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
   }
@@ -807,61 +664,48 @@
   /* ================= HIP CHECK-IN ================= */
   .hip-btn-group {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 8px;
   }
 
   .hip-state-btn {
-    min-height: 48px;
-    padding: 8px 6px;
+    min-height: 44px;
+    padding: 7px 4px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: var(--surface-subtle);
     color: var(--ink);
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     text-align: center;
     transition: all 0.15s ease;
   }
 
-  .hip-state-btn.active-green {
-    background: var(--stirling-green);
-    color: #FFFFFF;
-    border-color: var(--stirling-green);
-  }
-
-  .hip-state-btn.active-amber {
-    background: var(--ochil-gold);
-    color: #FFFFFF;
-    border-color: var(--ochil-gold);
-  }
-
-  .hip-state-btn.active-red {
-    background: var(--danger);
-    color: #FFFFFF;
-    border-color: var(--danger);
-  }
+  .hip-state-btn.active-green { background: var(--stirling-green); color: #FFFFFF; border-color: var(--stirling-green); }
+  .hip-state-btn.active-amber { background: var(--ochil-gold); color: #FFFFFF; border-color: var(--ochil-gold); }
+  .hip-state-btn.active-red { background: var(--danger); color: #FFFFFF; border-color: var(--danger); }
 
   /* ================= SEGMENTED FILTER BAR ================= */
   .filter-bar {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     overflow-x: auto;
+    max-width: 100%;
     padding: 4px;
     background: var(--surface-subtle);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     scrollbar-width: none;
   }
   .filter-bar::-webkit-scrollbar { display: none; }
 
   .filter-tab {
     min-height: 40px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: 7px 11px;
+    border-radius: 9px;
     border: none;
     background: transparent;
     font-size: 12.5px;
@@ -878,90 +722,56 @@
     box-shadow: var(--shadow-sm);
   }
 
-  /* ================= ROUTE / 24-WEEK LIST ================= */
+  /* ================= PLAN ACCORDIONS ================= */
   .week-accordion-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     overflow: hidden;
   }
 
-  .week-accordion-card.is-current {
-    border-color: var(--stirling-emerald);
-  }
+  .week-accordion-card.is-current { border-color: var(--stirling-emerald); }
 
   .week-accordion-trigger {
     width: 100%;
     background: none;
     border: none;
-    padding: 14px 16px;
+    padding: 12px 14px;
     text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     cursor: pointer;
-    min-height: 60px;
+    min-height: 54px;
   }
 
-  .week-accordion-trigger:hover {
-    background: var(--surface-subtle);
-  }
-
-  .week-accordion-body {
-    padding: 0 16px 16px;
-    border-top: 1px solid var(--border-subtle);
-  }
+  .week-accordion-trigger:hover { background: var(--surface-subtle); }
+  .week-accordion-body { padding: 0 14px 14px; border-top: 1px solid var(--border-subtle); }
 
   /* ================= STRENGTH TRACKER ================= */
-  .exercise-row {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .exercise-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
+  .exercise-row { padding: 12px 0; border-bottom: 1px solid var(--border-subtle); }
+  .exercise-row:last-child { border-bottom: none; padding-bottom: 0; }
 
   .exercise-head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
-  }
-
-  .exercise-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .exercise-scheme {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--stirling-emerald);
-    white-space: nowrap;
-  }
-
-  .exercise-cue {
-    font-size: 13px;
-    color: var(--ink-dim);
-    margin: 4px 0 10px;
-  }
-
-  .exercise-controls {
-    display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
   }
+
+  .exercise-name { font-size: 14.5px; font-weight: 600; color: var(--ink); min-width: 0; }
+  .exercise-scheme { font-family: var(--font-mono); font-size: 12px; color: var(--stirling-emerald); white-space: nowrap; }
+  .exercise-cue { font-size: 12.5px; color: var(--ink-dim); margin: 3px 0 8px; }
+
+  .exercise-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 
   .set-btn {
-    min-height: 44px;
-    min-width: 68px;
-    padding: 8px 10px;
+    min-height: 42px;
+    min-width: 60px;
+    padding: 7px 9px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: var(--surface-subtle);
@@ -972,38 +782,42 @@
     cursor: pointer;
   }
 
-  .set-btn.done {
-    background: var(--stirling-green);
-    color: #FFFFFF;
-    border-color: var(--stirling-green);
-  }
+  .set-btn.done { background: var(--stirling-green); color: #FFFFFF; border-color: var(--stirling-green); }
 
   .load-note-input {
-    flex: 1;
-    min-width: 140px;
-    min-height: 44px;
+    flex: 1 1 160px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 42px;
     padding: 8px 10px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: #FFFFFF;
     color: var(--ink);
-    font-size: 13px;
+    font-size: 14px;
   }
 
-  /* ================= CHECKLISTS & ACCORDIONS ================= */
+  .lift-timer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ================= CHECKLISTS & TEXT INPUTS ================= */
   .chk-row {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
+    gap: 10px;
+    padding: 8px 0;
     border-bottom: 1px solid var(--border-subtle);
     cursor: pointer;
-    min-height: 44px;
+    min-height: 42px;
   }
 
-  .chk-row:last-child {
-    border-bottom: none;
-  }
+  .chk-row:last-child { border-bottom: none; }
 
   .chk-box {
     width: 22px;
@@ -1018,39 +832,18 @@
     flex-shrink: 0;
   }
 
-  .chk-row.checked .chk-box {
-    background: var(--stirling-green);
-    border-color: var(--stirling-green);
-  }
+  .chk-row.checked .chk-box { background: var(--stirling-green); border-color: var(--stirling-green); }
+  .chk-box svg { width: 13px; height: 13px; stroke: #FFFFFF; stroke-width: 3; opacity: 0; }
+  .chk-row.checked .chk-box svg { opacity: 1; }
+  .chk-text { font-size: 13.5px; color: var(--ink); line-height: 1.4; }
+  .chk-row.checked .chk-text { color: var(--ink-muted); text-decoration: line-through; }
 
-  .chk-box svg {
-    width: 13px;
-    height: 13px;
-    stroke: #FFFFFF;
-    stroke-width: 3;
-    opacity: 0;
-  }
-
-  .chk-row.checked .chk-box svg {
-    opacity: 1;
-  }
-
-  .chk-text {
-    font-size: 14px;
-    color: var(--ink);
-    line-height: 1.4;
-  }
-
-  .chk-row.checked .chk-text {
-    color: var(--ink-muted);
-    text-decoration: line-through;
-  }
-
-  /* ================= INPUTS & SLIDERS ================= */
   .text-input {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 44px;
-    padding: 10px 14px;
+    padding: 9px 12px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: #FFFFFF;
@@ -1065,6 +858,147 @@
     cursor: pointer;
   }
 
+  /* ================= ROUTE INTERACTIVE MAP & COMPACT DIRECTORY ================= */
+  .route-week-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  @media (min-width: 640px) {
+    .route-week-pair {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  .route-match-tile {
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.11);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .route-map-shell {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-subtle);
+  }
+
+  .route-map-canvas {
+    width: 100%;
+    height: 265px;
+    transition: height 0.2s ease;
+  }
+
+  .route-map-canvas.expanded { height: 400px; }
+
+  @media (min-width: 820px) {
+    .route-map-canvas { height: 370px; }
+    .route-map-canvas.expanded { height: 480px; }
+  }
+
+  .route-map-status {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    text-align: center;
+    background: rgba(246, 248, 246, 0.94);
+    color: var(--ink);
+    font-size: 13px;
+    z-index: 3;
+    pointer-events: auto;
+  }
+
+  .route-map-status.hidden { display: none; }
+
+  .route-map-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
+  .route-telemetry-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  @media (min-width: 600px) {
+    .route-telemetry-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .telemetry-cell {
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 7px 9px;
+    min-width: 0;
+  }
+
+  @media (max-width: 599px) {
+    .route-telemetry-bar .telemetry-cell:last-child { grid-column: 1 / -1; }
+  }
+
+  .telemetry-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: var(--ink-muted); letter-spacing: 0.03em; }
+  .telemetry-val { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--stirling-green); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .route-stops-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .stop-jump-btn {
+    min-height: 36px;
+    padding: 4px 9px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stop-badge-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--stirling-green);
+    color: #FFFFFF;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .fortnight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .gmp-attr-note { font-size: 11px; color: var(--ink-muted); margin-top: 6px; line-height: 1.35; }
+
   /* ================= MOBILE BOTTOM TAB BAR ================= */
   .mobile-bottom-nav {
     position: fixed;
@@ -1078,243 +1012,41 @@
     border-top: 1px solid var(--border);
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    padding: 4px 4px calc(4px + var(--safe-bottom));
+    padding: 3px 4px calc(3px + var(--safe-bottom));
   }
 
   @media (min-width: 820px) {
-    .mobile-bottom-nav {
-      display: none;
-    }
+    .mobile-bottom-nav { display: none; }
   }
 
   .mobile-tab-btn {
-    min-height: 48px;
+    min-height: 46px;
     background: none;
     border: none;
-    padding: 4px 2px;
+    padding: 3px 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     color: var(--ink-muted);
     cursor: pointer;
   }
 
-  .mobile-tab-btn.active {
-    color: var(--stirling-green);
-  }
+  .mobile-tab-btn.active { color: var(--stirling-green); }
+  .mobile-tab-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .mobile-tab-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
 
-  .mobile-tab-btn svg {
-    width: 21px;
-    height: 21px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.9;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+  .footer-note { font-size: 12px; color: var(--ink-muted); text-align: center; margin: 18px 0 6px; }
 
-  .mobile-tab-label {
-    font-size: 10.5px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .footer-note {
-    font-size: 12px;
-    color: var(--ink-muted);
-    text-align: center;
-    margin: 24px 0 8px;
-  }
-
-  /* ================= ROUTE INTERACTIVE MAP & IPHONE 13 POLISH ================= */
-  .route-map-shell {
-    position: relative;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--surface-subtle);
-  }
-
-  .route-map-canvas {
-    width: 100%;
-    height: 290px;
-    transition: height 0.2s ease;
-  }
-
-  .route-map-canvas.expanded {
-    height: 430px;
-  }
-
-  @media (min-width: 820px) {
-    .route-map-canvas {
-      height: 390px;
-    }
-    .route-map-canvas.expanded {
-      height: 500px;
-    }
-  }
-
-  .route-map-status {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 18px;
-    text-align: center;
-    background: rgba(246, 248, 246, 0.92);
-    color: var(--ink);
-    font-size: 13px;
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  .route-map-status.hidden {
-    display: none;
-  }
-
-  .route-map-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-    align-items: center;
-  }
-
-  .route-telemetry-bar {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: 10px;
-  }
-
-  .telemetry-cell {
-    background: var(--surface-subtle);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    min-width: 0;
-  }
-
-  .telemetry-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    letter-spacing: 0.03em;
-  }
-
-  .telemetry-val {
-    font-family: var(--font-mono);
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--stirling-green);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .route-stops-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .stop-jump-btn {
-    min-height: 36px;
-    padding: 5px 10px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: #FFFFFF;
-    color: var(--ink);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .stop-jump-btn:hover {
-    background: var(--stirling-tint);
-    border-color: var(--stirling-emerald);
-  }
-
-  .stop-badge-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--stirling-green);
-    color: #FFFFFF;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .fortnight-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(142px, 1fr));
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .gmp-attr-note {
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-top: 8px;
-    line-height: 1.4;
-  }
-
-  /* iPhone 13 (390x844) & iOS Safari Ergonomics */
+  /* ================= IPHONE 13 & IOS SAFARI ANTI-ZOOM RULES ================= */
   @media (max-width: 819px) {
+    input, select, textarea,
     .text-input,
     .select-input,
     .load-note-input,
     #coachRunSelector {
       font-size: 16px !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .card {
-      padding: 14px;
-      border-radius: 16px;
-      margin-bottom: 12px;
-    }
-    .coach-panel {
-      padding: 15px;
-      margin-bottom: 12px;
-    }
-    .coach-timer-big {
-      font-size: 40px;
-    }
-    .session-row {
-      gap: 8px;
-      padding: 10px;
-    }
-    .session-check-btn {
-      width: 38px;
-      height: 44px;
-    }
-    .session-action-btn {
-      padding: 6px 9px;
-      font-size: 11.5px;
-    }
-    .route-telemetry-bar {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .route-telemetry-bar .telemetry-cell:last-child {
-      grid-column: 1 / -1;
     }
   }
 </style>
@@ -1342,44 +1074,79 @@
       <button class="desktop-nav-link" data-tab="prep">Fuel &amp; Race</button>
     </nav>
 
-    <div class="header-action-wrap">
-      <button class="header-cta-btn" id="openCoachQuickBtn">Interval Timer</button>
-    </div>
+    <button class="header-cta-btn" id="openCoachQuickBtn">Interval Timer</button>
   </div>
 </header>
 
 <main class="app-main">
 
-  <!-- ==================== VIEW 1: TODAY ==================== -->
+  <!-- ==================== VIEW 1: TODAY (ACTION DASHBOARD) ==================== -->
   <section class="content-view active" id="view-today">
 
-    <!-- Compact Stirling Hero + Countdown -->
-    <div class="card card-hero">
-      <div class="hero-top-grid">
+    <!-- Compact Race & Season Status Bar -->
+    <div class="card card-hero" style="padding:14px 16px;">
+      <div class="dash-status-bar">
         <div>
-          <h1 class="section-title">Stirling Half Marathon</h1>
-          <div class="meta-line tabular" id="heroMetaLine">
-            <span>Starts Sat 28 Nov 2026</span>
-            <span aria-hidden="true">·</span>
-            <span>Race Day Sun 16 May 2027</span>
-            <span aria-hidden="true">·</span>
-            <span>21.1 km</span>
-          </div>
-          <div class="meta-line" id="heroStatusLine" style="color:#F7D488; font-weight:600; margin-top:6px;"></div>
+          <h1 class="section-title" style="font-size:18px;">Stirling Half Marathon</h1>
+          <div class="meta-line" id="heroStatusLine" style="color:#F7D488; font-weight:600; margin-top:2px;"></div>
         </div>
-        <div class="countdown-strip tabular" aria-label="Countdown to Stirling Half Marathon">
-          <div class="count-cell"><div class="count-num" id="cdDays">--</div><div class="count-lbl">Days</div></div>
-          <div class="count-cell"><div class="count-num" id="cdHours">--</div><div class="count-lbl">Hrs</div></div>
-          <div class="count-cell"><div class="count-num" id="cdMins">--</div><div class="count-lbl">Min</div></div>
-          <div class="count-cell"><div class="count-num" id="cdSecs">--</div><div class="count-lbl">Sec</div></div>
+      </div>
+
+      <div class="dash-metrics-row tabular" aria-label="Training dashboard metrics">
+        <div class="dash-metric-cell">
+          <div class="dash-metric-val" id="cdDaysMetric">-- days</div>
+          <div class="dash-metric-lbl">To 16 May 2027</div>
         </div>
+        <div class="dash-metric-cell">
+          <div class="dash-metric-val" id="dashWeekMetric">0 / 4</div>
+          <div class="dash-metric-lbl" id="dashWeekLbl">This Week</div>
+        </div>
+        <div class="dash-metric-cell">
+          <div class="dash-metric-val" id="overallStatsShort">0%</div>
+          <div class="dash-metric-lbl" id="overallCountShort">0 / 96 done</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-Demand Run/Walk Interval Coach (opens when user starts a run timer) -->
+    <div class="coach-panel" id="runCoachBox" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+        <span class="coach-phase-label" id="coachHeaderLabel">Run/Walk Interval Timer</span>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <select id="coachRunSelector" class="select-input" style="min-height:36px; padding:4px 8px; font-size:13px; background:rgba(255,255,255,0.12); color:#FFFFFF; border-color:rgba(255,255,255,0.24); width:auto;">
+            <option value="sat" style="color:#122117;">Long Run</option>
+            <option value="wed" style="color:#122117;">Midweek Run</option>
+          </select>
+          <button class="coach-btn-outline" id="closeCoachBtn" type="button" style="min-height:36px; padding:4px 10px;">Hide</button>
+        </div>
+      </div>
+
+      <div class="coach-action-name" id="coachCurrentStepName">Warm-Up Brisk Walk</div>
+      <div class="coach-timer-big tabular" id="coachTimeLeft">05:00</div>
+      <div class="coach-phase-label tabular" id="coachStepMeta">Step 1 of 16 · Audio cues ready</div>
+
+      <div class="coach-progress-track">
+        <div class="coach-progress-fill" id="coachProgressBar" style="width:0%;"></div>
+      </div>
+
+      <div class="coach-controls">
+        <button class="coach-btn-light" id="coachPlayBtn">Start Run</button>
+        <button class="coach-btn-outline" id="coachSkipBtn">Next Step</button>
+        <button class="coach-btn-outline" id="coachResetBtn">Reset</button>
+      </div>
+      <div style="font-size:12px; color:#C7E3D1; margin-top:8px;" id="coachEffortCue">
+        Conversational pace: speak full sentences without gasping.
       </div>
     </div>
 
     <div class="grid-two-col">
 
-      <!-- Left Column: Weekly Schedule & Session Logger -->
+      <!-- Left: Next Action + Weekly 4-Session Checklist -->
       <div>
+        <!-- Primary Action Focus -->
+        <div class="next-up-card" id="nextFocusCard"></div>
+
+        <!-- Week Checklist Card -->
         <div class="card">
           <div class="week-nav-bar">
             <button class="icon-btn" id="prevWeekBtn" aria-label="Previous week">
@@ -1394,76 +1161,36 @@
             </button>
           </div>
 
-          <div class="card-header-row" style="margin-bottom:10px;">
-            <div>
-              <div style="font-weight:600; font-size:14.5px;" id="phaseTitleText">Phase 1 · First Steps</div>
-              <div class="meta-line" id="phaseSummaryText"></div>
-            </div>
-            <button class="btn btn-secondary btn-sm" id="toggleSwapBtn">Adjust Days</button>
-          </div>
-
-          <!-- 7-Day Visual Balance Strip (shows 3 free/social days clearly) -->
           <div class="week-strip" id="weekBalanceStrip" aria-label="Weekly training and rest balance"></div>
-
-          <!-- 4 Sessions List -->
           <div class="session-list" id="todaySessionsList"></div>
-
-          <!-- Optional Day Swapper Drawer -->
-          <div class="swap-panel" id="daySwapPanel" style="display:none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-              <strong style="font-size:13.5px;">Move sessions around work or social plans</strong>
-              <button class="btn btn-ghost btn-sm" id="resetDaysBtn">Reset to Default</button>
-            </div>
-            <div class="swap-grid" id="swapSelectGrid"></div>
-            <div id="swapSafetyWarning" style="margin-top:10px;"></div>
-          </div>
 
           <div class="hairline-divider"></div>
 
-          <!-- Busy Week / Repeat Control -->
-          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
-            <div class="meta-line" id="weekLoggedSummary" style="margin-top:0;"></div>
-            <button class="btn btn-ghost btn-sm" id="toggleRepeatWeekBtn">Mark as Repeat / Easy Week</button>
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+            <button class="btn btn-secondary btn-sm" id="toggleSwapBtn">Adjust Days</button>
+            <button class="btn btn-ghost btn-sm" id="toggleRepeatWeekBtn">Repeat / Easy Week</button>
           </div>
-          <div id="repeatWeekBanner" style="margin-top:10px;"></div>
+
+          <div class="swap-panel" id="daySwapPanel" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <strong style="font-size:13px;">Move sessions around work or social plans</strong>
+              <button class="btn btn-ghost btn-sm" id="resetDaysBtn">Reset</button>
+            </div>
+            <div class="swap-grid" id="swapSelectGrid"></div>
+            <div id="swapSafetyWarning" style="margin-top:8px;"></div>
+          </div>
+
+          <div id="repeatWeekBanner" style="margin-top:8px;"></div>
         </div>
       </div>
 
-      <!-- Right Column: Run/Walk Coach + Hip Comfort Check-In -->
+      <!-- Right: Compact Hip Check-In + Week Focus Note -->
       <div>
-
-        <!-- Interactive Run/Walk Interval Coach -->
-        <div class="coach-panel" id="runCoachBox">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
-            <span class="coach-phase-label" id="coachHeaderLabel">Run/Walk Interval Coach</span>
-            <select id="coachRunSelector" class="select-input" style="min-height:36px; padding:4px 8px; font-size:12px; background:rgba(255,255,255,0.12); color:#FFFFFF; border-color:rgba(255,255,255,0.24);">
-              <option value="sat" style="color:#122117;">Saturday Long Run</option>
-              <option value="wed" style="color:#122117;">Midweek Easy Run</option>
-            </select>
-          </div>
-
-          <div class="coach-action-name" id="coachCurrentStepName">Warm-Up Brisk Walk</div>
-          <div class="coach-timer-big tabular" id="coachTimeLeft">05:00</div>
-          <div class="coach-phase-label tabular" id="coachStepMeta">Step 1 of 16 · Audio cues ready</div>
-
-          <div class="coach-progress-track">
-            <div class="coach-progress-fill" id="coachProgressBar" style="width:0%;"></div>
-          </div>
-
-          <div class="coach-controls">
-            <button class="coach-btn-light" id="coachPlayBtn">Start Run</button>
-            <button class="coach-btn-outline" id="coachSkipBtn">Next Step</button>
-            <button class="coach-btn-outline" id="coachResetBtn">Reset</button>
-          </div>
-          <div style="font-size:12px; color:#C7E3D1; margin-top:10px;" id="coachEffortCue">
-            Conversational pace: you should be able to speak full sentences without gasping.
-          </div>
-        </div>
-
-        <!-- Hip Comfort Check-In -->
         <div class="card">
-          <h2 class="section-title" style="font-size:17px;">Hip &amp; Pelvis Check-In</h2>
-          <div class="meta-line">Log how your hips feel this week so you protect your joints before increasing load.</div>
+          <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px;">
+            <h2 class="section-title" style="font-size:16.5px;">Hip Check-In</h2>
+            <span class="meta-line" style="margin-top:0;">Tap before running</span>
+          </div>
 
           <div class="hip-btn-group" id="hipStatusGroup">
             <button class="hip-state-btn" data-hip="green">Feels Good</button>
@@ -1471,19 +1198,15 @@
             <button class="hip-state-btn" data-hip="red">Pinch / Pain</button>
           </div>
 
-          <div id="hipGuidanceBox" style="margin-top:12px;"></div>
+          <div id="hipGuidanceBox" style="margin-top:8px;"></div>
         </div>
 
-        <!-- Overall Progress Summary -->
-        <div class="card">
-          <h2 class="section-title" style="font-size:17px;">Season Overview</h2>
-          <div class="meta-line tabular" id="overallStatsLine" style="margin-top:8px; font-size:13.5px; color:var(--ink);"></div>
-          <div style="height:8px; background:var(--surface-subtle); border-radius:999px; overflow:hidden; margin-top:10px;">
-            <div id="overallProgressBar" style="height:100%; background:var(--stirling-emerald); width:0%;"></div>
-          </div>
+        <div class="card" style="padding:12px 14px;">
+          <div style="font-weight:600; font-size:13.5px; color:var(--ink);" id="phaseTitleText">Phase 1 · First Steps</div>
+          <div style="font-size:12.5px; color:var(--ink-dim); margin-top:3px;" id="phaseSummaryText"></div>
         </div>
-
       </div>
+
     </div>
 
   </section>
@@ -1491,34 +1214,27 @@
   <!-- ==================== VIEW 2: ROUTES ==================== -->
   <section class="content-view" id="view-routes">
 
-    <div class="card card-hero">
-      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:12px;">
+    <!-- This Week's Matched Runs + Treadmill Switch -->
+    <div class="card card-hero" style="padding:14px;">
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
         <div>
-          <h2 class="section-title">Run Routes: Stirling, Paisley &amp; Treadmill</h2>
-          <div class="meta-line">
-            <span>Stirling recce every 2 weeks</span>
-            <span aria-hidden="true">·</span>
-            <span>Flat, safe Paisley &amp; Renfrewshire paths</span>
-            <span aria-hidden="true">·</span>
-            <span>Hip-friendly treadmill options</span>
-          </div>
+          <h2 class="section-title" style="font-size:17px;" id="routesWeekTitle">Week 1 Routes</h2>
+          <div class="meta-line" style="margin-top:1px;">Stirling every 2 weeks · Safe Paisley &amp; Renfrewshire paths</div>
         </div>
-        <button class="coach-btn-outline" id="routesTreadmillToggleBtn" style="flex-shrink:0;">Use Treadmill Backup This Week</button>
+        <button class="coach-btn-outline" id="routesTreadmillToggleBtn" style="min-height:38px; padding:6px 10px; font-size:12px;">Treadmill Backup</button>
       </div>
-      <div class="grid-two-col grid-equal-col" style="margin-top:14px; gap:12px;" id="weeklyRoutePairBox"></div>
+      <div class="route-week-pair" id="weeklyRoutePairBox"></div>
     </div>
 
     <!-- Interactive Route Map Viewer -->
     <div class="card" id="routeMapCard">
-      <div class="card-header-row" style="margin-bottom:10px; flex-wrap:wrap;">
-        <div style="min-width:0; flex:1 1 210px;">
+      <div class="card-header-row" style="margin-bottom:8px; flex-wrap:wrap;">
+        <div style="min-width:0; flex:1 1 200px;">
           <div class="meta-line" style="margin-top:0; color:var(--stirling-emerald); font-weight:600;" id="routeMapRegionLine">Interactive Route Map</div>
-          <h3 class="section-title" style="font-size:18px; margin-top:2px;" id="routeMapTitle">Select a route to view on the map</h3>
-          <div class="meta-line" id="routeMapSubLine">Tap any outdoor route below to see its loop, checkpoints, and walking distance.</div>
+          <h3 class="section-title" style="font-size:17px; margin-top:2px;" id="routeMapTitle">Select a route</h3>
+          <div class="meta-line" id="routeMapSubLine" style="font-size:12px;">Tap any outdoor route to see its checkpoints and walking loop.</div>
         </div>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <a class="btn btn-secondary btn-sm" id="routeOpenExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none; display:none;">Open in Maps</a>
-        </div>
+        <a class="btn btn-secondary btn-sm" id="routeOpenExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open in Maps</a>
       </div>
 
       <!-- Outdoor Google Map Stage -->
@@ -1526,18 +1242,22 @@
         <div class="route-map-shell">
           <div id="routeGoogleMap" class="route-map-canvas" aria-label="Interactive running route map"></div>
           <div id="routeMapStatusOverlay" class="route-map-status">
-            <span id="routeMapStatusText">Loading interactive route map…</span>
+            <span id="routeMapStatusText">Loading route map…</span>
+            <div id="routeMapFallbackActions" style="display:none; flex-wrap:wrap; justify-content:center; gap:8px;">
+              <button class="btn btn-secondary btn-sm" id="routeMapRetryBtn" type="button">Retry Map</button>
+              <a class="btn btn-primary btn-sm" id="routeOverlayExternalLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open in Google Maps</a>
+            </div>
           </div>
         </div>
 
         <div class="route-map-controls">
           <button class="btn btn-secondary btn-sm" id="mapGestureToggleBtn" type="button">Touch: Scroll-Safe</button>
-          <button class="btn btn-secondary btn-sm" id="mapTypeToggleBtn" type="button">Terrain View</button>
-          <button class="btn btn-secondary btn-sm" id="mapExpandToggleBtn" type="button">Taller Map</button>
+          <button class="btn btn-secondary btn-sm" id="mapTypeToggleBtn" type="button">Terrain</button>
+          <button class="btn btn-secondary btn-sm" id="mapExpandToggleBtn" type="button">Taller</button>
           <button class="btn btn-ghost btn-sm" id="mapFitRouteBtn" type="button">Re-Centre</button>
         </div>
 
-        <div class="route-telemetry-bar" id="routeTelemetryBar">
+        <div class="route-telemetry-bar">
           <div class="telemetry-cell">
             <div class="telemetry-label">Mapped Loop</div>
             <div class="telemetry-val tabular" id="mapTelemetryDist">—</div>
@@ -1554,46 +1274,45 @@
 
         <div class="route-stops-strip" id="routeStopsStrip"></div>
         <div class="gmp-attr-note" id="routeMapAttributions" style="display:none;"></div>
-        <div class="gmp-attr-note">Maps &amp; walking routes powered by Google Maps Platform (subject to <a href="https://maps.google.com/help/terms_maps/?utm_campaign=gmp_mcp_codeassist_v1_aistudio" target="_blank" rel="noopener noreferrer" style="color:var(--stirling-emerald);">Google Maps Terms</a>).</div>
+        <div class="gmp-attr-note">Maps &amp; routes via Google Maps Platform (<a href="https://maps.google.com/help/terms_maps/?utm_campaign=gmp_mcp_codeassist_v1_aistudio" target="_blank" rel="noopener noreferrer" style="color:var(--stirling-emerald);">Google Maps Terms</a>).</div>
       </div>
 
       <!-- Indoor Treadmill Session Stage -->
       <div id="routeMapTreadmillStage" style="display:none;">
         <div class="callout-note callout-green">
           <strong id="tmStageTitle">Indoor Treadmill Session</strong>
-          <div id="tmStageBody" style="margin-top:6px;"></div>
-          <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px;">
-            <button class="btn btn-primary btn-sm" id="tmOpenCoachBtn" type="button">Launch Interval Coach</button>
+          <div id="tmStageBody" style="margin-top:4px;"></div>
+          <div style="margin-top:8px;">
+            <button class="btn btn-primary btn-sm" id="tmOpenCoachBtn" type="button">Start Interval Timer</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Sub-Tabs: Route Directory | Fortnightly Stirling -->
     <div class="card">
-      <h3 class="section-title" style="font-size:17px;">Fortnightly Stirling Schedule (Every 2 Weeks)</h3>
-      <div class="meta-line">Even weeks schedule a Saturday Stirling outing (~45 min drive or direct train via Glasgow Queen St) so race day feels familiar.</div>
-      <div id="stirlingFortnightStrip" class="fortnight-grid"></div>
-    </div>
+      <div class="filter-bar" id="routesSectionTabBar">
+        <button class="filter-tab active" data-rsec="directory">All Routes</button>
+        <button class="filter-tab" data-rsec="stirling">Stirling Every 2 Weeks</button>
+      </div>
 
-    <div class="card">
-      <div class="card-header-row" style="margin-bottom:10px;">
-        <div>
-          <h3 class="section-title" style="font-size:17px;">Route Directory</h3>
-          <div class="meta-line">Filtered for smooth, level surfaces that protect dysplastic hips and safe, well-lit public paths.</div>
+      <div id="routes-sec-directory">
+        <div class="filter-bar" id="routeFilterBar">
+          <button class="filter-tab active" data-rfilter="all">All</button>
+          <button class="filter-tab" data-rfilter="stirling">Stirling</button>
+          <button class="filter-tab" data-rfilter="renfrewshire">Paisley &amp; Renfrew</button>
+          <button class="filter-tab" data-rfilter="treadmill">Treadmill</button>
+          <button class="filter-tab" data-rfilter="lit">Lit 5 PM</button>
         </div>
+
+        <input type="text" id="routeSearchInput" class="text-input" placeholder="Search Barshaw, Canal, Stirling, treadmill…" style="margin-bottom:10px;">
+        <div id="routesDirectoryList"></div>
       </div>
 
-      <div class="filter-bar" id="routeFilterBar">
-        <button class="filter-tab active" data-rfilter="all">All Routes</button>
-        <button class="filter-tab" data-rfilter="stirling">Stirling (Every 2 Wks)</button>
-        <button class="filter-tab" data-rfilter="renfrewshire">Paisley &amp; Renfrewshire</button>
-        <button class="filter-tab" data-rfilter="treadmill">Treadmill Friendly</button>
-        <button class="filter-tab" data-rfilter="lit">Well-Lit 5 PM Winter</button>
+      <div id="routes-sec-stirling" style="display:none;">
+        <div class="meta-line" style="margin-top:0; margin-bottom:8px;">Even weeks schedule a Saturday Stirling outing (~45 min drive or train via Queen St) so race day feels familiar.</div>
+        <div id="stirlingFortnightStrip" class="fortnight-grid"></div>
       </div>
-
-      <input type="text" id="routeSearchInput" class="text-input" placeholder="Search Barshaw, Canal Path, Stirling, Airthrey, treadmill…" style="margin-bottom:14px;">
-
-      <div id="routesDirectoryList"></div>
     </div>
 
   </section>
@@ -1601,28 +1320,20 @@
   <!-- ==================== VIEW 3: 24-WEEK PLAN ==================== -->
   <section class="content-view" id="view-plan">
 
-    <div class="card">
-      <div class="card-header-row" style="margin-bottom:8px;">
-        <div>
-          <h2 class="section-title">24-Week Beginner Progression</h2>
-          <div class="meta-line tabular">
-            <span>Sat 28 Nov 2026 – Sun 16 May 2027</span>
-            <span aria-hidden="true">·</span>
-            <span>2 runs + 2 strength/week</span>
-            <span aria-hidden="true">·</span>
-            <span>3 rest &amp; social days/week</span>
-          </div>
-        </div>
+    <div class="card" style="padding:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap;">
+        <h2 class="section-title">24-Week Progression</h2>
+        <span class="meta-line tabular" style="margin-top:0;">28 Nov 2026 – 16 May 2027</span>
       </div>
 
-      <div class="filter-bar" id="planFilterBar">
-        <button class="filter-tab active" data-filter="all">All 24 Weeks</button>
-        <button class="filter-tab" data-filter="p1">W1–6 First Steps</button>
-        <button class="filter-tab" data-filter="p2">W7–12 Base</button>
-        <button class="filter-tab" data-filter="p3">W13–18 Endurance</button>
-        <button class="filter-tab" data-filter="p4">W19–22 Peak</button>
-        <button class="filter-tab" data-filter="p5">W23–24 Race</button>
-        <button class="filter-tab" data-filter="deload">Deload &amp; Checkpoints</button>
+      <div class="filter-bar" id="planFilterBar" style="margin-top:10px; margin-bottom:0;">
+        <button class="filter-tab active" data-filter="all">All 24</button>
+        <button class="filter-tab" data-filter="p1">W1–6</button>
+        <button class="filter-tab" data-filter="p2">W7–12</button>
+        <button class="filter-tab" data-filter="p3">W13–18</button>
+        <button class="filter-tab" data-filter="p4">W19–22</button>
+        <button class="filter-tab" data-filter="p5">W23–24</button>
+        <button class="filter-tab" data-filter="deload">Deloads</button>
       </div>
     </div>
 
@@ -1630,60 +1341,49 @@
 
   </section>
 
-  <!-- ==================== VIEW 3: STRENGTH & DESK WARM-UP ==================== -->
+  <!-- ==================== VIEW 4: STRENGTH & DESK WARM-UP ==================== -->
   <section class="content-view" id="view-strength">
 
-    <div class="grid-two-col">
-
-      <div>
-        <!-- Rest Timer + Split Selector -->
-        <div class="card">
-          <div class="card-header-row" style="margin-bottom:10px;">
-            <div>
-              <h2 class="section-title">Hip-Safe Strength Companion</h2>
-              <div class="meta-line">2 focused 35-min sessions/week · Built for hip dysplasia &amp; 9–5 desk posture</div>
-            </div>
-          </div>
-
-          <div class="filter-bar" id="strengthTabBar" style="margin-bottom:12px;">
-            <button class="filter-tab active" data-split="0">Day A · Hip &amp; Lower (Mon)</button>
-            <button class="filter-tab" data-split="1">Day B · Upper &amp; Core (Thu)</button>
-            <button class="filter-tab" data-split="2">15-Min Hip Mobility</button>
-          </div>
-
-          <div class="callout-note callout-gold" id="strengthSafetyNote"></div>
+    <!-- Compact Rest Timer -->
+    <div class="coach-panel" style="padding:12px 14px;">
+      <div class="lift-timer-bar">
+        <div>
+          <div class="coach-phase-label">Rest Timer</div>
+          <div class="coach-timer-big tabular" id="liftTimerDisplay" style="font-size:30px; margin:0;">01:00</div>
         </div>
-
-        <!-- Exercise List -->
-        <div class="card" id="strengthExercisesCard"></div>
-      </div>
-
-      <div>
-        <!-- Rest Timer -->
-        <div class="coach-panel" style="padding:16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-            <div>
-              <div class="coach-phase-label">Rest Interval Timer</div>
-              <div class="coach-timer-big tabular" id="liftTimerDisplay" style="font-size:34px; margin:2px 0 0;">01:00</div>
-            </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
-              <button class="coach-btn-outline lift-preset" data-sec="45" style="min-height:40px; padding:6px 10px;">45s</button>
-              <button class="coach-btn-outline lift-preset" data-sec="60" style="min-height:40px; padding:6px 10px;">60s</button>
-              <button class="coach-btn-outline lift-preset" data-sec="90" style="min-height:40px; padding:6px 10px;">90s</button>
-              <button class="coach-btn-light" id="liftTimerToggleBtn" style="flex:0; min-height:40px; padding:6px 14px;">Start</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5-Min 9-to-5 Desk-to-Run Warm-Up -->
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">5-Minute Desk-to-Run Warm-Up</h3>
-          <div class="meta-line">Do this right after finishing work at 5 PM to wake up stiff hips before running or lifting.</div>
-          <div class="hairline-divider"></div>
-          <div id="deskWarmupChecklist"></div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+          <button class="coach-btn-outline lift-preset" data-sec="45" style="min-height:40px; padding:6px 10px;">45s</button>
+          <button class="coach-btn-outline lift-preset" data-sec="60" style="min-height:40px; padding:6px 10px;">60s</button>
+          <button class="coach-btn-outline lift-preset" data-sec="90" style="min-height:40px; padding:6px 10px;">90s</button>
+          <button class="coach-btn-light" id="liftTimerToggleBtn" style="flex:0 0 auto; min-height:40px; padding:6px 14px;">Start</button>
         </div>
       </div>
+    </div>
 
+    <!-- Collapsible 5-Min Desk Warm-Up -->
+    <div class="card" style="padding:10px 14px;">
+      <button class="drawer-trigger" id="deskWarmupToggleBtn" type="button">
+        <div>
+          <div style="font-weight:600; font-size:14.5px;">5-Min 5 PM Desk Warm-Up</div>
+          <div class="meta-line" id="deskWarmupCountMeta" style="margin-top:1px;">Wake up stiff hips before running or lifting</div>
+        </div>
+        <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="deskWarmupToggleLbl">Show</span>
+      </button>
+      <div id="deskWarmupDrawer" style="display:none; padding-top:8px; border-top:1px solid var(--border-subtle); margin-top:6px;">
+        <div id="deskWarmupChecklist"></div>
+      </div>
+    </div>
+
+    <!-- Split Selector & Exercises -->
+    <div class="card">
+      <div class="filter-bar" id="strengthTabBar" style="margin-bottom:10px;">
+        <button class="filter-tab active" data-split="0">Day A · Hip &amp; Lower</button>
+        <button class="filter-tab" data-split="1">Day B · Upper &amp; Core</button>
+        <button class="filter-tab" data-split="2">15m Mobility</button>
+      </div>
+
+      <div class="callout-note callout-gold" id="strengthSafetyNote" style="margin-bottom:12px;"></div>
+      <div id="strengthExercisesCard"></div>
     </div>
 
   </section>
@@ -1691,74 +1391,69 @@
   <!-- ==================== VIEW 5: FUEL & RACE ==================== -->
   <section class="content-view" id="view-prep">
 
-    <div class="filter-bar" id="prepSubTabBar" style="margin-bottom:16px;">
-      <button class="filter-tab active" data-prepsub="fuel">9–5 Fuel, Meals &amp; Social Balance</button>
-      <button class="filter-tab" data-prepsub="race">Stirling Race Pace, Kit &amp; Hip Rules</button>
+    <div class="filter-bar" id="prepSubTabBar">
+      <button class="filter-tab active" data-prepsub="fuel">Meals &amp; Social</button>
+      <button class="filter-tab" data-prepsub="race">Race Pace &amp; Course</button>
+      <button class="filter-tab" data-prepsub="hipkit">Hip Rules &amp; Kit</button>
     </div>
 
+    <!-- SUB-TAB 1: MEALS & SOCIAL -->
     <div id="prep-sub-fuel">
-    <div class="grid-two-col">
-
-      <div>
-        <div class="card">
-          <h2 class="section-title">9-to-5 &amp; Social Food Guide</h2>
-          <div class="meta-line">Practical meals for Mon–Fri workdays, 5:30 PM pre-run snacks, and weekend social events.</div>
-
-          <div class="filter-bar" id="fuelFilterBar" style="margin-top:12px;">
-            <button class="filter-tab active" data-fuelcat="all">All</button>
-            <button class="filter-tab" data-fuelcat="prerun">Pre-Run Bridge</button>
-            <button class="filter-tab" data-fuelcat="lunch">Desk Lunch</button>
-            <button class="filter-tab" data-fuelcat="dinner">20-Min Dinner</button>
-            <button class="filter-tab" data-fuelcat="social">Social &amp; Eating Out</button>
-          </div>
-
-          <input type="text" id="fuelSearchInput" class="text-input" placeholder="Search meals, oats, pasta, eating out…" style="margin-bottom:12px;">
-
-          <div id="fuelMealsList"></div>
-        </div>
-      </div>
-
-      <div>
-        <!-- Long-Run Carb & Hydration Calculator -->
-        <div class="card card-hero">
-          <h3 class="section-title" style="font-size:18px;">Long-Run Fuel &amp; Water Planner</h3>
-          <div class="meta-line">Slide to match this Saturday's planned run duration</div>
-
-          <div style="margin:14px 0 8px;">
-            <input type="range" min="20" max="135" step="5" value="60" class="range-input" id="fuelDurationSlider">
-          </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:12px; background:rgba(255,255,255,0.1); border-radius:var(--radius-sm);">
-            <div>
-              <div class="tabular" style="font-weight:700; font-size:16px;" id="fuelDurationLabel">60 min session</div>
-              <div style="font-size:12.5px; color:#C7E3D1; margin-top:2px;" id="fuelAdviceText"></div>
+      <div class="grid-two-col">
+        <div>
+          <!-- Long-Run Carb & Hydration Calculator -->
+          <div class="card card-hero" style="padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap;">
+              <h2 class="section-title" style="font-size:16.5px;">Long-Run Fuel Calculator</h2>
+              <span class="tabular" style="font-family:var(--font-mono); font-size:14px; font-weight:700; color:#F7D488;" id="fuelCarbResult">Water only</span>
             </div>
-            <div class="tabular" style="font-family:var(--font-mono); font-size:15px; font-weight:700; color:#F7D488; white-space:nowrap;" id="fuelCarbResult">Water only</div>
+            <input type="range" min="20" max="135" step="5" value="60" class="range-input" id="fuelDurationSlider" style="margin:6px 0 4px;">
+            <div style="display:flex; justify-content:space-between; gap:8px; font-size:12px; color:#C7E3D1;">
+              <span class="tabular" style="font-weight:700; color:#FFFFFF;" id="fuelDurationLabel">60 min</span>
+              <span id="fuelAdviceText" style="text-align:right;"></span>
+            </div>
+          </div>
+
+          <!-- Sunday 30-Min Prep Drawer -->
+          <div class="card" style="padding:10px 14px;">
+            <button class="drawer-trigger" id="sundayPrepToggleBtn" type="button">
+              <div>
+                <div style="font-weight:600; font-size:14.5px;">Sunday 30-Min Workweek Prep</div>
+                <div class="meta-line" id="sundayPrepMeta" style="margin-top:1px;">0/4 ready for Mon–Fri</div>
+              </div>
+              <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="sundayPrepToggleLbl">Show</span>
+            </button>
+            <div id="sundayPrepDrawer" style="display:none; padding-top:8px; border-top:1px solid var(--border-subtle); margin-top:6px;">
+              <div id="sundayPrepChecklist"></div>
+            </div>
           </div>
         </div>
 
-        <!-- Sunday 30-Min Prep Checklist -->
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">Sunday 30-Min Workweek Prep</h3>
-          <div class="meta-line">Sets up Mon–Fri lunches and post-work snacks so training never feels rushed.</div>
-          <div class="hairline-divider"></div>
-          <div id="sundayPrepChecklist"></div>
+        <div>
+          <div class="card">
+            <h3 class="section-title" style="font-size:16.5px; margin-bottom:8px;">9–5 &amp; Social Meal Ideas</h3>
+            <div class="filter-bar" id="fuelFilterBar">
+              <button class="filter-tab active" data-fuelcat="all">All</button>
+              <button class="filter-tab" data-fuelcat="prerun">Pre-Run</button>
+              <button class="filter-tab" data-fuelcat="lunch">Lunch</button>
+              <button class="filter-tab" data-fuelcat="dinner">Dinner</button>
+              <button class="filter-tab" data-fuelcat="social">Social</button>
+            </div>
+            <input type="text" id="fuelSearchInput" class="text-input" placeholder="Search oats, pasta, eating out…" style="margin-bottom:8px;">
+            <div id="fuelMealsList"></div>
+          </div>
         </div>
       </div>
-
-    </div>
     </div>
 
+    <!-- SUB-TAB 2: RACE PACE & COURSE -->
     <div id="prep-sub-race" style="display:none;">
-    <div class="grid-two-col">
-
-      <div>
-        <!-- Interactive Stirling Finish Time & Run/Walk Pace Planner -->
+      <div class="grid-two-col">
         <div class="card">
           <h2 class="section-title">Stirling 21.1 km Pace Planner</h2>
-          <div class="meta-line">Plan a comfortable, injury-free finish using your preferred run/walk rhythm.</div>
+          <div class="meta-line">Pick your run/walk rhythm for an injury-free finish.</div>
 
-          <div class="swap-grid" style="margin-top:14px;">
+          <div class="swap-grid" style="margin-top:10px;">
             <div class="swap-field">
               <label for="paceRatioSelect">Run / Walk Rhythm</label>
               <select id="paceRatioSelect" class="select-input">
@@ -1780,64 +1475,78 @@
             </div>
           </div>
 
-          <div class="callout-note callout-green" style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-            <div>
-              <div style="font-weight:700; font-size:13.5px;">Estimated Finish Window</div>
-              <div style="font-size:12px;" id="paceEffectiveSummary">Includes brisk 10:30/km walk breaks</div>
+          <div class="callout-note callout-green" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div style="min-width:0;">
+              <div style="font-weight:700; font-size:13px;">Estimated Finish</div>
+              <div style="font-size:12px;" id="paceEffectiveSummary">6 min jog / 1 min brisk walk</div>
             </div>
-            <div class="tabular" style="font-family:var(--font-mono); font-size:20px; font-weight:700;" id="estimatedFinishTime">2h 38m</div>
+            <div class="tabular" style="font-family:var(--font-mono); font-size:19px; font-weight:700; flex-shrink:0;" id="estimatedFinishTime">2h 38m</div>
           </div>
+        </div>
 
-          <div class="hairline-divider"></div>
-          <h3 style="font-size:15px; margin:0 0 10px;">Stirling Course Checkpoints</h3>
+        <div class="card">
+          <h3 class="section-title" style="font-size:16.5px; margin-bottom:6px;">Stirling Course Stages</h3>
           <div id="stirlingCourseStages"></div>
         </div>
-
-        <!-- Hip Dysplasia Protection Rules -->
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">Hip Dysplasia Running Rules</h3>
-          <div class="meta-line">Key habits that protect a shallower hip socket across 24 weeks.</div>
-          <div class="hairline-divider"></div>
-          <div id="hipRulesList"></div>
-        </div>
       </div>
+    </div>
 
-      <div>
-        <!-- Real-Life Work & Social Troubleshooter -->
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">When Work or Social Plans Clash</h3>
-          <div class="meta-line">Tap a scenario for the exact adjustment protocol.</div>
-          <div class="hairline-divider"></div>
-          <div id="troubleshooterContainer"></div>
+    <!-- SUB-TAB 3: HIP RULES & KIT -->
+    <div id="prep-sub-hipkit" style="display:none;">
+      <div class="grid-two-col">
+        <div>
+          <div class="card">
+            <h2 class="section-title" style="font-size:16.5px; margin-bottom:4px;">Hip Dysplasia Rules</h2>
+            <div class="meta-line" style="margin-bottom:6px;">Tap a rule to read why it protects your socket.</div>
+            <div id="hipRulesList"></div>
+          </div>
+
+          <div class="card">
+            <h3 class="section-title" style="font-size:16.5px; margin-bottom:4px;">When Work or Social Plans Clash</h3>
+            <div id="troubleshooterContainer"></div>
+          </div>
         </div>
 
-        <!-- Long-Run & Race Checklists -->
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">Essential Beginner Kit &amp; Long-Run Bag</h3>
-          <div class="hairline-divider"></div>
-          <div id="longRunBagChecklist"></div>
-        </div>
+        <div>
+          <div class="card" style="padding:10px 14px;">
+            <button class="drawer-trigger" id="bagDrawerToggleBtn" type="button">
+              <div>
+                <div style="font-weight:600; font-size:15px;">Long-Run Kit Bag</div>
+                <div class="meta-line" id="bagCountMeta" style="margin-top:1px;">0/7 packed</div>
+              </div>
+              <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="bagDrawerLbl">Show</span>
+            </button>
+            <div id="bagDrawerBody" style="display:none; padding-top:8px; border-top:1px solid var(--border-subtle); margin-top:6px;">
+              <div id="longRunBagChecklist"></div>
+            </div>
+          </div>
 
-        <div class="card">
-          <h3 class="section-title" style="font-size:17px;">Race-Week Checklist (May 2027)</h3>
-          <div class="hairline-divider"></div>
-          <div id="raceWeekChecklist"></div>
-        </div>
+          <div class="card" style="padding:10px 14px;">
+            <button class="drawer-trigger" id="raceDrawerToggleBtn" type="button">
+              <div>
+                <div style="font-weight:600; font-size:15px;">Race-Week Checklist (May 2027)</div>
+                <div class="meta-line" id="raceCountMeta" style="margin-top:1px;">0/5 ready</div>
+              </div>
+              <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="raceDrawerLbl">Show</span>
+            </button>
+            <div id="raceDrawerBody" style="display:none; padding-top:8px; border-top:1px solid var(--border-subtle); margin-top:6px;">
+              <div id="raceWeekChecklist"></div>
+            </div>
+          </div>
 
-        <!-- Safe Inline Reset Control -->
-        <div style="text-align:center; margin-top:12px;">
-          <button class="btn btn-ghost btn-sm" id="resetInitBtn">Reset Saved Progress</button>
-          <div id="resetConfirmBar" style="display:none; margin-top:8px; justify-content:center; gap:8px;">
-            <button class="btn btn-sm" style="background:var(--danger); color:#FFFFFF;" id="resetConfirmBtn">Confirm Clear All Data</button>
-            <button class="btn btn-secondary btn-sm" id="resetCancelBtn">Cancel</button>
+          <div style="text-align:center; margin-top:8px;">
+            <button class="btn btn-ghost btn-sm" id="resetInitBtn">Reset Saved Progress</button>
+            <div id="resetConfirmBar" style="display:none; margin-top:8px; justify-content:center; gap:8px;">
+              <button class="btn btn-sm" style="background:var(--danger); color:#FFFFFF;" id="resetConfirmBtn">Confirm Clear All Data</button>
+              <button class="btn btn-secondary btn-sm" id="resetCancelBtn">Cancel</button>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
 
     <p class="footer-note">
-      Built for a beginner runner balancing a 9–5 week, social life, and hip dysplasia · Stirling Half Marathon, 16 May 2027. Always clear persistent hip pain with a physiotherapist.
+      Stirling Half Marathon · 16 May 2027. Always clear persistent groin or hip pain with a physiotherapist.
     </p>
   </section>
 
@@ -1881,24 +1590,23 @@ const DEFAULT_SCHEDULE = {
   liftB: 'Thu'
 };
 
-// 24-week beginner + hip-dysplasia-friendly run/walk progression (2 runs + 2 strength/week)
 const WEEKS = [
-  { n: 1,  dates: '28 Nov – 4 Dec 2026',  phase: 'p1', satDur: '21 min', satRatio: '1′ jog / 2′ walk × 7',   satJogSec: 60,  satWalkSec: 120, satReps: 7,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  note: 'Start gently. Walk breaks are built in to let your hip tendons adapt.' },
-  { n: 2,  dates: '5 – 11 Dec 2026',      phase: 'p1', satDur: '24 min', satRatio: '1′ jog / 2′ walk × 8',   satJogSec: 60,  satWalkSec: 120, satReps: 8,  wedDur: '21 min', wedRatio: '1′ jog / 2′ walk × 7',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 7,  note: 'Keep jogs slow enough to chat easily. Focus on short, light steps.' },
-  { n: 3,  dates: '12 – 18 Dec 2026',     phase: 'p1', satDur: '27 min', satRatio: '90″ jog / 90″ walk × 9',  satJogSec: 90,  satWalkSec: 90,  satReps: 9,  wedDur: '24 min', wedRatio: '90″ jog / 90″ walk × 8',  wedJogSec: 90,  wedWalkSec: 90,  wedReps: 8,  note: 'First slight bump in jog interval. Keep pelvis level and upright.' },
+  { n: 1,  dates: '28 Nov – 4 Dec 2026',  phase: 'p1', satDur: '21 min', satRatio: '1′ jog / 2′ walk × 7',   satJogSec: 60,  satWalkSec: 120, satReps: 7,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  note: 'Start gently. Walk breaks are built in so your hip tendons adapt comfortably.' },
+  { n: 2,  dates: '5 – 11 Dec 2026',      phase: 'p1', satDur: '24 min', satRatio: '1′ jog / 2′ walk × 8',   satJogSec: 60,  satWalkSec: 120, satReps: 8,  wedDur: '21 min', wedRatio: '1′ jog / 2′ walk × 7',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 7,  note: 'Keep jogs slow enough to chat easily. Focus on short, quiet steps.' },
+  { n: 3,  dates: '12 – 18 Dec 2026',     phase: 'p1', satDur: '27 min', satRatio: '90″ jog / 90″ walk × 9',  satJogSec: 90,  satWalkSec: 90,  satReps: 9,  wedDur: '24 min', wedRatio: '90″ jog / 90″ walk × 8',  wedJogSec: 90,  wedWalkSec: 90,  wedReps: 8,  note: 'First slight bump in jog time. Keep pelvis level and upright.' },
   { n: 4,  dates: '19 – 25 Dec 2026',     phase: 'p1', satDur: '21 min', satRatio: '1′ jog / 2′ walk × 7',   satJogSec: 60,  satWalkSec: 120, satReps: 7,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  deload: true, note: 'Christmas Deload Week: lighter volume so you can enjoy festive plans guilt-free.' },
   { n: 5,  dates: '26 Dec – 1 Jan 2027',  phase: 'p1', satDur: '30 min', satRatio: '2′ jog / 1′ walk × 10',  satJogSec: 120, satWalkSec: 60,  satReps: 10, wedDur: '24 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  note: 'New Year week: smooth 2-minute jogs on flat pavement or park paths.' },
-  { n: 6,  dates: '2 – 8 Jan 2027',       phase: 'p1', satDur: '36 min', satRatio: '2′ jog / 1′ walk × 12',  satJogSec: 120, satWalkSec: 60,  satReps: 12, wedDur: '27 min', wedRatio: '2′ jog / 1′ walk × 9',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 9,  checkpoint: true, note: 'Phase 1 Checkpoint: Hips should feel settled and stable before Phase 2.' },
+  { n: 6,  dates: '2 – 8 Jan 2027',       phase: 'p1', satDur: '36 min', satRatio: '2′ jog / 1′ walk × 12',  satJogSec: 120, satWalkSec: 60,  satReps: 12, wedDur: '27 min', wedRatio: '2′ jog / 1′ walk × 9',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 9,  checkpoint: true, note: 'Phase 1 Checkpoint: hips should feel settled and stable before Phase 2.' },
 
   { n: 7,  dates: '9 – 15 Jan 2027',      phase: 'p2', satDur: '40 min', satRatio: '3′ jog / 1′ walk × 10',  satJogSec: 180, satWalkSec: 60,  satReps: 10, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  note: 'Moving to 3-minute jogs. Do not speed up; ease is the target.' },
   { n: 8,  dates: '16 – 22 Jan 2027',     phase: 'p2', satDur: '33 min', satRatio: '2′ jog / 1′ walk × 11',  satJogSec: 120, satWalkSec: 60,  satReps: 11, wedDur: '24 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  deload: true, note: 'Deload Week: absorb January aerobic gains and let joints recover.' },
   { n: 9,  dates: '23 – 29 Jan 2027',     phase: 'p2', satDur: '48 min', satRatio: '3′ jog / 1′ walk × 12',  satJogSec: 180, satWalkSec: 60,  satReps: 12, wedDur: '32 min', wedRatio: '3′ jog / 1′ walk × 8',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 8,  note: 'Nearly 50 minutes on your feet on Saturday—bring a small bottle of water.' },
   { n: 10, dates: '30 Jan – 5 Feb 2027',  phase: 'p2', satDur: '55 min', satRatio: '4′ jog / 1′ walk × 11',  satJogSec: 240, satWalkSec: 60,  satReps: 11, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: '4-minute jogs. Keep stride quick and gentle, avoiding heavy heel braking.' },
   { n: 11, dates: '6 – 12 Feb 2027',      phase: 'p2', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: 'First 1-hour long run milestone! Celebrate with good food and rest.' },
-  { n: 12, dates: '13 – 19 Feb 2027',     phase: 'p2', satDur: '44 min', satRatio: '3′ jog / 1′ walk × 11',  satJogSec: 180, satWalkSec: 60,  satReps: 11, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  deload: true, checkpoint: true, note: 'Halfway Deload & Checkpoint: assess shoes, hip comfort, and weekly energy.' },
+  { n: 12, dates: '13 – 19 Feb 2027',     phase: 'p2', satDur: '44 min', satRatio: '3′ jog / 1′ walk × 11',  satJogSec: 180, satWalkSec: 60,  satReps: 11, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  deload: true, checkpoint: true, note: 'Halfway Deload & Checkpoint: assess shoes, hip comfort, and energy.' },
 
-  { n: 13, dates: '20 – 26 Feb 2027',     phase: 'p3', satDur: '66 min', satRatio: '5′ jog / 1′ walk × 11',  satJogSec: 300, satWalkSec: 60,  satReps: 11, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Entering Endurance Phase. Practise eating a carb breakfast 90 min before Saturday run.' },
-  { n: 14, dates: '27 Feb – 5 Mar 2027',  phase: 'p3', satDur: '72 min', satRatio: '5′ jog / 1′ walk × 12',  satJogSec: 300, satWalkSec: 60,  satReps: 12, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Over 70 min: test 1 gel or a handful of jelly sweets around minute 35.' },
+  { n: 13, dates: '20 – 26 Feb 2027',     phase: 'p3', satDur: '66 min', satRatio: '5′ jog / 1′ walk × 11',  satJogSec: 300, satWalkSec: 60,  satReps: 11, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Endurance Phase: eat a carb breakfast 90 min before Saturday run.' },
+  { n: 14, dates: '27 Feb – 5 Mar 2027',  phase: 'p3', satDur: '72 min', satRatio: '5′ jog / 1′ walk × 12',  satJogSec: 300, satWalkSec: 60,  satReps: 12, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Over 70 min: test 1 gel or jelly sweets around minute 35.' },
   { n: 15, dates: '6 – 12 Mar 2027',      phase: 'p3', satDur: '84 min', satRatio: '6′ jog / 1′ walk × 12',  satJogSec: 360, satWalkSec: 60,  satReps: 12, wedDur: '42 min', wedRatio: '5′ jog / 1′ walk × 7',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 7,  note: '6-minute jog blocks. Take walk breaks before your hips feel tired.' },
   { n: 16, dates: '13 – 19 Mar 2027',     phase: 'p3', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  deload: true, note: 'Deload Week: keep legs fresh and prioritise 8 hours sleep.' },
   { n: 17, dates: '20 – 26 Mar 2027',     phase: 'p3', satDur: '91 min', satRatio: '6′ jog / 1′ walk × 13',  satJogSec: 360, satWalkSec: 60,  satReps: 13, wedDur: '42 min', wedRatio: '6′ jog / 1′ walk × 6',   wedJogSec: 360, wedWalkSec: 60,  wedReps: 6,  note: '90-minute milestone! Test anti-chafe balm and race-day socks.' },
@@ -1910,7 +1618,7 @@ const WEEKS = [
   { n: 22, dates: '24 – 30 Apr 2027',     phase: 'p4', satDur: '98 min',  satRatio: '6′ jog / 1′ walk × 14', satJogSec: 360, satWalkSec: 60,  satReps: 14, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',      wedJogSec: 300, wedWalkSec: 60, wedReps: 6, note: 'Final solid build week. Everything from here protects freshness.' },
 
   { n: 23, dates: '1 – 7 May 2027',       phase: 'p5', satDur: '65 min', satRatio: '4′ jog / 1′ walk × 13',  satJogSec: 240, satWalkSec: 60,  satReps: 13, wedDur: '30 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Taper Begins: cut volume smoothly and keep lower strength light.' },
-  { n: 24, dates: '8 – 16 May 2027',      phase: 'p5', satDur: '25 min', satRatio: '3′ jog / 1′ walk × 6 (Sat 8 May)', satJogSec: 180, satWalkSec: 60, satReps: 6, wedDur: '15 min', wedRatio: '2′ jog / 1′ walk × 5 (Wed 12 May)', wedJogSec: 120, wedWalkSec: 60, wedReps: 5, race: true, note: 'Race Week! Sat 8 May light shakeout, Mon/Wed easy flush, Sun 16 May: Stirling Half Marathon 21.1 km.' }
+  { n: 24, dates: '8 – 16 May 2027',      phase: 'p5', satDur: '25 min', satRatio: '3′ jog / 1′ walk × 6 (Sat 8 May)', satJogSec: 180, satWalkSec: 60, satReps: 6, wedDur: '15 min', wedRatio: '2′ jog / 1′ walk × 5 (Wed 12 May)', wedJogSec: 120, wedWalkSec: 60, wedReps: 5, race: true, note: 'Race Week! Sat 8 May shakeout, Wed 12 May easy flush, Sun 16 May: Stirling Half Marathon.' }
 ];
 
 const PHASE_INFO = {
@@ -1921,121 +1629,121 @@ const PHASE_INFO = {
   p5: { title: 'Phase 5 · Stirling Taper & Race', desc: 'Drop fatigue, stay rested, and arrive healthy at the start line.' }
 };
 
-/* ================= STRENGTH DATA (HIP DYSPLASIA SAFE) ================= */
+/* ================= STRENGTH DATA ================= */
 const STRENGTH_SPLITS = [
   {
     name: 'Day A — Hip, Glute & Lower Stability',
-    safety: 'Hip-Safe Focus: Keep squats/presses above any front-of-hip pinch. Move slowly (3 sec lower), stop 2 reps before failure, and skip any movement that causes sharp groin pain.',
+    safety: 'Keep squats/presses above any front-of-hip pinch. Lower slowly (3 sec), stop 2 reps before failure, and skip any movement causing sharp groin pain.',
     exercises: [
-      { id: 'a1', name: 'Glute Bridge or Supported Hip Thrust', scheme: '3 × 10–12', cue: 'Squeeze glutes at top for 1 sec; avoids deep hip flexion while building posterior power.' },
-      { id: 'a2', name: 'Side-Lying Clamshell or Banded Lateral Walk', scheme: '3 × 12 / side', cue: 'Targets gluteus medius—the primary muscle that keeps a dysplastic hip stable mid-stride.' },
-      { id: 'a3', name: 'Box Squat or Leg Press (Controlled Depth)', scheme: '3 × 8–10', cue: 'Tap a bench at parallel or slightly above. Never drop into a deep pinch at the bottom.' },
-      { id: 'a4', name: 'Dumbbell Romanian Deadlift', scheme: '2–3 × 8–10', cue: 'Soft knees, push hips straight back keeping weights close to thighs.' },
-      { id: 'a5', name: 'Low Step-Up (Control Focus)', scheme: '2 × 8 / leg', cue: 'Use a low step (15–20 cm); keep pelvis level without your hip dropping sideways.' },
-      { id: 'a6', name: 'Standing Calf Raise', scheme: '3 × 12–15', cue: 'Strong calves absorb ground impact before shock travels up to your hips.' }
+      { id: 'a1', name: 'Glute Bridge or Supported Hip Thrust', scheme: '3 × 10–12', cue: 'Squeeze glutes at top for 1 sec; avoids deep hip flexion.' },
+      { id: 'a2', name: 'Side-Lying Clamshell or Banded Lateral Walk', scheme: '3 × 12 / side', cue: 'Builds gluteus medius to keep a dysplastic hip stable mid-stride.' },
+      { id: 'a3', name: 'Box Squat or Leg Press (Controlled Depth)', scheme: '3 × 8–10', cue: 'Tap bench at or slightly above parallel—never drop into a pinch.' },
+      { id: 'a4', name: 'Dumbbell Romanian Deadlift', scheme: '2–3 × 8–10', cue: 'Soft knees, push hips back keeping weights close to thighs.' },
+      { id: 'a5', name: 'Low Step-Up (Control Focus)', scheme: '2 × 8 / leg', cue: 'Use a 15–20 cm step; keep pelvis level without dropping sideways.' },
+      { id: 'a6', name: 'Standing Calf Raise', scheme: '3 × 12–15', cue: 'Strong calves absorb ground shock before it reaches your hips.' }
     ]
   },
   {
     name: 'Day B — Upper Body, Desk Posture & Core',
-    safety: '9–5 Desk Reset: Counters seated shoulder slump and strengthens the deep core so your pelvis stays supported when fatigued in the later miles.',
+    safety: 'Counters 9–5 seated shoulder slump and strengthens your deep core so your pelvis stays supported late in runs.',
     exercises: [
-      { id: 'b1', name: 'Chest-Supported Row or Seated Cable Row', scheme: '3 × 8–10', cue: 'Pull elbows back smoothly to undo desk posture and support upright running form.' },
-      { id: 'b2', name: 'Incline Dumbbell Chest Press', scheme: '3 × 8–10', cue: 'Controlled lowering; keep shoulder blades tucked steadily against the bench.' },
-      { id: 'b3', name: 'Lat Pulldown', scheme: '2–3 × 8–10', cue: 'Pull bar toward collarbone without leaning excessively backward.' },
-      { id: 'b4', name: 'Dead Bug (Slow Pelvic Control)', scheme: '3 × 8 / side', cue: 'Press lower back gently into the floor; only lower leg as far as pelvis stays rock steady.' },
-      { id: 'b5', name: 'Pallof Press (Anti-Rotation)', scheme: '2 × 10 / side', cue: 'Hold band or cable at chest and press out—trains trunk stability against twisting.' },
-      { id: 'b6', name: 'Modified Side Plank (Knees or Feet)', scheme: '2 × 20–30s / side', cue: 'Builds lateral hip and oblique endurance without heavy joint compression.' }
+      { id: 'b1', name: 'Chest-Supported Row or Seated Cable Row', scheme: '3 × 8–10', cue: 'Pull elbows back smoothly to undo desk posture.' },
+      { id: 'b2', name: 'Incline Dumbbell Chest Press', scheme: '3 × 8–10', cue: 'Controlled lowering; keep shoulder blades tucked steadily.' },
+      { id: 'b3', name: 'Lat Pulldown', scheme: '2–3 × 8–10', cue: 'Pull toward collarbone without leaning excessively back.' },
+      { id: 'b4', name: 'Dead Bug (Slow Pelvic Control)', scheme: '3 × 8 / side', cue: 'Press lower back gently to floor while lowering leg slowly.' },
+      { id: 'b5', name: 'Pallof Press (Anti-Rotation)', scheme: '2 × 10 / side', cue: 'Press band/cable straight out—trains trunk stability.' },
+      { id: 'b6', name: 'Modified Side Plank (Knees or Feet)', scheme: '2 × 20–30s / side', cue: 'Builds lateral hip & oblique endurance with low joint load.' }
     ]
   },
   {
     name: '15-Min Hip Recovery & Mobility',
-    safety: 'Recovery Only: Stay in comfortable range (3/10 gentle stretch max). Never force end-range hip splits or deep butterfly stretches with hip dysplasia.',
+    safety: 'Stay in comfortable range (3/10 gentle stretch max). Never force end-range hip splits or deep butterfly stretches.',
     exercises: [
-      { id: 'm1', name: 'Half-Kneeling Gentle Hip Flexor Shift', scheme: '2 × 30s / side', cue: 'Tuck tailbone under slightly and lean forward 2 cm—do not over-arch lower back.' },
-      { id: 'm2', name: '90/90 Gentle Hip Windshield Wipers', scheme: '2 × 8 / side', cue: 'Move smoothly within pain-free range to lubricate the hip joint.' },
-      { id: 'm3', name: 'Supine Hamstring Towel/Band Stretch', scheme: '2 × 30s / leg', cue: 'Keep opposite leg slightly bent to protect lower back and pelvis.' },
-      { id: 'm4', name: 'Calf Wall Stretch (Knee Straight & Bent)', scheme: '2 × 30s / side', cue: 'Eases Achilles and lower-leg stiffness after pavement runs.' }
+      { id: 'm1', name: 'Half-Kneeling Gentle Hip Flexor Shift', scheme: '2 × 30s / side', cue: 'Tuck tailbone under slightly and lean forward 2 cm gently.' },
+      { id: 'm2', name: '90/90 Gentle Hip Windshield Wipers', scheme: '2 × 8 / side', cue: 'Move smoothly within pain-free range to lubricate joint.' },
+      { id: 'm3', name: 'Supine Hamstring Towel/Band Stretch', scheme: '2 × 30s / leg', cue: 'Keep opposite leg bent to protect lower back and pelvis.' },
+      { id: 'm4', name: 'Calf Wall Stretch (Straight & Bent)', scheme: '2 × 30s / side', cue: 'Eases lower-leg stiffness after pavement runs.' }
     ]
   }
 ];
 
 const DESK_WARMUP_ITEMS = [
-  '1 min: Ankle circles & calf pumps while standing up from desk',
-  '1 min: 10 slow bodyweight glute bridges (wake up glutes after sitting)',
-  '1 min: 10 side-lying clamshells or standing hip abductions each side',
-  '1 min: Gentle standing hip flexor tuck (20 sec per side)',
-  '1 min: Brisk hallway or pavement walk before starting interval 1'
+  '1 min: Ankle circles & calf pumps standing at desk',
+  '1 min: 10 slow bodyweight glute bridges',
+  '1 min: 10 clamshells or standing hip abductions/side',
+  '1 min: Gentle standing hip flexor tuck (20s/side)',
+  '1 min: Brisk walk before starting interval 1'
 ];
 
 /* ================= FUEL, 9-5 MEALS & SOCIAL GUIDE ================= */
 const FUEL_ITEMS = [
-  { cat: 'prerun', title: '5:30 PM Pre-Run Desk Bridge: Banana + Toast', timing: '45–60 min before evening run', body: '1 slice toast with honey/jam or 1 ripe banana + glass of water. Gives fast energy after a 1 PM lunch without sitting heavy in your stomach.' },
-  { cat: 'prerun', title: 'Saturday Long-Run Breakfast: Porridge or Bagel', timing: '60–90 min before Sat morning run', body: '45g oats made with milk/water + berries & honey, OR 1 toasted bagel with jam and a little peanut butter.' },
-  { cat: 'prerun', title: 'Emergency 20-Min Pre-Run Top-Up', timing: '15–20 min prior', body: 'Half a banana, 2 Medjool dates, or a small cereal bar when work ran late and you need quick fuel.' },
-  { cat: 'lunch', title: '10-Min Desk Lunch: Chicken & Avocado Burrito Bowl', timing: 'Workday lunch · 5 min assembly', body: 'Microwave pouch rice/quinoa, pre-cooked chicken or black beans, sweetcorn, salsa, spinach, and Greek yoghurt.' },
-  { cat: 'lunch', title: 'Tuna, Sweetcorn & Salad Wholegrain Wrap', timing: 'Packable office lunch', body: 'Tuna mixed with light mayo + Greek yoghurt, sweetcorn, crunchy lettuce, and a side of fruit for steady afternoon energy.' },
-  { cat: 'lunch', title: 'Overnight Protein Oats (Prep 3 Jars)', timing: 'Zero morning effort', body: '50g oats, 150g Greek yoghurt, splash of milk, chia seeds, berries, 1 tbsp peanut butter. Grab from fridge before commuting.' },
-  { cat: 'dinner', title: '20-Min Post-Run Pasta: Chicken Pesto & Spinach', timing: 'Quick weeknight recovery', body: 'Boil pasta; stir through cooked chicken, green pesto, cherry tomatoes, and a big handful of wilted spinach. Batch extra for lunch.' },
-  { cat: 'dinner', title: 'Loaded Jacket Potato (Microwave + Crisp)', timing: '12 min · High carb & iron', body: 'Microwave baking potato 8 min then crisp 5 min; top with baked beans & cheddar or tuna sweetcorn.' },
-  { cat: 'dinner', title: '15-Min Sheet-Pan Fajitas or Stir-Fry', timing: 'Minimal washing up', body: 'Frozen sliced peppers/onions + chicken or tofu + fajita spice or soy sauce, served with wraps or instant noodles.' },
-  { cat: 'social', title: 'Friday Drinks & Work Socials Strategy', timing: 'Social balance without guilt', body: 'Friday is a permanent rest day! Alternate alcoholic drinks 1:1 with sparkling water, eat a carb + protein meal before bed, and swap Sat morning run to afternoon or Sunday if you sleep in.' },
-  { cat: 'social', title: 'Eating Out at Restaurants the Night Before a Long Run', timing: 'Saturday prep', body: 'Choose familiar carb-rich mains (pasta, rice bowls, pizza, burgers without heavy cream/chilli) and drink an extra glass of water.' },
-  { cat: 'social', title: 'Brunch & Coffee Dates After Saturday Run', timing: 'Post-run recovery', body: 'Schedule brunch for after your Saturday morning run! Eggs on sourdough, pancakes with fruit, or a breakfast wrap refills glycogen naturally.' }
+  { cat: 'prerun', title: '5:30 PM Pre-Run Bridge: Banana + Toast', timing: '45–60 min pre-run', body: '1 slice toast with honey/jam or 1 ripe banana + glass of water. Fast energy after a 1 PM lunch without feeling heavy.' },
+  { cat: 'prerun', title: 'Saturday Breakfast: Porridge or Bagel', timing: '60–90 min pre-run', body: '45g oats with milk/water + berries & honey, OR 1 toasted bagel with jam and a little peanut butter.' },
+  { cat: 'prerun', title: '20-Min Late-Work Top-Up', timing: '15–20 min prior', body: 'Half a banana, 2 Medjool dates, or a small cereal bar when work ran late.' },
+  { cat: 'lunch', title: '10-Min Desk Lunch: Chicken & Avocado Bowl', timing: 'Workday lunch', body: 'Microwave pouch rice/quinoa, pre-cooked chicken or black beans, sweetcorn, salsa, spinach, and Greek yoghurt.' },
+  { cat: 'lunch', title: 'Tuna, Sweetcorn & Salad Wrap', timing: 'Packable office lunch', body: 'Tuna mixed with light mayo + Greek yoghurt, sweetcorn, lettuce, and fruit for steady afternoon energy.' },
+  { cat: 'lunch', title: 'Overnight Protein Oats (Prep 3 Jars)', timing: 'Zero morning effort', body: '50g oats, 150g Greek yoghurt, splash of milk, chia seeds, berries, 1 tbsp peanut butter.' },
+  { cat: 'dinner', title: '20-Min Pasta: Chicken Pesto & Spinach', timing: 'Weeknight recovery', body: 'Boil pasta; stir through cooked chicken, green pesto, cherry tomatoes, and wilted spinach. Batch extra for lunch.' },
+  { cat: 'dinner', title: 'Loaded Jacket Potato', timing: '12 min · High carb & iron', body: 'Microwave baking potato 8 min then crisp 5 min; top with baked beans & cheddar or tuna sweetcorn.' },
+  { cat: 'dinner', title: '15-Min Sheet-Pan Fajitas / Stir-Fry', timing: 'Minimal washing up', body: 'Frozen sliced peppers/onions + chicken or tofu + fajita spice or soy sauce with wraps or noodles.' },
+  { cat: 'social', title: 'Friday Drinks & Work Socials', timing: 'Permanent rest day', body: 'Alternate alcoholic drinks 1:1 with sparkling water, eat a carb + protein meal before bed, and slide Sat run to Sun if needed.' },
+  { cat: 'social', title: 'Restaurants Night Before Long Run', timing: 'Saturday prep', body: 'Pick familiar carb-rich mains (pasta, rice bowls, pizza, burgers without heavy cream/chilli) + extra water.' },
+  { cat: 'social', title: 'Brunch Dates After Saturday Run', timing: 'Post-run recovery', body: 'Schedule brunch after your Saturday morning run—eggs on sourdough or pancakes with fruit refill glycogen naturally.' }
 ];
 
 const SUNDAY_PREP_ITEMS = [
-  'Boil or portion 1 batch of grains/pasta/jacket potatoes for Mon–Wed lunches',
-  'Stock 5:30 PM pre-run snacks at desk or in work bag (bananas, oat bars, dates)',
-  'Check weather forecast & lay out Mon/Wed evening kit before the workweek starts',
-  'Pick which evening (Tue or Fri) is locked in for friends/social plans'
+  'Portion 1 batch of grains/pasta/potatoes for Mon–Wed lunches',
+  'Stock 5:30 PM desk/bag snacks (bananas, oat bars, dates)',
+  'Lay out Mon/Wed evening kit before the workweek starts',
+  'Lock in which rest evening (Tue or Fri) is for friends/social plans'
 ];
 
 /* ================= RACE & HIP PLAYBOOK ================= */
 const COURSE_STAGES = [
-  { km: '0–5 km', name: 'Start & River Forth', cue: 'Hold back deliberately. Stick to your planned walk breaks right from minute 6 even when everyone sprints past.' },
-  { km: '5–11 km', name: 'Bridge of Allan & Ochil Foothills', cue: 'Settle into conversational breathing. Take water at aid stations and your first gel/chews around 35–40 min.' },
-  { km: '11–16 km', name: 'Causewayhead & Wallace Monument', cue: 'Keep steps short and light on gentle rises; lean slightly from the ankles rather than bending at the hips.' },
-  { km: '16–21.1 km', name: 'Approach to Stirling Castle', cue: 'Break the final 5 km into single walk/run blocks. Smile through the finish chute—you trained 24 weeks to arrive injury-free!' }
+  { km: '0–5 km', name: 'Start & River Forth', cue: 'Hold back deliberately. Take walk breaks right from minute 6 even when others sprint past.' },
+  { km: '5–11 km', name: 'Bridge of Allan & Ochil Foothills', cue: 'Conversational breathing. Sip water at aid stations and take first fuel at 35–40 min.' },
+  { km: '11–16 km', name: 'Causewayhead & Wallace Monument', cue: 'Short, light steps on gentle rises; lean slightly from the ankles, not the hips.' },
+  { km: '16–21.1 km', name: 'Approach to Stirling Castle', cue: 'Break the final 5 km into single walk/run blocks. Smile through the finish chute!' }
 ];
 
 const HIP_RULES = [
-  { title: '1. Shorten Your Stride (Higher Cadence)', body: 'Overstriding slams braking force straight into the hip socket. Aim for quick, quiet footsteps landing underneath your hips.' },
-  { title: '2. Keep Walk Breaks As Planned', body: 'Walk breaks reset pelvic posture and cut cumulative joint shear by 25–30% without losing any half-marathon fitness.' },
-  { title: '3. Watch for the "C-Sign" Pinch', body: 'Dull muscle tiredness in glutes/thighs is normal. Sharp pinching at the front groin crease or lateral socket ache means slow down or switch to walking.' },
-  { title: '4. Cushioned, Supportive Shoes', body: 'Visit a specialist running shop for gait advice and fresh cushioned trainers. Replace worn shoes around Week 16–18 before peak runs.' },
-  { title: '5. Flat, Predictable Surfaces First', body: 'Run mostly on level tarmac or smooth park paths during Phases 1–2; sloped road cambers and uneven trails stress one hip asymmetrically.' },
-  { title: '6. 48-Hour Buffer After Hip Strength', body: 'Keep at least one rest or upper-body day between Day A (Hip Strength) and your Saturday Long Run.' }
+  { id: 'r1', title: '1. Shorten Your Stride (Quick Cadence)', body: 'Overstriding slams braking force straight into the hip socket. Aim for quick, quiet steps landing under your hips.' },
+  { id: 'r2', title: '2. Keep Walk Breaks As Planned', body: 'Walk breaks reset pelvic posture and cut cumulative joint shear by 25–30% without losing half-marathon fitness.' },
+  { id: 'r3', title: '3. Watch for the "C-Sign" Pinch', body: 'Dull glute/thigh fatigue is normal. Sharp pinching at the front groin crease or lateral socket ache means slow down or walk.' },
+  { id: 'r4', title: '4. Cushioned, Supportive Shoes', body: 'Get gait advice at a running shop and replace worn trainers around Week 16–18 before peak runs.' },
+  { id: 'r5', title: '5. Flat, Predictable Surfaces First', body: 'Stick mostly to level tarmac or smooth park paths in Phases 1–2; cambered roads and uneven trails stress one hip asymmetrically.' },
+  { id: 'r6', title: '6. 48-Hour Buffer After Hip Strength', body: 'Leave at least one rest or upper-body day between Day A (Hip Strength) and your Saturday Long Run.' }
 ];
 
 const TROUBLESHOOTER_ITEMS = [
-  { id: 'social', q: 'Last-minute Friday night out or Saturday wedding?', a: 'Tap "Adjust Days" on Today and slide Saturday Long Run to Sunday morning (or do a shorter midweek swap). Never try to run hungover or sleep-deprived on sore hips.' },
-  { id: 'work', q: '9–5 work deadline leaves zero evening energy?', a: 'Switch to Minimum Effective Week: keep Saturday Long Run and Day A Hip Strength (30 min). Skipping one midweek run during a busy work week will not hurt race day.' },
-  { id: 'missed', q: 'Missed a run due to rain, travel, or tiredness?', a: 'Let it go and move on to the next scheduled session. Never stack two runs back-to-back to "catch up"—doubling load is the #1 cause of hip flare-ups.' },
-  { id: 'niggle', q: 'Front of hip feels tight or pinchy after sitting all day?', a: 'Do the 5-min Desk-to-Run Warm-Up first. If still >3/10 discomfort after 5 min of walking, convert the session to a brisk walk and mark "Repeat Week" in Today.' },
-  { id: 'festive', q: 'Christmas, New Year, or holiday week disruption?', a: 'Week 4 is already built as a light Christmas deload. If away for a full week, simply repeat the previous week when you return.' }
+  { id: 'social', q: 'Friday night out or Saturday wedding?', a: 'Tap "Adjust Days" on Today and slide Saturday Long Run to Sunday morning. Never run sleep-deprived on sore hips.' },
+  { id: 'work', q: '9–5 deadline leaves zero evening energy?', a: 'Keep Saturday Long Run + Day A Hip Strength (30 min). Skipping one midweek run during a heavy workweek will not hurt race day.' },
+  { id: 'missed', q: 'Missed a run due to weather or travel?', a: 'Skip it cleanly and move to the next session. Never stack two runs back-to-back to "catch up".' },
+  { id: 'niggle', q: 'Front of hip feels tight after sitting all day?', a: 'Do the 5-min Desk Warm-Up first. If still >3/10 after 5 min walking, turn it into a brisk walk and tap "Repeat / Easy Week".' },
+  { id: 'festive', q: 'Christmas or holiday disruption?', a: 'Week 4 is already a light Christmas deload. If away for a full week, repeat the previous week on return.' }
 ];
 
 const LONGRUN_BAG_CHK = [
-  'Charged phone + headphones (if using interval coach)',
-  'Soft flask or small water bottle (runs over 45 min)',
+  'Charged phone + headphones (interval timer)',
+  'Small water bottle / soft flask (runs over 45 min)',
   'Tested gel, chews, or jelly sweets (Week 14+)',
-  'Supportive cushioned shoes + blister-free socks',
-  'Anti-chafe balm for thighs/underarms',
-  'House keys + contactless card / emergency bus fare',
+  'Cushioned trainers + blister-free socks',
+  'Anti-chafe balm',
+  'House keys + contactless card',
   'Light waterproof shell for Scottish weather'
 ];
 
 const RACEWEEK_CHK = [
-  'Confirm Stirling Half Marathon start pen, bag drop & travel/parking',
-  'Test full race-day outfit & socks during Week 21 peak run',
-  'Lay out race number, pins, shoes, watch & gels on Saturday night',
-  'Prepare familiar Sunday morning breakfast (porridge or bagel)',
-  'No new stretches, new shoes, or heavy leg workouts during Race Week'
+  'Confirm Stirling start pen, bag drop & train/parking',
+  'Test full race-day kit & socks on Week 21 run',
+  'Lay out race bib, pins, trainers & gels Saturday night',
+  'Familiar Sunday breakfast (porridge or bagel)',
+  'No new stretches, shoes, or heavy leg lifts in Race Week'
 ];
 
-/* ================= ROUTES CATALOGUE (STIRLING FORTNIGHTLY, PAISLEY & RENFREWSHIRE, TREADMILL) ================= */
+/* ================= ROUTES CATALOGUE ================= */
 const ROUTES = [
-  // STIRLING ROUTES (used every 2 weeks on even weeks)
+  // STIRLING ROUTES (every 2 weeks on even weeks)
   {
     id: 'stirling-kings-park',
     region: 'stirling',
@@ -2043,7 +1751,7 @@ const ROUTES = [
     name: 'King’s Park Perimeter Loop',
     area: 'Stirling · FK8',
     dist: '2.2 km loop (repeat 1–3×)',
-    surface: 'Smooth park tarmac · flat with gentle views',
+    surface: 'Smooth park tarmac · flat with castle views',
     lit: false,
     treadmill: false,
     isLoop: true,
@@ -2053,15 +1761,15 @@ const ROUTES = [
       'Victoria Square, Stirling, Scotland',
       'King\'s Park, Stirling, Scotland'
     ],
-    facilities: 'Free street/park parking nearby · Town cafés & toilets 5 min walk',
-    hipNote: 'Flat, wide park paths right below Stirling Castle—easy to bail out early if hips tighten.',
+    facilities: 'Free street/park parking · Town cafés & toilets 5 min walk',
+    hipNote: 'Flat, wide park paths right below Stirling Castle—easy to stop early if hips tighten.',
     weeks: [2, 6]
   },
   {
     id: 'stirling-forth-cambuskenneth',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'River Forth & Cambuskenneth Abbey Towpath',
+    name: 'River Forth & Cambuskenneth Towpath',
     area: 'Stirling Forthside · FK9',
     dist: '4 – 8 km out-and-back',
     surface: 'Flat riverside tarmac & footbridge',
@@ -2073,8 +1781,8 @@ const ROUTES = [
       'Cambuskenneth Abbey, Stirling, Scotland',
       'Stirling Railway Station, Stirling, Scotland'
     ],
-    facilities: 'Parking near Stirling Station / Forthside · 5 min walk from train station',
-    hipNote: 'Completely level riverside path—ideal for building aerobic confidence without hill strain.',
+    facilities: 'Parking near Stirling Station / Forthside · 5 min from train',
+    hipNote: 'Completely level riverside path—ideal for building aerobic confidence without hills.',
     weeks: [4, 10]
   },
   {
@@ -2095,14 +1803,14 @@ const ROUTES = [
       'University of Stirling Sports Centre, Stirling, Scotland'
     ],
     facilities: 'Campus parking, sports centre toilets & cafés open weekends',
-    hipNote: 'Traffic-free, calm paths around Airthrey Loch; close to the actual half-marathon middle miles.',
+    hipNote: 'Traffic-free, calm paths around Airthrey Loch; close to the half-marathon middle miles.',
     weeks: [8, 14]
   },
   {
     id: 'stirling-causewayhead',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'Causewayhead & Wallace Monument Valley Stretch',
+    name: 'Causewayhead & Wallace Monument Stretch',
     area: 'Causewayhead to Bridge of Allan',
     dist: '6 – 12 km out-and-back',
     surface: 'Level wide pavement & cycle path',
@@ -2115,16 +1823,16 @@ const ROUTES = [
       'Bridge of Allan Railway Station, Bridge of Allan, Scotland'
     ],
     facilities: 'Wallace Monument car park café/toilets · Bus links back to town',
-    hipNote: 'Lets you preview the scenic middle stretch of the Stirling Half without tackling steep climbs.',
+    hipNote: 'Previews the scenic middle stretch of the Stirling Half without tackling steep climbs.',
     weeks: [12, 18]
   },
   {
     id: 'stirling-castle-long-preview',
     region: 'stirling',
     regionLabel: 'Stirling',
-    name: 'Forth Valley & Stirling Castle Long Preview',
-    area: 'Forthside · Causewayhead · King’s Park',
-    dist: '10 – 16 km (or 25 min Race-Week shakeout)',
+    name: 'Forth Valley & Stirling Long Preview',
+    area: 'Forthside · Causewayhead · Bridge of Allan',
+    dist: '10 – 16 km (or 25 min taper)',
     surface: 'Smooth tarmac paths & flat pavements',
     lit: false,
     treadmill: false,
@@ -2136,7 +1844,7 @@ const ROUTES = [
       'Bridge of Allan, Scotland'
     ],
     facilities: 'Stirling Station / Thistles Centre toilets & breakfast cafés',
-    hipNote: 'Rehearses train/car arrival, pre-run breakfast timing, and gentle late-run pacing before 16 May.',
+    hipNote: 'Rehearses travel, pre-run breakfast timing, and gentle pacing before 16 May.',
     weeks: [16, 20, 22, 24]
   },
 
@@ -2147,7 +1855,7 @@ const ROUTES = [
     regionLabel: 'Paisley & Renfrewshire',
     name: 'Barshaw Park Outer Loop',
     area: 'East Paisley · PA1',
-    dist: '1.6 km per loop (repeat for 20–50 min)',
+    dist: '1.6 km per loop (repeat 20–50 min)',
     surface: 'Smooth traffic-free tarmac · gentle park paths',
     lit: false,
     treadmill: false,
@@ -2159,14 +1867,14 @@ const ROUTES = [
       'Barshaw Park, Paisley, Scotland'
     ],
     facilities: 'Car park off Glasgow Rd · Daytime toilets & walled garden café',
-    hipNote: 'Traffic-free, zero kerbs to trip on, and looping format means you are never far from your car or exit.',
+    hipNote: 'Traffic-free, zero kerbs to trip on, and looping format keeps you close to your car.',
     weeks: [1, 5]
   },
   {
     id: 'paisley-white-cart',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'White Cart Walkway & Paisley Abbey Loop',
+    name: 'White Cart Walkway & Abbey Loop',
     area: 'Central Paisley · PA1',
     dist: '2.5 – 4.5 km riverside loop',
     surface: 'Wide, flat paved walkway · street-lit',
@@ -2179,8 +1887,8 @@ const ROUTES = [
       'Lagoon Leisure Centre, Paisley, Scotland',
       'Paisley Gilmour Street Railway Station, Paisley, Scotland'
     ],
-    facilities: '5 min from Paisley Gilmour St Station · Town cafés & lit public streets',
-    hipNote: 'Best winter 5:30 PM weekday choice—bright street lighting, open sightlines, and totally flat.',
+    facilities: '5 min from Paisley Gilmour St Station · Town cafés & lit streets',
+    hipNote: 'Best winter 5:30 PM weekday choice—bright street lighting, open sightlines, totally flat.',
     weeks: []
   },
   {
@@ -2200,7 +1908,7 @@ const ROUTES = [
       'Johnstone Railway Station, Johnstone, Scotland'
     ],
     facilities: 'Near Paisley Canal & Johnstone stations · Turn back at half-time',
-    hipNote: 'Old railway line with a super-gradual grade—zero road crossings and predictable footing for hips. Stick to daylight hours.',
+    hipNote: 'Old railway line with super-gradual grade and zero road crossings. Stick to daylight hours.',
     weeks: [3, 9, 15]
   },
   {
@@ -2210,7 +1918,7 @@ const ROUTES = [
     name: 'Renfrew Waterfront & Braehead Boardwalk',
     area: 'Renfrew Riverside · PA4',
     dist: '3 – 8 km out-and-back',
-    surface: 'Flat, wide paved Clyde promenade · well-lit near Braehead',
+    surface: 'Flat Clyde promenade · lit near Braehead',
     lit: true,
     treadmill: false,
     isLoop: false,
@@ -2220,7 +1928,7 @@ const ROUTES = [
       'XSite Braehead, Renfrew, Scotland'
     ],
     facilities: 'Free Braehead parking & toilets · Bus links to Paisley',
-    hipNote: 'Completely pancake-flat riverside stretch with street lighting along the boardwalk—great both after work and on weekends.',
+    hipNote: 'Pancake-flat riverside stretch with street lighting along the boardwalk.',
     weeks: [7, 13]
   },
   {
@@ -2229,7 +1937,7 @@ const ROUTES = [
     regionLabel: 'Paisley & Renfrewshire',
     name: 'Robertson Park & Inchinnan Cycleway',
     area: 'Renfrew · PA4',
-    dist: '1.2 km park loop or 3–6 km cycle path',
+    dist: '1.2 km park loop or 3–6 km path',
     surface: 'Smooth level park tarmac',
     lit: true,
     treadmill: false,
@@ -2239,15 +1947,15 @@ const ROUTES = [
       'Renfrew Victory Baths, Renfrew, Scotland',
       'Robertson Park, Renfrew, Scotland'
     ],
-    facilities: 'Park entrance on Inchinnan Rd · Nearby shops & parking',
-    hipNote: 'Enclosed, friendly neighbourhood park for early run/walk intervals with flat footing.',
+    facilities: 'Park entrance on Inchinnan Rd · Shops & parking nearby',
+    hipNote: 'Enclosed, friendly neighbourhood park for early run/walk intervals.',
     weeks: []
   },
   {
     id: 'erskine-boden-boo',
     region: 'renfrewshire',
     regionLabel: 'Paisley & Renfrewshire',
-    name: 'Erskine Harbour & Boden Boo Clyde Path',
+    name: 'Erskine Harbour & Boden Boo Path',
     area: 'Erskine · PA8',
     dist: '3 – 8 km out-and-back',
     surface: 'Flat riverside tarmac & smooth woodland path',
@@ -2259,7 +1967,7 @@ const ROUTES = [
       'Erskine Harbour, Erskine, Scotland'
     ],
     facilities: 'Free car park at Boden Boo / Erskine Harbour',
-    hipNote: 'Quiet, scenic flat Clyde path with zero steep climbs; ideal for mid-morning Saturday runs.',
+    hipNote: 'Quiet, scenic flat Clyde path with zero steep climbs; ideal for Saturday mornings.',
     weeks: [11, 17]
   },
   {
@@ -2269,7 +1977,7 @@ const ROUTES = [
     name: 'Castle Semple Loch & Lochwinnoch Path',
     area: 'Lochwinnoch, Renfrewshire · PA12',
     dist: '4 – 16 km out-and-back',
-    surface: 'Flat, smooth traffic-free railway path beside the loch',
+    surface: 'Flat, smooth traffic-free lochside path',
     lit: false,
     treadmill: false,
     isLoop: false,
@@ -2278,8 +1986,8 @@ const ROUTES = [
       'Lochwinnoch Railway Station, Lochwinnoch, Scotland',
       'RSPB Lochwinnoch, Lochwinnoch, Scotland'
     ],
-    facilities: 'Castle Semple Visitor Centre café, toilets & parking · 12 min train from Paisley',
-    hipNote: 'Best Renfrewshire Saturday long-run route for Weeks 19–23: ultra-flat, soft scenic distraction, and café reward at the finish.',
+    facilities: 'Visitor Centre café, toilets & parking · 12 min train from Paisley',
+    hipNote: 'Best Renfrewshire peak-run route (Weeks 19–23): ultra-flat with café finish.',
     weeks: [19, 21, 23]
   },
 
@@ -2289,41 +1997,41 @@ const ROUTES = [
     region: 'treadmill',
     regionLabel: 'Treadmill Friendly',
     name: 'Winter 5 PM Starter Intervals',
-    area: 'Home or Paisley Gym Treadmill',
+    area: 'Home or Paisley Gym',
     dist: '18 – 30 min · 0.5% incline',
     surface: 'Cushioned treadmill belt · exact speed control',
     lit: true,
     treadmill: true,
-    facilities: 'Indoor lighting, toilets, water bottle holder & dry footing',
-    hipNote: 'Set incline to 0.5% (never >1.5% early on to avoid hip flexor pinch). Jog at 6.5–7.5 km/h, walk at 4.8–5.2 km/h.',
+    facilities: 'Indoor lighting, toilets, water holder & dry footing',
+    hipNote: 'Keep incline at 0.5% (avoid >1.5% early on). Jog 6.5–7.5 km/h, walk 4.8–5.2 km/h.',
     weeks: []
   },
   {
     id: 'tm-cadence-builder',
     region: 'treadmill',
     regionLabel: 'Treadmill Friendly',
-    name: 'Midweek Cadence & Pelvis Control Session',
+    name: 'Midweek Cadence & Pelvis Control',
     area: 'Gym or Home Treadmill',
     dist: '30 – 45 min · 0.5–1.0% incline',
     surface: 'Cushioned belt · ~15–20% softer impact than cold tarmac',
     lit: true,
     treadmill: true,
     facilities: 'Climate-controlled · safe solo after dark all winter',
-    hipNote: 'Use the treadmill display to practise shorter, lighter steps during 3–6 min jog blocks with 1 min walk resets.',
+    hipNote: 'Practise shorter, lighter steps during 3–6 min jog blocks with 1 min walk resets.',
     weeks: []
   },
   {
     id: 'tm-storm-longrun',
     region: 'treadmill',
     regionLabel: 'Treadmill Friendly',
-    name: 'Scottish Storm Saturday Long-Run Fallback',
+    name: 'Scottish Storm Saturday Fallback',
     area: 'Gym Treadmill',
     dist: '45 – 100 min · 0.5% incline',
     surface: 'Even, non-slip indoor belt',
     lit: true,
     treadmill: true,
     facilities: 'Water + gels right in front of you · TV/podcast distraction',
-    hipNote: 'Break long runs into 15-min podcast/playlist chapters. Step off briefly during 1-min walk breaks only if needed, or walk steady at 5.0 km/h.',
+    hipNote: 'Split long runs into 15-min podcast chapters; walk steady at 5.0 km/h on breaks.',
     weeks: []
   },
   {
@@ -2337,13 +2045,13 @@ const ROUTES = [
     lit: true,
     treadmill: true,
     facilities: 'Zero traffic, immediate stop if any hip pinch appears',
-    hipNote: 'Keep incline strictly at 0% on Amber hip days; walk smoothly at 5.0–5.5 km/h to keep blood flowing without impact.',
+    hipNote: 'Keep incline strictly at 0% on Amber hip days; walk smoothly at 5.0–5.5 km/h.',
     weeks: []
   }
 ];
 
 function getRecommendedRoutesForWeek(wk) {
-  const isStirlingWeek = wk % 2 === 0; // Every 2 weeks (Weeks 2, 4, 6, ... 24)
+  const isStirlingWeek = wk % 2 === 0;
   let satRoute = ROUTES.find(r => r.weeks.includes(wk));
   if (!satRoute) {
     satRoute = isStirlingWeek
@@ -2355,7 +2063,6 @@ function getRecommendedRoutesForWeek(wk) {
     satRoute = wk >= 11 ? ROUTES.find(r => r.id === 'tm-storm-longrun') : ROUTES.find(r => r.id === 'tm-winter-starter');
   }
 
-  // Midweek Wed run: dark winter (Weeks 1-13: Nov–Feb) defaults to Treadmill or Street-Lit White Cart/Renfrew Waterfront; Spring (Weeks 14-24) mixes Lit Paisley/Renfrewshire
   let wedRoute;
   if (useTreadmillBackup || wk <= 8) {
     wedRoute = wk % 4 === 1 ? ROUTES.find(r => r.id === 'paisley-white-cart') : ROUTES.find(r => r.id === 'tm-winter-starter');
@@ -2372,42 +2079,43 @@ function getRecommendedRoutesForWeek(wk) {
 const STORAGE_KEY = 'stirling-half-24wk-v1';
 
 let STATE = {
-  log: {},          // { [wk]: { satRun: bool, liftA: bool, wedRun: bool, liftB: bool } }
-  schedules: {},    // { [wk]: { satRun: 'Sat', liftA: 'Mon', wedRun: 'Wed', liftB: 'Thu' } }
-  hipStatus: {},    // { [wk]: 'green' | 'amber' | 'red' }
-  repeatedWeeks: {},// { [wk]: bool }
-  treadmillWeeks: {}, // { [wk]: bool }
-  routeRuns: {},    // { [routeId]: count }
-  liftSets: {},     // { 'split-exId': [bool, bool, bool] }
-  liftNotes: {},    // { 'exId': '10kg x 10' }
-  warmups: {},      // { idx: bool }
-  sundayPrep: {},   // { idx: bool }
-  longRunBag: {},   // { idx: bool }
-  raceWeekBag: {}   // { idx: bool }
+  log: {},
+  schedules: {},
+  hipStatus: {},
+  repeatedWeeks: {},
+  treadmillWeeks: {},
+  routeRuns: {},
+  liftSets: {},
+  liftNotes: {},
+  warmups: {},
+  sundayPrep: {},
+  longRunBag: {},
+  raceWeekBag: {}
 };
 
 let viewingWeek = 1;
 let activeTab = 'today';
 let activePrepSubTab = 'fuel';
+let activeRouteSection = 'directory';
 let activePlanFilter = 'all';
 let activeRouteFilter = 'all';
 let activeStrengthSplit = 0;
 let activeFuelCategory = 'all';
 let swapPanelOpen = false;
+let coachOpen = false;
+let expandedRouteId = null;
+let expandedHipRuleId = null;
 let audioCtx = null;
 
 function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
-  } catch (e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (e) {}
 }
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
-      STATE = Object.assign(STATE, parsed);
+      STATE = Object.assign(STATE, JSON.parse(raw));
     }
   } catch (e) {}
 }
@@ -2429,6 +2137,18 @@ function realCurrentWeek() {
 
 function checkSvg() {
   return '<svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>';
+}
+
+function buildFallbackMapsUrl(route) {
+  if (!route || !route.mapStops?.length) return 'https://www.google.com/maps';
+  const stops = route.mapStops;
+  const u = new URL('https://www.google.com/maps/dir/');
+  u.searchParams.set('api', '1');
+  u.searchParams.set('travelmode', 'walking');
+  u.searchParams.set('origin', stops[0]);
+  u.searchParams.set('destination', stops[stops.length - 1]);
+  if (stops.length > 2) u.searchParams.set('waypoints', stops.slice(1, -1).join('|'));
+  return u.toString();
 }
 
 /* ================= AUDIO & HAPTIC ================= */
@@ -2475,29 +2195,23 @@ function playCue(type) {
 function updateCountdown() {
   const now = new Date();
   const diff = RACE_DATE.getTime() - now.getTime();
+  const metricEl = document.getElementById('cdDaysMetric');
+  const statusEl = document.getElementById('heroStatusLine');
+
   if (diff <= 0) {
-    document.getElementById('cdDays').textContent = '00';
-    document.getElementById('cdHours').textContent = '00';
-    document.getElementById('cdMins').textContent = '00';
-    document.getElementById('cdSecs').textContent = '00';
-    document.getElementById('heroStatusLine').textContent = 'Race Day in Stirling — run easy and enjoy every km.';
+    metricEl.textContent = 'Race Day';
+    statusEl.textContent = 'Run easy and enjoy Stirling today.';
     return;
   }
+
   const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff / 3600000) % 24);
-  const m = Math.floor((diff / 60000) % 60);
-  const s = Math.floor((diff / 1000) % 60);
-  document.getElementById('cdDays').textContent = String(d).padStart(2, '0');
-  document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
-  document.getElementById('cdMins').textContent = String(m).padStart(2, '0');
-  document.getElementById('cdSecs').textContent = String(s).padStart(2, '0');
+  metricEl.textContent = `${d} days`;
 
   const daysUntilStart = Math.ceil((START_DATE.getTime() - now.getTime()) / 86400000);
-  const statusEl = document.getElementById('heroStatusLine');
   if (daysUntilStart > 0) {
-    statusEl.textContent = `Plan begins in ${daysUntilStart} day${daysUntilStart === 1 ? '' : 's'} (Saturday 28 Nov 2026) — preview Week 1 below.`;
+    statusEl.textContent = `Starts in ${daysUntilStart} day${daysUntilStart === 1 ? '' : 's'} (Sat 28 Nov) · 2 runs + 2 strength/wk`;
   } else {
-    statusEl.textContent = `Currently in Week ${realCurrentWeek()} of 24 · 2 runs + 2 strength + 3 rest/social days.`;
+    statusEl.textContent = `Week ${realCurrentWeek()} of 24 · 2 runs + 2 strength + 3 open days`;
   }
 }
 
@@ -2507,6 +2221,19 @@ let coachStepIdx = 0;
 let coachSecondsLeft = 0;
 let coachRunning = false;
 let coachTimer = null;
+
+function setCoachOpen(open, runType = null) {
+  coachOpen = open;
+  const box = document.getElementById('runCoachBox');
+  box.style.display = open ? 'block' : 'none';
+  if (runType) {
+    document.getElementById('coachRunSelector').value = runType;
+    loadCoachRun();
+  }
+  if (open) {
+    setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 40);
+  }
+}
 
 function buildCoachStepsForWeek(wk, runType) {
   const w = WEEKS[wk - 1];
@@ -2543,10 +2270,9 @@ function formatMMSS(sec) {
 function renderCoachDisplay() {
   const step = coachSteps[coachStepIdx];
   if (!step) return;
-  const totalSteps = coachSteps.length;
   document.getElementById('coachCurrentStepName').textContent = step.name;
   document.getElementById('coachTimeLeft').textContent = formatMMSS(coachSecondsLeft);
-  document.getElementById('coachStepMeta').textContent = `Step ${coachStepIdx + 1} of ${totalSteps} · Week ${viewingWeek}`;
+  document.getElementById('coachStepMeta').textContent = `Step ${coachStepIdx + 1} of ${coachSteps.length} · Week ${viewingWeek}`;
   const pct = Math.round(((step.duration - coachSecondsLeft) / step.duration) * 100);
   document.getElementById('coachProgressBar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
 }
@@ -2568,7 +2294,7 @@ function advanceCoachStep() {
   }
 }
 
-/* ================= RENDER: TODAY ================= */
+/* ================= RENDER: TODAY (ACTION DASHBOARD) ================= */
 function renderToday() {
   const w = WEEKS[viewingWeek - 1];
   const log = getWeekLog(viewingWeek);
@@ -2587,33 +2313,87 @@ function renderToday() {
   // Build 7-day strip
   const dayAssignments = {};
   DAYS_ORDER.forEach(d => { dayAssignments[d] = []; });
-  dayAssignments[sched.satRun].push({ type: 'run', short: 'Long Run' });
-  dayAssignments[sched.wedRun].push({ type: 'run', short: 'Easy Run' });
-  dayAssignments[sched.liftA].push({ type: 'lift', short: 'Hip Lift' });
-  dayAssignments[sched.liftB].push({ type: 'lift', short: 'Upper/Core' });
+  dayAssignments[sched.satRun].push({ type: 'run', short: 'Long' });
+  dayAssignments[sched.wedRun].push({ type: 'run', short: 'Easy' });
+  dayAssignments[sched.liftA].push({ type: 'lift', short: 'Hip' });
+  dayAssignments[sched.liftB].push({ type: 'lift', short: 'Core' });
 
   document.getElementById('weekBalanceStrip').innerHTML = DAYS_ORDER.map(day => {
     const items = dayAssignments[day];
     const hasRun = items.some(i => i.type === 'run');
     const hasLift = items.some(i => i.type === 'lift');
     const cls = hasRun ? 'has-run' : hasLift ? 'has-lift' : 'is-free';
-    const label = items.length ? items.map(i => i.short).join(' + ') : 'Rest / Social';
+    const label = items.length ? items.map(i => i.short).join('+') : 'Open';
     return `
       <div class="day-slot ${cls}">
         <div class="day-slot-name">${day}</div>
-        <div class="day-slot-type" title="${label}">${label}</div>
+        <div class="day-slot-type">${label}</div>
       </div>
     `;
   }).join('');
 
-  // Render 4 weekly sessions sorted by DAYS_ORDER with matched routes
   const recRoutes = getRecommendedRoutesForWeek(viewingWeek);
   const sessionDefs = [
-    { key: 'satRun', day: sched.satRun, title: w.race ? 'Taper Shakeout + Sun 16 May Race (21.1 km)' : `Long Run · ${w.satDur}`, detail: `${w.satRatio} · Route: ${recRoutes.satRoute.name} (${recRoutes.satRoute.regionLabel})`, hasCoach: true, coachType: 'sat', isRace: !!w.race },
-    { key: 'liftA',  day: sched.liftA,  title: 'Strength A · Hip & Lower Stability', detail: '35 min · Glute medius, bridges, controlled box squats', goStrength: 0 },
-    { key: 'wedRun', day: sched.wedRun, title: `Midweek Easy Run · ${w.wedDur}`, detail: `${w.wedRatio} · Route: ${recRoutes.wedRoute.name}`, hasCoach: true, coachType: 'wed' },
-    { key: 'liftB',  day: sched.liftB,  title: 'Strength B · Upper Body, Desk Posture & Core', detail: '35 min · Rows, presses, dead bugs & side planks', goStrength: 1 }
+    { key: 'satRun', day: sched.satRun, title: w.race ? 'Taper Shakeout + Sun 16 May Race' : `Long Run · ${w.satDur}`, detail: `${w.satRatio} · ${recRoutes.satRoute.name}`, hasCoach: true, coachType: 'sat', routeId: recRoutes.satRoute.id, isRace: !!w.race },
+    { key: 'liftA',  day: sched.liftA,  title: 'Strength A · Hip & Lower', detail: '35 min · Glute medius, bridges, box squat', goStrength: 0 },
+    { key: 'wedRun', day: sched.wedRun, title: `Midweek Run · ${w.wedDur}`, detail: `${w.wedRatio} · ${recRoutes.wedRoute.name}`, hasCoach: true, coachType: 'wed', routeId: recRoutes.wedRoute.id },
+    { key: 'liftB',  day: sched.liftB,  title: 'Strength B · Upper & Core', detail: '35 min · Rows, press, dead bugs & side plank', goStrength: 1 }
   ].sort((a, b) => DAYS_ORDER.indexOf(a.day) - DAYS_ORDER.indexOf(b.day));
+
+  // Next Up Focus Card
+  const nextItem = sessionDefs.find(s => !log[s.key]);
+  const nextBox = document.getElementById('nextFocusCard');
+  if (nextItem) {
+    nextBox.innerHTML = `
+      <div class="next-up-kicker">Next To Do · ${nextItem.day} (Week ${viewingWeek})</div>
+      <div class="next-up-title">${nextItem.title}</div>
+      <div class="meta-line" style="margin-top:0;">${nextItem.detail}</div>
+      <div class="next-up-actions">
+        <button class="btn btn-primary btn-sm" id="nextCompleteBtn" type="button">Mark Done</button>
+        ${nextItem.hasCoach
+          ? `<button class="btn btn-secondary btn-sm" id="nextTimerBtn" type="button">Start Timer</button>
+             <button class="btn btn-ghost btn-sm" id="nextMapBtn" type="button">Route Map</button>`
+          : `<button class="btn btn-secondary btn-sm" id="nextStrengthBtn" type="button">Open Exercises</button>`
+        }
+      </div>
+    `;
+    document.getElementById('nextCompleteBtn').addEventListener('click', () => {
+      log[nextItem.key] = true;
+      saveState();
+      playCue('check');
+      renderToday();
+      renderPlan();
+    });
+    if (nextItem.hasCoach) {
+      document.getElementById('nextTimerBtn').addEventListener('click', () => setCoachOpen(true, nextItem.coachType));
+      document.getElementById('nextMapBtn').addEventListener('click', () => {
+        selectedMapRouteId = nextItem.routeId;
+        switchTab('routes');
+      });
+    } else {
+      document.getElementById('nextStrengthBtn').addEventListener('click', () => {
+        activeStrengthSplit = nextItem.goStrength;
+        switchTab('strength');
+        renderStrength();
+      });
+    }
+  } else {
+    nextBox.innerHTML = `
+      <div class="next-up-kicker">Week ${viewingWeek} Complete</div>
+      <div class="next-up-title">All 4 sessions logged</div>
+      <div class="meta-line" style="margin-top:0;">Enjoy your 3 open rest &amp; social days—hips stay fresh by resting between builds.</div>
+      ${viewingWeek < 24 ? `<div class="next-up-actions"><button class="btn btn-secondary btn-sm" id="previewNextWkBtn" type="button">Preview Week ${viewingWeek + 1}</button></div>` : ''}
+    `;
+    const pBtn = document.getElementById('previewNextWkBtn');
+    if (pBtn) {
+      pBtn.addEventListener('click', () => {
+        viewingWeek++;
+        selectedMapRouteId = getRecommendedRoutesForWeek(viewingWeek).satRoute.id;
+        renderToday();
+        renderRoutes();
+      });
+    }
+  }
 
   document.getElementById('todaySessionsList').innerHTML = sessionDefs.map(s => {
     const isDone = !!log[s.key];
@@ -2623,19 +2403,18 @@ function renderToday() {
           <span class="check-circle">${checkSvg()}</span>
         </button>
         <div class="session-body" data-sess-key="${s.key}">
-          <div class="session-meta tabular">${s.day} · ${isDone ? 'Completed' : 'Planned'}</div>
+          <div class="session-meta tabular">${s.day} · ${isDone ? 'Done' : 'To Do'}</div>
           <div class="session-title">${s.title}</div>
           <div class="session-detail">${s.detail}</div>
         </div>
         ${s.hasCoach
-          ? `<button class="session-action-btn" data-launch-coach="${s.coachType}">Interval Coach</button>`
-          : `<button class="session-action-btn" data-open-strength="${s.goStrength}">Open Plan</button>`
+          ? `<button class="session-action-btn" data-launch-coach="${s.coachType}">Timer</button>`
+          : `<button class="session-action-btn" data-open-strength="${s.goStrength}">Plan</button>`
         }
       </div>
     `;
   }).join('');
 
-  // Attach session handlers
   document.querySelectorAll('[data-sess-key]').forEach(el => {
     el.addEventListener('click', () => {
       const k = el.dataset.sessKey;
@@ -2648,11 +2427,7 @@ function renderToday() {
   });
 
   document.querySelectorAll('[data-launch-coach]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.getElementById('coachRunSelector').value = btn.dataset.launchCoach;
-      loadCoachRun();
-      document.getElementById('runCoachBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+    btn.addEventListener('click', () => setCoachOpen(true, btn.dataset.launchCoach));
   });
 
   document.querySelectorAll('[data-open-strength]').forEach(btn => {
@@ -2663,7 +2438,7 @@ function renderToday() {
     });
   });
 
-  // Render Swap Panel selects
+  // Swap Panel selects
   const swapMeta = [
     { key: 'satRun', label: 'Long Run' },
     { key: 'wedRun', label: 'Midweek Run' },
@@ -2689,32 +2464,29 @@ function renderToday() {
     });
   });
 
-  // Hip-safety buffer check for consecutive Long Run & Lower Strength A
   const satIdx = DAYS_ORDER.indexOf(sched.satRun);
   const liftAIdx = DAYS_ORDER.indexOf(sched.liftA);
   const wedIdx = DAYS_ORDER.indexOf(sched.wedRun);
   const distSatLift = Math.min(Math.abs(satIdx - liftAIdx), 7 - Math.abs(satIdx - liftAIdx));
-  const sameRunDay = satIdx === wedIdx;
   const warnBox = document.getElementById('swapSafetyWarning');
-  if (sameRunDay) {
-    warnBox.innerHTML = `<div class="callout-note callout-danger">You scheduled both runs on ${sched.satRun}. Separate your two runs by at least 2 days to protect hip cartilage.</div>`;
+  if (satIdx === wedIdx) {
+    warnBox.innerHTML = `<div class="callout-note callout-danger">Both runs are on ${sched.satRun}. Separate runs by at least 2 days for hip cartilage recovery.</div>`;
   } else if (distSatLift <= 1) {
-    warnBox.innerHTML = `<div class="callout-note callout-gold">Hip-Safety Note: Long Run (${sched.satRun}) and Lower Strength A (${sched.liftA}) are within 24 hours. Leave 1 rest day between them if your hips feel fatigued.</div>`;
+    warnBox.innerHTML = `<div class="callout-note callout-gold">Long Run (${sched.satRun}) and Hip Strength (${sched.liftA}) are back-to-back. Leave 1 day between if hips feel tired.</div>`;
   } else {
-    warnBox.innerHTML = `<div class="callout-note callout-green">Good spacing: your hip-loading sessions have recovery time between them, with 3 rest/social days open.</div>`;
+    warnBox.innerHTML = `<div class="callout-note callout-green">Good spacing: recovery time between hip sessions with 3 open social days.</div>`;
   }
 
-  // Logged count + repeat week state
   const doneCount = ['satRun', 'liftA', 'wedRun', 'liftB'].filter(k => log[k]).length;
-  document.getElementById('weekLoggedSummary').textContent = `${doneCount}/4 sessions completed this week`;
+  document.getElementById('dashWeekMetric').textContent = `${doneCount} / 4`;
+  document.getElementById('dashWeekLbl').textContent = `Week ${viewingWeek} Done`;
 
   const isRepeated = !!STATE.repeatedWeeks[viewingWeek];
-  document.getElementById('toggleRepeatWeekBtn').textContent = isRepeated ? 'Repeated Week Logged' : 'Mark as Repeat / Easy Week';
+  document.getElementById('toggleRepeatWeekBtn').textContent = isRepeated ? 'Repeated Week Active' : 'Repeat / Easy Week';
   document.getElementById('repeatWeekBanner').innerHTML = isRepeated
-    ? `<div class="callout-note callout-thistle">Repeat / Busy Week active: repeat this week's durations next week before moving forward. Prioritise Saturday's run and Day A Hip Strength.</div>`
+    ? `<div class="callout-note callout-thistle">Repeat Week active: hold this week's durations next week before advancing.</div>`
     : '';
 
-  // Hip Check-In
   const currentHip = STATE.hipStatus[viewingWeek] || 'green';
   document.querySelectorAll('.hip-state-btn').forEach(btn => {
     const h = btn.dataset.hip;
@@ -2723,21 +2495,20 @@ function renderToday() {
   });
 
   const hipAdvice = {
-    green: `<div class="callout-note callout-green"><strong>Green Light:</strong> Normal mild muscle warmth only. Follow this week's intervals and strength plan as written.</div>`,
-    amber: `<div class="callout-note callout-gold"><strong>Amber Caution:</strong> Hip stiffness or 3/10 ache. Do the 5-min Desk Warm-Up first, add +30 sec to your walk intervals, and skip heavy lower lifts until loose.</div>`,
-    red: `<div class="callout-note callout-danger"><strong>Red Stop:</strong> Pinching groin pain or limp. Stop running for 4–5 days, switch to gentle pain-free walking, and mark this week as Repeated before resuming.</div>`
+    green: `<div class="callout-note callout-green"><strong>Green:</strong> Follow this week's intervals and strength as planned.</div>`,
+    amber: `<div class="callout-note callout-gold"><strong>Amber:</strong> Do 5-min Desk Warm-Up first, add +30s walk breaks, skip heavy leg lifts.</div>`,
+    red: `<div class="callout-note callout-danger"><strong>Red:</strong> Stop running 4–5 days, stick to pain-free walking, and mark Repeat Week.</div>`
   };
   document.getElementById('hipGuidanceBox').innerHTML = hipAdvice[currentHip];
 
-  // Season Overview
   let totalDone = 0;
   for (let i = 1; i <= 24; i++) {
     const wl = getWeekLog(i);
     totalDone += ['satRun', 'liftA', 'wedRun', 'liftB'].filter(k => wl[k]).length;
   }
   const pct = Math.round((totalDone / 96) * 100);
-  document.getElementById('overallStatsLine').textContent = `${totalDone} of 96 total sessions logged (${pct}%)`;
-  document.getElementById('overallProgressBar').style.width = `${pct}%`;
+  document.getElementById('overallStatsShort').textContent = `${pct}%`;
+  document.getElementById('overallCountShort').textContent = `${totalDone} / 96 sessions`;
 
   loadCoachRun();
 }
@@ -2762,36 +2533,32 @@ function renderPlan() {
     const isExp = expandedPlanWeek === w.n;
     const isCurr = w.n === realWk;
     const rec = getRecommendedRoutesForWeek(w.n);
-    const tagText = w.race ? 'Race Week' : w.checkpoint ? 'Checkpoint' : w.deload ? 'Deload' : PHASE_INFO[w.phase].title.split('·')[1].trim();
-    const locTag = rec.isStirlingWeek ? `Stirling: ${rec.satRoute.name}` : `${rec.satRoute.regionLabel}: ${rec.satRoute.name}`;
+    const tagText = w.race ? 'Race' : w.checkpoint ? 'Check' : w.deload ? 'Deload' : PHASE_INFO[w.phase].title.split('·')[1].trim();
 
     return `
       <div class="week-accordion-card ${isCurr ? 'is-current' : ''}">
         <button class="week-accordion-trigger" data-plan-wk="${w.n}">
-          <div>
+          <div style="min-width:0;">
             <div class="meta-line tabular" style="margin-top:0;">
-              <strong>Week ${w.n}</strong>
+              <strong>Wk ${w.n}</strong>
               <span aria-hidden="true">·</span>
               <span>${w.dates}</span>
               <span aria-hidden="true">·</span>
               <span>${tagText}</span>
             </div>
-            <div style="font-size:14.5px; font-weight:600; color:var(--ink); margin-top:3px;">
-              Long: ${w.satDur} (${w.satRatio.split(' (')[0]}) · Midweek: ${w.wedDur}
+            <div style="font-size:13.5px; font-weight:600; color:var(--ink); margin-top:2px;">
+              Long ${w.satDur} · Mid ${w.wedDur} · ${rec.satRoute.name}
             </div>
-            <div class="meta-line" style="margin-top:2px;">${locTag}</div>
           </div>
           <div style="text-align:right; flex-shrink:0;">
             <div class="tabular" style="font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--stirling-emerald);">${done}/4</div>
-            <div style="font-size:11px; color:var(--ink-muted);">${isExp ? 'Hide' : 'Details'}</div>
           </div>
         </button>
         ${isExp ? `
           <div class="week-accordion-body">
-            <p style="font-size:13px; color:var(--ink-dim); margin:12px 0;">${w.note}</p>
-            <div style="display:flex; flex-wrap:wrap; gap:8px;">
-              <button class="btn btn-primary btn-sm" data-jump-wk="${w.n}">Open Week ${w.n} in Today</button>
-            </div>
+            <div class="meta-line" style="margin-top:8px;">Long: ${w.satRatio} · Midweek: ${w.wedRatio}</div>
+            <p style="font-size:12.5px; color:var(--ink-dim); margin:8px 0 10px;">${w.note}</p>
+            <button class="btn btn-primary btn-sm" data-jump-wk="${w.n}">Open Week ${w.n} in Today</button>
           </div>
         ` : ''}
       </div>
@@ -2809,6 +2576,7 @@ function renderPlan() {
   container.querySelectorAll('[data-jump-wk]').forEach(btn => {
     btn.addEventListener('click', () => {
       viewingWeek = +btn.dataset.jumpWk;
+      selectedMapRouteId = getRecommendedRoutesForWeek(viewingWeek).satRoute.id;
       switchTab('today');
       renderToday();
       renderRoutes();
@@ -2827,7 +2595,7 @@ function renderStrength() {
 
   const card = document.getElementById('strengthExercisesCard');
   card.innerHTML = `
-    <h3 class="section-title" style="font-size:17px; margin-bottom:4px;">${split.name}</h3>
+    <div style="font-weight:600; font-size:15px; margin-bottom:2px;">${split.name}</div>
     ${split.exercises.map(ex => {
       const sets = STATE.liftSets[ex.id] || [false, false, false];
       const note = STATE.liftNotes[ex.id] || '';
@@ -2842,7 +2610,7 @@ function renderStrength() {
             <button class="set-btn ${sets[0] ? 'done' : ''}" data-ex="${ex.id}" data-set="0">Set 1</button>
             <button class="set-btn ${sets[1] ? 'done' : ''}" data-ex="${ex.id}" data-set="1">Set 2</button>
             <button class="set-btn ${sets[2] ? 'done' : ''}" data-ex="${ex.id}" data-set="2">Set 3</button>
-            <input type="text" class="load-note-input" data-note-ex="${ex.id}" placeholder="Weight / reps note (e.g. 10 kg × 10)" value="${note.replace(/"/g, '&quot;')}">
+            <input type="text" class="load-note-input" data-note-ex="${ex.id}" placeholder="Weight / reps note" value="${note.replace(/"/g, '&quot;')}">
           </div>
         </div>
       `;
@@ -2868,7 +2636,12 @@ function renderStrength() {
     });
   });
 
-  renderSimpleChecklist('deskWarmupChecklist', DESK_WARMUP_ITEMS, 'warmups');
+  renderSimpleChecklist('deskWarmupChecklist', DESK_WARMUP_ITEMS, 'warmups', () => {
+    const done = DESK_WARMUP_ITEMS.filter((_, i) => STATE.warmups?.[i]).length;
+    document.getElementById('deskWarmupCountMeta').textContent = `${done}/${DESK_WARMUP_ITEMS.length} completed · Wake up hips at 5 PM`;
+  });
+  const wDone = DESK_WARMUP_ITEMS.filter((_, i) => STATE.warmups?.[i]).length;
+  document.getElementById('deskWarmupCountMeta').textContent = `${wDone}/${DESK_WARMUP_ITEMS.length} completed · Wake up hips at 5 PM`;
 }
 
 /* ================= LIFT REST TIMER ================= */
@@ -2909,18 +2682,23 @@ function renderFuel() {
 
   const container = document.getElementById('fuelMealsList');
   if (!filtered.length) {
-    container.innerHTML = `<div class="callout-note callout-green">No meals matched your search. Try clearing the search box or switching categories.</div>`;
+    container.innerHTML = `<div class="callout-note callout-green">No meals matched. Try clearing the search box.</div>`;
   } else {
     container.innerHTML = filtered.map(item => `
-      <div style="padding:12px 0; border-bottom:1px solid var(--border-subtle);">
-        <div style="font-weight:600; font-size:15px; color:var(--ink);">${item.title}</div>
-        <div class="meta-line" style="margin-top:2px;">${item.timing}</div>
-        <p style="font-size:13.5px; color:var(--ink-dim); margin:6px 0 0;">${item.body}</p>
+      <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+        <div style="font-weight:600; font-size:14px; color:var(--ink);">${item.title}</div>
+        <div class="meta-line" style="margin-top:1px;">${item.timing}</div>
+        <p style="font-size:12.5px; color:var(--ink-dim); margin:4px 0 0;">${item.body}</p>
       </div>
     `).join('');
   }
 
-  renderSimpleChecklist('sundayPrepChecklist', SUNDAY_PREP_ITEMS, 'sundayPrep');
+  const updatePrepCount = () => {
+    const done = SUNDAY_PREP_ITEMS.filter((_, i) => STATE.sundayPrep?.[i]).length;
+    document.getElementById('sundayPrepMeta').textContent = `${done}/${SUNDAY_PREP_ITEMS.length} ready for Mon–Fri`;
+  };
+  renderSimpleChecklist('sundayPrepChecklist', SUNDAY_PREP_ITEMS, 'sundayPrep', updatePrepCount);
+  updatePrepCount();
 }
 
 function updateFuelCalc() {
@@ -2929,13 +2707,13 @@ function updateFuelCalc() {
   const adviceEl = document.getElementById('fuelAdviceText');
   const resEl = document.getElementById('fuelCarbResult');
   if (dur < 60) {
-    adviceEl.textContent = 'Normal pre-run meal + sips of water. No mid-run gels required.';
+    adviceEl.textContent = 'Pre-run meal + water only';
     resEl.textContent = 'Water only';
   } else if (dur <= 85) {
-    adviceEl.textContent = 'Practise taking 1 gel or 3–4 jelly sweets around 35–40 min with water.';
+    adviceEl.textContent = '1 gel or 3–4 sweets around 35 min';
     resEl.textContent = '20–30g carbs';
   } else {
-    adviceEl.textContent = 'Practise race fuelling: 1 gel/chew every 35–40 min + regular water sips.';
+    adviceEl.textContent = '1 gel every 35–40 min + water';
     resEl.textContent = '30–50g / hr';
   }
 }
@@ -2943,8 +2721,8 @@ function updateFuelCalc() {
 /* ================= RENDER: RACE & HIP ================= */
 function updatePacePlanner() {
   const ratio = document.getElementById('paceRatioSelect').value;
-  const jogPace = parseFloat(document.getElementById('jogPaceSelect').value); // min per km
-  const walkPace = 10.5; // 10:30 /km brisk walk
+  const jogPace = parseFloat(document.getElementById('jogPaceSelect').value);
+  const walkPace = 10.5;
 
   let effectivePace = jogPace;
   let summary = `Steady ${Math.floor(jogPace)}:${jogPace % 1 === 0.5 ? '30' : '00'} /km continuous jog`;
@@ -2952,7 +2730,7 @@ function updatePacePlanner() {
     const [j, w] = ratio.split(':').map(Number);
     const jogFrac = j / (j + w);
     effectivePace = (jogFrac * jogPace) + ((1 - jogFrac) * walkPace);
-    summary = `${j} min jog / ${w} min brisk walk · avg ${Math.floor(effectivePace)}:${String(Math.round((effectivePace % 1) * 60)).padStart(2, '0')} /km`;
+    summary = `${j}m jog / ${w}m walk · avg ${Math.floor(effectivePace)}:${String(Math.round((effectivePace % 1) * 60)).padStart(2, '0')} /km`;
   }
 
   const totalMins = Math.round(21.1 * effectivePace);
@@ -2966,49 +2744,67 @@ function renderRaceAndHip() {
   updatePacePlanner();
 
   document.getElementById('stirlingCourseStages').innerHTML = COURSE_STAGES.map(s => `
-    <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+    <div style="padding:9px 0; border-bottom:1px solid var(--border-subtle);">
       <div class="meta-line tabular" style="margin-top:0;">
         <strong style="color:var(--stirling-green);">${s.km}</strong>
         <span aria-hidden="true">·</span>
         <span>${s.name}</span>
       </div>
-      <div style="font-size:13.5px; color:var(--ink-dim); margin-top:4px;">${s.cue}</div>
+      <div style="font-size:12.5px; color:var(--ink-dim); margin-top:3px;">${s.cue}</div>
     </div>
   `).join('');
 
-  document.getElementById('hipRulesList').innerHTML = HIP_RULES.map(r => `
-    <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
-      <div style="font-weight:600; font-size:14.5px; color:var(--ink);">${r.title}</div>
-      <div style="font-size:13.5px; color:var(--ink-dim); margin-top:3px;">${r.body}</div>
-    </div>
-  `).join('');
+  const rulesEl = document.getElementById('hipRulesList');
+  rulesEl.innerHTML = HIP_RULES.map(r => {
+    const open = expandedHipRuleId === r.id;
+    return `
+      <div style="border-bottom:1px solid var(--border-subtle);">
+        <button class="drawer-trigger" data-hip-rule="${r.id}" type="button" style="min-height:42px; padding:6px 0;">
+          <span style="font-weight:600; font-size:13.5px;">${r.title}</span>
+          <span style="font-size:12px; color:var(--stirling-emerald); flex-shrink:0;">${open ? 'Hide' : 'View'}</span>
+        </button>
+        <div style="display:${open ? 'block' : 'none'}; font-size:12.5px; color:var(--ink-dim); padding-bottom:8px;">${r.body}</div>
+      </div>
+    `;
+  }).join('');
+
+  rulesEl.querySelectorAll('[data-hip-rule]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      expandedHipRuleId = expandedHipRuleId === btn.dataset.hipRule ? null : btn.dataset.hipRule;
+      renderRaceAndHip();
+    });
+  });
 
   const troubleEl = document.getElementById('troubleshooterContainer');
   troubleEl.innerHTML = TROUBLESHOOTER_ITEMS.map(item => `
-    <div style="border-bottom:1px solid var(--border-subtle); padding:6px 0;">
-      <button class="week-accordion-trigger" style="padding:8px 0; min-height:44px;" data-trouble-id="${item.id}">
-        <span style="font-weight:600; font-size:14px; color:var(--ink);">${item.q}</span>
+    <div style="border-bottom:1px solid var(--border-subtle);">
+      <button class="drawer-trigger" style="padding:6px 0; min-height:42px;" data-trouble-id="${item.id}" type="button">
+        <span style="font-weight:600; font-size:13.5px; color:var(--ink);">${item.q}</span>
         <span style="font-size:12px; color:var(--stirling-emerald); flex-shrink:0;">View</span>
       </button>
-      <div id="trouble-ans-${item.id}" style="display:none; padding:0 0 10px; font-size:13.5px; color:var(--ink-dim);">
-        ${item.a}
-      </div>
+      <div id="trouble-ans-${item.id}" style="display:none; padding:0 0 8px; font-size:12.5px; color:var(--ink-dim);">${item.a}</div>
     </div>
   `).join('');
 
   troubleEl.querySelectorAll('[data-trouble-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       const box = document.getElementById(`trouble-ans-${btn.dataset.troubleId}`);
-      const isOpen = box.style.display === 'block';
-      box.style.display = isOpen ? 'none' : 'block';
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
     });
   });
 
-  renderSimpleChecklist('longRunBagChecklist', LONGRUN_BAG_CHK, 'longRunBag');
-  renderSimpleChecklist('raceWeekChecklist', RACEWEEK_CHK, 'raceWeekBag');
+  const updateBagCounts = () => {
+    const b = LONGRUN_BAG_CHK.filter((_, i) => STATE.longRunBag?.[i]).length;
+    const rc = RACEWEEK_CHK.filter((_, i) => STATE.raceWeekBag?.[i]).length;
+    document.getElementById('bagCountMeta').textContent = `${b}/${LONGRUN_BAG_CHK.length} packed`;
+    document.getElementById('raceCountMeta').textContent = `${rc}/${RACEWEEK_CHK.length} ready`;
+  };
+  renderSimpleChecklist('longRunBagChecklist', LONGRUN_BAG_CHK, 'longRunBag', updateBagCounts);
+  renderSimpleChecklist('raceWeekChecklist', RACEWEEK_CHK, 'raceWeekBag', updateBagCounts);
+  updateBagCounts();
 }
 
-function renderSimpleChecklist(containerId, items, stateKey) {
+function renderSimpleChecklist(containerId, items, stateKey, onUpdate) {
   const el = document.getElementById(containerId);
   if (!STATE[stateKey]) STATE[stateKey] = {};
   el.innerHTML = items.map((text, idx) => {
@@ -3027,7 +2823,8 @@ function renderSimpleChecklist(containerId, items, stateKey) {
       STATE[stateKey][idx] = !STATE[stateKey][idx];
       saveState();
       playCue(STATE[stateKey][idx] ? 'check' : 'walk');
-      renderSimpleChecklist(containerId, items, stateKey);
+      renderSimpleChecklist(containerId, items, stateKey, onUpdate);
+      if (onUpdate) onUpdate();
     });
   });
 }
@@ -3071,11 +2868,10 @@ let routeMapInfoWindow = null;
 let activeMapPolylines = [];
 let activeMapMarkers = [];
 let activeRouteViewport = null;
-let mapGestureMode = 'cooperative'; // Scroll-safe on iPhone 13
+let mapGestureMode = 'cooperative';
 let mapTerrainMode = false;
 let mapExpandedMode = false;
 
-// Session-only in-memory caches (never persisted to localStorage)
 const PLACE_QUERY_CACHE = new Map();
 const ROUTE_COMPUTE_CACHE = new Map();
 
@@ -3085,11 +2881,19 @@ async function ensureGoogleMapsLoaded() {
 
   mapsBootstrapPromise = (async () => {
     const res = await fetch('/api/maps-config', { cache: 'no-store' });
-    if (!res.ok) throw new Error('Unable to load Maps configuration');
+    const ct = res.headers.get('content-type') || '';
+    if (!res.ok || !ct.includes('application/json')) {
+      const err = new Error('STATIC_HOST_NO_CONFIG');
+      err.isStaticHost = true;
+      throw err;
+    }
     const cfg = await res.json();
-    if (!cfg?.apiKey) throw new Error('Google Maps API key is not configured');
+    if (!cfg?.apiKey) {
+      const err = new Error('NO_API_KEY_CONFIGURED');
+      err.isStaticHost = true;
+      throw err;
+    }
 
-    // Official Google Maps JavaScript API dynamic bootstrap loader
     await new Promise((resolve, reject) => {
       ((g) => {
         var h, a, k, p = 'The Google Maps JavaScript API', c = 'google', l = 'importLibrary', q = '__ib__', m = document, b = window;
@@ -3131,18 +2935,20 @@ function clearMapOverlays() {
   if (routeMapInfoWindow) routeMapInfoWindow.close();
 }
 
-function setMapOverlayStatus(text, show) {
+function setMapOverlayStatus(text, show, showActions = false, externalUrl = '') {
   const overlay = document.getElementById('routeMapStatusOverlay');
   const textEl = document.getElementById('routeMapStatusText');
+  const actionsEl = document.getElementById('routeMapFallbackActions');
+  const extOverlayLink = document.getElementById('routeOverlayExternalLink');
   if (!overlay || !textEl) return;
   textEl.textContent = text || '';
+  if (actionsEl) actionsEl.style.display = showActions ? 'flex' : 'none';
+  if (extOverlayLink && externalUrl) extOverlayLink.href = externalUrl;
   overlay.classList.toggle('hidden', !show);
 }
 
 async function resolvePlaceStop(textQuery) {
-  if (PLACE_QUERY_CACHE.has(textQuery)) {
-    return PLACE_QUERY_CACHE.get(textQuery);
-  }
+  if (PLACE_QUERY_CACHE.has(textQuery)) return PLACE_QUERY_CACHE.get(textQuery);
   const { Place } = await google.maps.importLibrary('places');
   const { places } = await Place.searchByText({
     textQuery,
@@ -3175,12 +2981,11 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
     document.getElementById('routeMapCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // Highlight selected route card in directory without full re-render flicker if already rendered
   document.querySelectorAll('[data-map-route]').forEach((btn) => {
     const active = btn.dataset.mapRoute === routeId;
     btn.classList.toggle('btn-primary', active);
     btn.classList.toggle('btn-ghost', !active);
-    btn.textContent = active ? 'On Map' : (btn.dataset.isTm === '1' ? 'View Specs' : 'View Map');
+    btn.textContent = active ? 'On Map' : (btn.dataset.isTm === '1' ? 'Specs' : 'Map');
   });
 
   if (r.treadmill || !r.mapStops?.length) {
@@ -3194,29 +2999,38 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
 
   outdoorStage.style.display = 'block';
   tmStage.style.display = 'none';
-  document.getElementById('mapTelemetryDist').textContent = 'Calculating…';
-  document.getElementById('mapTelemetryTime').textContent = 'Calculating…';
+
+  const fallbackUrl = buildFallbackMapsUrl(r);
+  extLink.href = fallbackUrl;
+  extLink.style.display = 'inline-flex';
+
+  document.getElementById('mapTelemetryDist').textContent = r.dist.split('(')[0].trim();
+  document.getElementById('mapTelemetryTime').textContent = 'Loading…';
   document.getElementById('mapTelemetrySurface').textContent = r.surface;
-  document.getElementById('routeStopsStrip').innerHTML = '';
+  document.getElementById('routeStopsStrip').innerHTML = r.mapStops.map((s, i) => `
+    <span class="stop-jump-btn" style="cursor:default;"><span class="stop-badge-num">${i === 0 ? 'S' : i + 1}</span><span>${s.split(',')[0]}</span></span>
+  `).join('');
   attrBox.style.display = 'none';
   attrBox.innerHTML = '';
 
-  if (activeTab !== 'routes') return; // Defer live map load until Routes tab is visible
+  if (activeTab !== 'routes') return;
 
-  setMapOverlayStatus(`Mapping ${r.name}…`, true);
+  setMapOverlayStatus(`Loading map for ${r.name}…`, true, false, fallbackUrl);
 
   try {
     await ensureGoogleMapsLoaded();
-    const [{ Map, InfoWindow }, { AdvancedMarkerElement, PinElement }, { Route }] = await Promise.all([
+    // Allow Safari/WebKit a frame so visible #routeGoogleMap container has full layout dimensions
+    await new Promise((res) => requestAnimationFrame(res));
+
+    const [{ Map, InfoWindow, Polyline }, { AdvancedMarkerElement, PinElement }, { Route }, { LatLngBounds }] = await Promise.all([
       google.maps.importLibrary('maps'),
       google.maps.importLibrary('marker'),
-      google.maps.importLibrary('routes')
+      google.maps.importLibrary('routes'),
+      google.maps.importLibrary('core')
     ]);
 
-    // Bail if user picked another route while loading
     if (selectedMapRouteId !== routeId) return;
 
-    // Resolve route places dynamically via Places API (New)
     const resolvedStops = [];
     for (const q of r.mapStops) {
       const p = await resolvePlaceStop(q);
@@ -3225,9 +3039,8 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
 
     if (selectedMapRouteId !== routeId) return;
     if (resolvedStops.length < 2) {
-      setMapOverlayStatus('Could not locate route checkpoints right now.', true);
-      document.getElementById('mapTelemetryDist').textContent = r.dist;
-      document.getElementById('mapTelemetryTime').textContent = 'See plan';
+      setMapOverlayStatus('Could not locate route checkpoints right now.', true, true, fallbackUrl);
+      document.getElementById('mapTelemetryTime').textContent = 'See Google Maps';
       return;
     }
 
@@ -3235,7 +3048,7 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
       routeGoogleMap = new Map(document.getElementById('routeGoogleMap'), {
         center: resolvedStops[0].place.location,
         zoom: 14,
-        mapId: 'DEMO_MAP_ID', // Mandatory for AdvancedMarkerElement
+        mapId: 'DEMO_MAP_ID',
         gestureHandling: mapGestureMode,
         mapTypeId: mapTerrainMode ? 'terrain' : 'roadmap',
         mapTypeControl: false,
@@ -3244,65 +3057,94 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
         internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
       });
       routeMapInfoWindow = new InfoWindow();
+    } else {
+      google.maps.event.trigger(routeGoogleMap, 'resize');
     }
 
     clearMapOverlays();
 
-    // Compute real walking route using modern Route.computeRoutes()
+    // Compute walking route (with resilient marker+bounds fallback if Routes API fails)
     let computedRoute = ROUTE_COMPUTE_CACHE.get(routeId);
     if (!computedRoute) {
-      const originStop = resolvedStops[0];
-      const destStop = resolvedStops[resolvedStops.length - 1];
-      const midStops = resolvedStops.slice(1, -1);
+      try {
+        const originStop = resolvedStops[0];
+        const destStop = resolvedStops[resolvedStops.length - 1];
+        const midStops = resolvedStops.slice(1, -1);
 
-      const routeReq = {
-        origin: originStop.place.location,
-        destination: destStop.place.location,
-        intermediates: midStops.map((s) => ({ location: s.place.location })),
-        travelMode: 'WALKING',
-        fields: ['path', 'legs', 'viewport', 'distanceMeters', 'durationMillis', 'localizedValues'],
-        language: 'en-GB',
-        region: 'GB',
-        internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
-      };
+        const routeReq = {
+          origin: originStop.place.location,
+          destination: destStop.place.location,
+          intermediates: midStops.map((s) => ({ location: s.place.location })),
+          travelMode: 'WALKING',
+          fields: ['path', 'legs', 'viewport', 'distanceMeters', 'durationMillis'],
+          language: 'en-GB',
+          region: 'GB',
+          internalUsageAttributionIds: ['gmp_mcp_codeassist_v1_aistudio']
+        };
 
-      const res = await Route.computeRoutes(routeReq);
-      if (res?.routes?.length) {
-        computedRoute = res.routes[0];
-        ROUTE_COMPUTE_CACHE.set(routeId, computedRoute);
+        const res = await Route.computeRoutes(routeReq);
+        if (res?.routes?.length) {
+          computedRoute = res.routes[0];
+          ROUTE_COMPUTE_CACHE.set(routeId, computedRoute);
+        }
+      } catch (routeErr) {
+        if (isQuotaError(routeErr)) {
+          window.dispatchEvent(new CustomEvent('gmp-quota-exceeded'));
+        }
       }
     }
 
     if (selectedMapRouteId !== routeId) return;
 
-    // Render polyline
+    const bounds = new LatLngBounds();
+    resolvedStops.forEach((s) => bounds.extend(s.place.location));
+
     if (computedRoute) {
-      activeMapPolylines = computedRoute.createPolylines({
+      const lines = computedRoute.createPolylines({
         polylineOptions: {
-          map: routeGoogleMap,
           strokeColor: '#0B3B24',
           strokeOpacity: 0.92,
           strokeWeight: 5
         }
       });
+      lines.forEach((line) => line.setMap(routeGoogleMap));
+      activeMapPolylines = lines;
 
-      if (computedRoute.viewport) {
-        activeRouteViewport = computedRoute.viewport;
-        routeGoogleMap.fitBounds(computedRoute.viewport, { top: 36, right: 24, bottom: 36, left: 24 });
+      if (!activeMapPolylines.length && computedRoute.path?.length) {
+        const fallbackLine = new Polyline({
+          path: computedRoute.path,
+          strokeColor: '#0B3B24',
+          strokeOpacity: 0.92,
+          strokeWeight: 5,
+          map: routeGoogleMap
+        });
+        activeMapPolylines = [fallbackLine];
       }
+
+      activeRouteViewport = computedRoute.viewport || bounds;
+      routeGoogleMap.fitBounds(activeRouteViewport, { top: 32, right: 20, bottom: 32, left: 20 });
 
       const meters = computedRoute.distanceMeters || 0;
       const km = (meters / 1000).toFixed(1);
-      // Estimate beginner run/walk pace (~7:45 /km average) alongside walk time
       const estRunWalkMin = Math.max(5, Math.round((meters / 1000) * 7.75));
-      document.getElementById('mapTelemetryDist').textContent = `${km} km ${r.isLoop ? 'loop' : 'path'}`;
-      document.getElementById('mapTelemetryTime').textContent = `~${estRunWalkMin} min run/walk`;
+      document.getElementById('mapTelemetryDist').textContent = meters ? `${km} km ${r.isLoop ? 'loop' : 'path'}` : r.dist;
+      document.getElementById('mapTelemetryTime').textContent = meters ? `~${estRunWalkMin} min run/walk` : 'Walk path';
     } else {
-      document.getElementById('mapTelemetryDist').textContent = r.dist;
-      document.getElementById('mapTelemetryTime').textContent = 'Walk path';
+      // Draw checkpoint connector polyline so map still shows the route loop cleanly
+      const line = new Polyline({
+        path: resolvedStops.map((s) => s.place.location),
+        strokeColor: '#14633B',
+        strokeOpacity: 0.78,
+        strokeWeight: 4,
+        map: routeGoogleMap
+      });
+      activeMapPolylines = [line];
+      activeRouteViewport = bounds;
+      routeGoogleMap.fitBounds(bounds, { top: 32, right: 20, bottom: 32, left: 20 });
+      document.getElementById('mapTelemetryDist').textContent = r.dist.split('(')[0].trim();
+      document.getElementById('mapTelemetryTime').textContent = 'Checkpoints shown';
     }
 
-    // Deduplicate final return pin if loop finishes back at origin
     const markerStops = (r.isLoop && resolvedStops.length > 2 && resolvedStops[0].place.id === resolvedStops[resolvedStops.length - 1].place.id)
       ? resolvedStops.slice(0, -1)
       : resolvedStops;
@@ -3324,9 +3166,9 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
       const marker = new AdvancedMarkerElement({
         map: routeGoogleMap,
         position: s.place.location,
-        title: s.place.displayName || s.query,
-        content: pin
+        title: s.place.displayName || s.query
       });
+      marker.append(pin);
 
       const openStopInfo = () => {
         routeGoogleMap.panTo(s.place.location);
@@ -3354,7 +3196,6 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
       });
     });
 
-    // External Google Maps walking directions link constructed from resolved Place coordinates/names
     const origLatLng = resolvedStops[0].place.location.toJSON();
     const destLatLng = resolvedStops[resolvedStops.length - 1].place.location.toJSON();
     const midCoords = resolvedStops.slice(1, -1).map((s) => {
@@ -3368,15 +3209,11 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
     dirUrl.searchParams.set('destination', `${destLatLng.lat},${destLatLng.lng}`);
     if (midCoords.length) dirUrl.searchParams.set('waypoints', midCoords.join('|'));
     extLink.href = dirUrl.toString();
-    extLink.style.display = 'inline-flex';
 
-    // Show Place attributions if present
     const attrTexts = [];
     resolvedStops.forEach((s) => {
       if (Array.isArray(s.place.attributions)) {
-        s.place.attributions.forEach((a) => {
-          if (a?.provider) attrTexts.push(a.provider);
-        });
+        s.place.attributions.forEach((a) => { if (a?.provider) attrTexts.push(a.provider); });
       }
     });
     if (attrTexts.length) {
@@ -3384,14 +3221,16 @@ async function selectRouteForMap(routeId, scrollIntoView = false) {
       attrBox.style.display = 'block';
     }
 
-    setMapOverlayStatus('', false);
+    setMapOverlayStatus('', false, false, dirUrl.toString());
   } catch (err) {
     if (isQuotaError(err)) {
       window.dispatchEvent(new CustomEvent('gmp-quota-exceeded'));
     }
-    setMapOverlayStatus('Unable to load route map right now. Check connection or try again.', true);
-    document.getElementById('mapTelemetryDist').textContent = r.dist;
-    document.getElementById('mapTelemetryTime').textContent = 'Unavailable';
+    const msg = err?.isStaticHost
+      ? 'Interactive in-app maps require the Node server (or Shared App URL). Tap below to view this walking route directly in Google Maps.'
+      : 'Unable to load route map right now. Check connection or open directly in Google Maps.';
+    setMapOverlayStatus(msg, true, true, fallbackUrl);
+    document.getElementById('mapTelemetryTime').textContent = 'Tap Open in Maps';
   }
 }
 
@@ -3405,33 +3244,24 @@ function renderRoutes() {
     selectedMapRouteId = rec.satRoute.id;
   }
 
+  document.getElementById('routesWeekTitle').textContent = `Week ${viewingWeek} Matched Routes`;
   const tmBtn = document.getElementById('routesTreadmillToggleBtn');
-  tmBtn.textContent = tmActive ? `Week ${viewingWeek}: Treadmill Backup On` : `Use Treadmill Backup (Week ${viewingWeek})`;
+  tmBtn.textContent = tmActive ? `Week ${viewingWeek}: Treadmill On` : `Treadmill Backup`;
 
   document.getElementById('weeklyRoutePairBox').innerHTML = `
-    <div style="padding:12px 14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; gap:10px;">
+    <div class="route-match-tile">
       <div style="min-width:0;">
-        <div class="meta-line" style="margin-top:0; color:#F7D488; font-weight:600;">
-          <span>Week ${viewingWeek} Long Run</span>
-          <span aria-hidden="true">·</span>
-          <span>${rec.satRoute.regionLabel}</span>
-        </div>
-        <div style="font-size:15.5px; font-weight:700; color:#FFFFFF; margin-top:3px;">${rec.satRoute.name}</div>
-        <div style="font-size:12px; color:#D4EAE0; margin-top:4px;">${w.satDur} (${w.satRatio}) · ${rec.satRoute.surface}</div>
+        <div class="meta-line" style="margin-top:0; color:#F7D488; font-weight:600; font-size:11.5px;">Long Run · ${w.satDur}</div>
+        <div style="font-size:14.5px; font-weight:700; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${rec.satRoute.name}</div>
       </div>
-      <button class="coach-btn-outline" data-pick-map="${rec.satRoute.id}" style="min-height:40px; padding:6px 10px; font-size:12px; flex-shrink:0;">Map</button>
+      <button class="coach-btn-outline" data-pick-map="${rec.satRoute.id}" style="min-height:38px; padding:5px 10px; font-size:12px; flex-shrink:0;">${rec.satRoute.treadmill ? 'Specs' : 'Map'}</button>
     </div>
-    <div style="padding:12px 14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; gap:10px;">
+    <div class="route-match-tile">
       <div style="min-width:0;">
-        <div class="meta-line" style="margin-top:0; color:#C7E3D1; font-weight:600;">
-          <span>Week ${viewingWeek} Midweek Run</span>
-          <span aria-hidden="true">·</span>
-          <span>${rec.wedRoute.regionLabel}</span>
-        </div>
-        <div style="font-size:15.5px; font-weight:700; color:#FFFFFF; margin-top:3px;">${rec.wedRoute.name}</div>
-        <div style="font-size:12px; color:#D4EAE0; margin-top:4px;">${w.wedDur} (${w.wedRatio}) · ${rec.wedRoute.lit ? 'Lit / Indoor safe after work' : rec.wedRoute.surface}</div>
+        <div class="meta-line" style="margin-top:0; color:#C7E3D1; font-weight:600; font-size:11.5px;">Midweek · ${w.wedDur}</div>
+        <div style="font-size:14.5px; font-weight:700; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${rec.wedRoute.name}</div>
       </div>
-      <button class="coach-btn-outline" data-pick-map="${rec.wedRoute.id}" style="min-height:40px; padding:6px 10px; font-size:12px; flex-shrink:0;">${rec.wedRoute.treadmill ? 'Specs' : 'Map'}</button>
+      <button class="coach-btn-outline" data-pick-map="${rec.wedRoute.id}" style="min-height:38px; padding:5px 10px; font-size:12px; flex-shrink:0;">${rec.wedRoute.treadmill ? 'Specs' : 'Map'}</button>
     </div>
   `;
 
@@ -3447,7 +3277,7 @@ function renderRoutes() {
     const r = ROUTES.find(rt => rt.weeks.includes(item.n)) || ROUTES[0];
     const isSel = item.n === viewingWeek;
     return `
-      <button class="btn btn-secondary" data-stirling-wk="${item.n}" data-stirling-route="${r.id}" style="min-height:56px; flex-direction:column; align-items:flex-start; gap:2px; padding:9px 10px; text-align:left; white-space:normal; ${isSel ? 'border-color:var(--stirling-green); background:var(--stirling-tint);' : ''}">
+      <button class="btn btn-secondary" data-stirling-wk="${item.n}" data-stirling-route="${r.id}" style="min-height:52px; flex-direction:column; align-items:flex-start; gap:2px; padding:8px 10px; text-align:left; white-space:normal; ${isSel ? 'border-color:var(--stirling-green); background:var(--stirling-tint);' : ''}">
         <span class="tabular" style="font-family:var(--font-mono); font-size:10.5px; color:var(--stirling-emerald);">Wk ${item.n} · ${item.dates.split('–')[0].trim()}</span>
         <span style="font-size:12px; font-weight:600; color:var(--ink); line-height:1.25;">${r.name}</span>
       </button>
@@ -3464,7 +3294,7 @@ function renderRoutes() {
     });
   });
 
-  // Filtered directory
+  // Filtered directory (condensed with tap-to-expand details)
   const q = (document.getElementById('routeSearchInput').value || '').toLowerCase().trim();
   const filtered = ROUTES.filter(r => {
     let fOk = true;
@@ -3479,62 +3309,64 @@ function renderRoutes() {
 
   const listEl = document.getElementById('routesDirectoryList');
   if (!filtered.length) {
-    listEl.innerHTML = `<div class="callout-note callout-green">No routes matched your filter. Try switching tabs or clearing the search box.</div>`;
-    return;
+    listEl.innerHTML = `<div class="callout-note callout-green">No routes matched. Try clearing search or switching filters.</div>`;
+  } else {
+    listEl.innerHTML = filtered.map(r => {
+      const count = STATE.routeRuns[r.id] || 0;
+      const isOnMap = selectedMapRouteId === r.id;
+      const isOpen = expandedRouteId === r.id;
+      return `
+        <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div style="flex:1 1 auto; min-width:0;">
+              <div class="meta-line" style="margin-top:0; font-size:11.5px;">
+                <strong style="color:var(--stirling-emerald);">${r.regionLabel}</strong>
+                <span aria-hidden="true">·</span>
+                <span class="tabular">${r.dist.split('(')[0].trim()}</span>
+                ${r.lit ? '<span aria-hidden="true">·</span><span>Lit 5 PM</span>' : ''}
+              </div>
+              <div style="font-size:15px; font-weight:600; color:var(--ink); margin-top:2px;">${r.name}</div>
+            </div>
+            <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
+              <button class="btn ${isOnMap ? 'btn-primary' : 'btn-ghost'} btn-sm" data-map-route="${r.id}" data-is-tm="${r.treadmill ? '1' : '0'}" style="min-height:36px; padding:4px 9px;">${isOnMap ? 'On Map' : (r.treadmill ? 'Specs' : 'Map')}</button>
+              <button class="btn btn-secondary btn-sm tabular" data-log-route="${r.id}" style="min-height:36px; padding:4px 9px;">${count > 0 ? `✓ ${count}` : 'Log'}</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:4px;">
+            <span style="font-size:12px; color:var(--ink-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.surface}</span>
+            <button type="button" data-expand-route="${r.id}" style="background:none; border:none; padding:4px 2px; font-size:12px; font-weight:600; color:var(--stirling-emerald); cursor:pointer; flex-shrink:0;">${isOpen ? 'Hide notes' : 'Notes & Parking'}</button>
+          </div>
+          ${isOpen ? `
+            <div style="margin-top:6px; padding:8px 10px; background:var(--surface-subtle); border-radius:var(--radius-sm); font-size:12.5px; color:var(--ink-dim);">
+              <div><strong>Hip Note:</strong> ${r.hipNote}</div>
+              <div style="margin-top:3px;"><strong>Logistics:</strong> ${r.facilities}${r.weeks.length ? ` · Wks ${r.weeks.join(', ')}` : ''}</div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+
+    listEl.querySelectorAll('[data-map-route]').forEach(btn => {
+      btn.addEventListener('click', () => void selectRouteForMap(btn.dataset.mapRoute, true));
+    });
+
+    listEl.querySelectorAll('[data-log-route]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.logRoute;
+        STATE.routeRuns[id] = (STATE.routeRuns[id] || 0) + 1;
+        saveState();
+        playCue('check');
+        renderRoutes();
+      });
+    });
+
+    listEl.querySelectorAll('[data-expand-route]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        expandedRouteId = expandedRouteId === btn.dataset.expandRoute ? null : btn.dataset.expandRoute;
+        renderRoutes();
+      });
+    });
   }
-
-  listEl.innerHTML = filtered.map(r => {
-    const count = STATE.routeRuns[r.id] || 0;
-    const weekTags = r.weeks.length ? ` · Assigned Weeks ${r.weeks.join(', ')}` : '';
-    const isOnMap = selectedMapRouteId === r.id;
-    return `
-      <div style="padding:14px 0; border-bottom:1px solid var(--border-subtle);">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:10px;">
-          <div style="flex:1 1 200px; min-width:0;">
-            <div class="meta-line" style="margin-top:0;">
-              <strong style="color:var(--stirling-emerald);">${r.regionLabel}</strong>
-              <span aria-hidden="true">·</span>
-              <span>${r.area}</span>
-              <span aria-hidden="true">·</span>
-              <span class="tabular">${r.dist}</span>
-            </div>
-            <div style="font-size:16px; font-weight:600; color:var(--ink); margin-top:3px;">${r.name}</div>
-            <div class="meta-line" style="margin-top:3px;">
-              <span>${r.surface}</span>
-              ${r.lit ? '<span aria-hidden="true">·</span><span>Lit / Indoor 5 PM safe</span>' : '<span aria-hidden="true">·</span><span>Daylight recommended</span>'}
-              <span>${weekTags}</span>
-            </div>
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; flex-shrink:0; flex-wrap:wrap;">
-            <button class="btn ${isOnMap ? 'btn-primary' : 'btn-ghost'} btn-sm" data-map-route="${r.id}" data-is-tm="${r.treadmill ? '1' : '0'}">${isOnMap ? 'On Map' : (r.treadmill ? 'View Specs' : 'View Map')}</button>
-            <button class="btn btn-secondary btn-sm tabular" data-log-route="${r.id}">${count > 0 ? `Ran Here (${count})` : 'Log Run Here'}</button>
-          </div>
-        </div>
-        <div style="font-size:13px; color:var(--ink-dim); margin-top:8px;">
-          <strong>Hip &amp; Surface Note:</strong> ${r.hipNote}
-        </div>
-        <div style="font-size:12.5px; color:var(--ink-muted); margin-top:4px;">
-          <strong>Logistics:</strong> ${r.facilities}
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  listEl.querySelectorAll('[data-map-route]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      void selectRouteForMap(btn.dataset.mapRoute, true);
-    });
-  });
-
-  listEl.querySelectorAll('[data-log-route]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.logRoute;
-      STATE.routeRuns[id] = (STATE.routeRuns[id] || 0) + 1;
-      saveState();
-      playCue('check');
-      renderRoutes();
-    });
-  });
 
   if (activeTab === 'routes' && selectedMapRouteId) {
     void selectRouteForMap(selectedMapRouteId, false);
@@ -3564,8 +3396,30 @@ function switchPrepSubTab(sub) {
   activePrepSubTab = sub;
   document.getElementById('prep-sub-fuel').style.display = sub === 'fuel' ? 'block' : 'none';
   document.getElementById('prep-sub-race').style.display = sub === 'race' ? 'block' : 'none';
+  document.getElementById('prep-sub-hipkit').style.display = sub === 'hipkit' ? 'block' : 'none';
   document.querySelectorAll('#prepSubTabBar .filter-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.prepsub === sub);
+  });
+}
+
+function switchRoutesSection(sec) {
+  activeRouteSection = sec;
+  document.getElementById('routes-sec-directory').style.display = sec === 'directory' ? 'block' : 'none';
+  document.getElementById('routes-sec-stirling').style.display = sec === 'stirling' ? 'block' : 'none';
+  document.querySelectorAll('#routesSectionTabBar .filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.rsec === sec);
+  });
+}
+
+function wireSimpleDrawer(btnId, bodyId, lblId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const body = document.getElementById(bodyId);
+    const lbl = document.getElementById(lblId);
+    const open = body.style.display === 'block';
+    body.style.display = open ? 'none' : 'block';
+    if (lbl) lbl.textContent = open ? 'Show' : 'Hide';
   });
 }
 
@@ -3581,12 +3435,13 @@ document.getElementById('brandLink').addEventListener('click', (e) => {
 
 document.getElementById('openCoachQuickBtn').addEventListener('click', () => {
   switchTab('today');
-  setTimeout(() => {
-    document.getElementById('runCoachBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 50);
+  setCoachOpen(true);
 });
 
-// Navigation updates for Routes & Prep
+document.getElementById('closeCoachBtn').addEventListener('click', () => {
+  setCoachOpen(false);
+});
+
 document.getElementById('prevWeekBtn').addEventListener('click', () => {
   if (viewingWeek > 1) {
     viewingWeek--;
@@ -3613,6 +3468,10 @@ document.getElementById('routesTreadmillToggleBtn').addEventListener('click', ()
   renderToday();
 });
 
+document.getElementById('routeMapRetryBtn').addEventListener('click', () => {
+  if (selectedMapRouteId) void selectRouteForMap(selectedMapRouteId, false);
+});
+
 document.getElementById('mapGestureToggleBtn').addEventListener('click', () => {
   mapGestureMode = mapGestureMode === 'cooperative' ? 'greedy' : 'cooperative';
   document.getElementById('mapGestureToggleBtn').textContent =
@@ -3622,27 +3481,32 @@ document.getElementById('mapGestureToggleBtn').addEventListener('click', () => {
 
 document.getElementById('mapTypeToggleBtn').addEventListener('click', () => {
   mapTerrainMode = !mapTerrainMode;
-  document.getElementById('mapTypeToggleBtn').textContent = mapTerrainMode ? 'Road Map' : 'Terrain View';
+  document.getElementById('mapTypeToggleBtn').textContent = mapTerrainMode ? 'Road' : 'Terrain';
   if (routeGoogleMap) routeGoogleMap.setMapTypeId(mapTerrainMode ? 'terrain' : 'roadmap');
 });
 
 document.getElementById('mapExpandToggleBtn').addEventListener('click', () => {
   mapExpandedMode = !mapExpandedMode;
   document.getElementById('routeGoogleMap').classList.toggle('expanded', mapExpandedMode);
-  document.getElementById('mapExpandToggleBtn').textContent = mapExpandedMode ? 'Compact Map' : 'Taller Map';
+  document.getElementById('mapExpandToggleBtn').textContent = mapExpandedMode ? 'Compact' : 'Taller';
+  if (routeGoogleMap) {
+    setTimeout(() => google.maps.event.trigger(routeGoogleMap, 'resize'), 220);
+  }
 });
 
 document.getElementById('mapFitRouteBtn').addEventListener('click', () => {
   if (routeGoogleMap && activeRouteViewport) {
-    routeGoogleMap.fitBounds(activeRouteViewport, { top: 36, right: 24, bottom: 36, left: 24 });
+    routeGoogleMap.fitBounds(activeRouteViewport, { top: 32, right: 20, bottom: 32, left: 20 });
   }
 });
 
 document.getElementById('tmOpenCoachBtn').addEventListener('click', () => {
   switchTab('today');
-  setTimeout(() => {
-    document.getElementById('runCoachBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 50);
+  setCoachOpen(true);
+});
+
+document.querySelectorAll('#routesSectionTabBar .filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchRoutesSection(tab.dataset.rsec));
 });
 
 document.querySelectorAll('#routeFilterBar .filter-tab').forEach(tab => {
@@ -3659,6 +3523,11 @@ document.getElementById('routeSearchInput').addEventListener('input', renderRout
 document.querySelectorAll('#prepSubTabBar .filter-tab').forEach(tab => {
   tab.addEventListener('click', () => switchPrepSubTab(tab.dataset.prepsub));
 });
+
+wireSimpleDrawer('deskWarmupToggleBtn', 'deskWarmupDrawer', 'deskWarmupToggleLbl');
+wireSimpleDrawer('sundayPrepToggleBtn', 'sundayPrepDrawer', 'sundayPrepToggleLbl');
+wireSimpleDrawer('bagDrawerToggleBtn', 'bagDrawerBody', 'bagDrawerLbl');
+wireSimpleDrawer('raceDrawerToggleBtn', 'raceDrawerBody', 'raceDrawerLbl');
 
 document.getElementById('toggleSwapBtn').addEventListener('click', () => {
   swapPanelOpen = !swapPanelOpen;
@@ -3686,7 +3555,6 @@ document.querySelectorAll('.hip-state-btn').forEach(btn => {
   });
 });
 
-// Coach buttons
 document.getElementById('coachRunSelector').addEventListener('change', loadCoachRun);
 
 document.getElementById('coachPlayBtn').addEventListener('click', () => {
@@ -3714,7 +3582,6 @@ document.getElementById('coachPlayBtn').addEventListener('click', () => {
 document.getElementById('coachSkipBtn').addEventListener('click', advanceCoachStep);
 document.getElementById('coachResetBtn').addEventListener('click', loadCoachRun);
 
-// Plan filter tabs
 document.querySelectorAll('#planFilterBar .filter-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('#planFilterBar .filter-tab').forEach(t => t.classList.remove('active'));
@@ -3724,7 +3591,6 @@ document.querySelectorAll('#planFilterBar .filter-tab').forEach(tab => {
   });
 });
 
-// Strength tabs & timer
 document.querySelectorAll('#strengthTabBar .filter-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     activeStrengthSplit = +tab.dataset.split;
@@ -3746,7 +3612,6 @@ document.getElementById('liftTimerToggleBtn').addEventListener('click', () => {
   }
 });
 
-// Fuel controls
 document.querySelectorAll('#fuelFilterBar .filter-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('#fuelFilterBar .filter-tab').forEach(t => t.classList.remove('active'));
@@ -3759,11 +3624,9 @@ document.querySelectorAll('#fuelFilterBar .filter-tab').forEach(tab => {
 document.getElementById('fuelSearchInput').addEventListener('input', renderFuel);
 document.getElementById('fuelDurationSlider').addEventListener('input', updateFuelCalc);
 
-// Pace planner
 document.getElementById('paceRatioSelect').addEventListener('change', updatePacePlanner);
 document.getElementById('jogPaceSelect').addEventListener('change', updatePacePlanner);
 
-// Safe inline reset
 document.getElementById('resetInitBtn').addEventListener('click', () => {
   document.getElementById('resetConfirmBar').style.display = 'flex';
 });
@@ -3787,7 +3650,7 @@ document.getElementById('resetConfirmBtn').addEventListener('click', () => {
   loadState();
   viewingWeek = realCurrentWeek();
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+  setInterval(updateCountdown, 60000);
   renderToday();
   renderRoutes();
   renderPlan();
