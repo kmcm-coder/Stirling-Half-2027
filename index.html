@@ -1858,9 +1858,9 @@ const MEAL_RECIPES = {
       note: '45g porridge oats cooked with milk/water, stir in 120ml liquid egg whites over low heat until thick, swirl in 1–2 tbsp mincemeat.',
       nutrients: '24g protein · Slow carbs · Iron & B vitamins',
       items: [
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Porridge oats' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Porridge oats', pantry: true },
         { cat: 'Dairy, Eggs & Chilled', item: 'Carton liquid egg whites' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Christmas mincemeat jar' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Christmas mincemeat jar', pantry: true },
         { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' }
       ]
     },
@@ -1871,10 +1871,10 @@ const MEAL_RECIPES = {
       note: '45g oats with milk, sliced ripe banana, pinch of cinnamon, plus optional spoonful of Greek yoghurt or honey.',
       nutrients: 'Potassium · Fast & slow carbs · Calcium',
       items: [
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Porridge oats' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Porridge oats', pantry: true },
         { cat: 'Veg, Salad & Fruit', item: 'Bananas' },
         { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt' }
+        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt (large tub)' }
       ]
     },
     {
@@ -1884,7 +1884,7 @@ const MEAL_RECIPES = {
       note: 'Favourite high-fibre or granola cereal with cold milk and fresh berries or dried fruit.',
       nutrients: 'Fortified iron & B12 · Vitamin C',
       items: [
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Breakfast cereal / granola' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Breakfast cereal / granola' },
         { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' },
         { cat: 'Veg, Salad & Fruit', item: 'Berries (fresh or frozen)' }
       ]
@@ -1896,13 +1896,13 @@ const MEAL_RECIPES = {
       name: 'Roasted Tomato & Chorizo Soup + Cheese Toastie',
       tag: 'Hot Lunch · 4 min',
       temp: 'Hot',
-      note: 'Warm carton soup (roasted tomato, chicken & veg, or spiced butternut) paired with a crusty cheddar & ham toastie on sourdough.',
+      note: 'Warm carton soup (roasted tomato, chicken & veg, or spiced butternut) paired with a crusty cheddar & ham/chorizo toastie on sourdough.',
       nutrients: 'Lycopene (Vit C/A) · Protein & carbs',
       items: [
         { cat: 'Dairy, Eggs & Chilled', item: 'Fresh soup carton (tomato/chicken/veg)' },
         { cat: 'Carbs, Pasta & Bakery', item: 'Sourdough loaf or crusty rolls' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
-        { cat: 'Meat, Fish & Shellfish', item: 'Cooked ham or chorizo slices' }
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese (block)' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Deli ham or sliced roast pork' }
       ]
     },
     {
@@ -1913,11 +1913,12 @@ const MEAL_RECIPES = {
       note: 'Microwave baking potato at the office; load with spring-onion tuna mayo, sweetcorn, melted cheddar & side greens.',
       nutrients: 'Omega-3 · Vitamin B6 & potassium · Iron',
       items: [
-        { cat: 'Veg, Salad & Fruit', item: 'Baking potatoes' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baking / jacket potatoes' },
         { cat: 'Meat, Fish & Shellfish', item: 'Tinned tuna' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Tinned sweetcorn' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Light mayo & spring onions' }
+        { cat: 'Veg, Salad & Fruit', item: 'Sweetcorn (tinned or frozen)' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese (block)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Spring onions' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Light mayo', pantry: true }
       ]
     },
     {
@@ -1925,13 +1926,15 @@ const MEAL_RECIPES = {
       name: 'Hot King Prawn, Chilli & Ginger Miso Noodle Pot',
       tag: 'Hot Lunch · 4 min',
       temp: 'Hot',
-      note: 'Pre-cooked rice noodles in a tub with miso paste, sweet chilli/sriracha, frozen edamame/peas, spring onion & king prawns—just add boiling kettle water!',
+      note: 'Pre-cooked rice noodles in a tub with miso paste, sweet chilli/sriracha, frozen peas, spring onion & cooked king prawns—just add boiling kettle water!',
       nutrients: 'Lean shellfish protein · Zinc & selenium',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Cooked king prawns' },
         { cat: 'Carbs, Pasta & Bakery', item: 'Quick rice noodle nests' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Miso paste & chilli flakes / sriracha' },
-        { cat: 'Veg, Salad & Fruit', item: 'Spring onions & sugar snap peas' }
+        { cat: 'Veg, Salad & Fruit', item: 'Spring onions' },
+        { cat: 'Veg, Salad & Fruit', item: 'Frozen peas' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Miso paste', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Chilli flakes / sriracha', pantry: true }
       ]
     },
     {
@@ -1940,7 +1943,7 @@ const MEAL_RECIPES = {
       tag: 'Hot Leftovers · 3 min',
       temp: 'Hot',
       note: 'Reheat an extra portion from dinner—creamy pesto, smoky chorizo, tender chicken & wilted spinach.',
-      nutrients: 'Zero extra Sunday prep · Iron & folate',
+      nutrients: 'Zero extra cost · Iron & folate',
       items: []
     },
     {
@@ -1948,41 +1951,45 @@ const MEAL_RECIPES = {
       name: 'Smoked Salmon, Cream Cheese & Cucumber Bagel Box',
       tag: 'Cold Lunch · 3 min',
       temp: 'Cold',
-      note: 'Toasted or fresh bagel with herb cream cheese, smoked salmon, cucumber ribbons, lemon & black pepper + cherry tomatoes.',
+      note: 'Toasted or fresh bagel with cream cheese, smoked salmon, cucumber ribbons, lemon & black pepper + cherry tomatoes.',
       nutrients: 'Omega-3 & Vitamin D · Joint-friendly fats',
       items: [
         { cat: 'Carbs, Pasta & Bakery', item: 'Bagels (pack of 4–5)' },
         { cat: 'Meat, Fish & Shellfish', item: 'Smoked salmon slices' },
         { cat: 'Dairy, Eggs & Chilled', item: 'Soft cream cheese' },
-        { cat: 'Veg, Salad & Fruit', item: 'Cucumber & cherry tomatoes' }
+        { cat: 'Veg, Salad & Fruit', item: 'Cucumber' },
+        { cat: 'Veg, Salad & Fruit', item: 'Cherry tomatoes' }
       ]
     },
     {
       id: 'ln-sweet-chilli-rice',
-      name: 'Cold Sweet-Chilli Chicken, Mango & Crispy Noodle/Rice Bowl',
+      name: 'Cold Sweet-Chilli Chicken, Pepper & Cucumber Rice Bowl',
       tag: 'Cold Lunch · 4 min',
       temp: 'Cold',
-      note: 'Flavoured microwave rice pouch (cooled) tossed with chargrilled chicken, red pepper, cucumber, sweet chilli & lime.',
+      note: 'Microwave rice pouch (cooled) tossed with chargrilled chicken, crisp red pepper, cucumber, sweet chilli & lime.',
       nutrients: 'Vitamin C (peppers/lime) · High-energy carbs',
       items: [
-        { cat: 'Meat, Fish & Shellfish', item: 'Pre-cooked chargrilled chicken strips' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave basmati/coconut rice pouches' },
-        { cat: 'Veg, Salad & Fruit', item: 'Red peppers & cucumber' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Sweet chilli sauce & fresh lime' }
+        { cat: 'Meat, Fish & Shellfish', item: 'Chargrilled chicken strips' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave rice pouches' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers' },
+        { cat: 'Veg, Salad & Fruit', item: 'Cucumber' },
+        { cat: 'Veg, Salad & Fruit', item: 'Fresh limes' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Sweet chilli sauce', pantry: true }
       ]
     },
     {
       id: 'ln-ciabatta-pork',
-      name: 'Honey-Mustard Roast Pork, Crispy Bacon & Rocket Ciabatta',
+      name: 'Honey-Mustard Pork, Crispy Bacon & Spinach Ciabatta',
       tag: 'Cold/Toasted · 4 min',
       temp: 'Cold',
-      note: 'Warm or cold crusty ciabatta roll with sliced roast pork or ham, honey mustard, crispy bacon bits & peppery rocket.',
+      note: 'Warm or cold crusty ciabatta roll with sliced roast pork or ham, honey mustard & fresh spinach leaves.',
       nutrients: 'B1 & B12 vitamins · Satisfying crunch',
       items: [
         { cat: 'Carbs, Pasta & Bakery', item: 'Ciabatta rolls' },
-        { cat: 'Meat, Fish & Shellfish', item: 'Sliced roast pork or deli ham' },
-        { cat: 'Veg, Salad & Fruit', item: 'Rocket / baby spinach bag' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Wholegrain honey mustard' }
+        { cat: 'Meat, Fish & Shellfish', item: 'Deli ham or sliced roast pork' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baby spinach' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Wholegrain mustard', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Honey', pantry: true }
       ]
     }
   ],
@@ -1991,94 +1998,111 @@ const MEAL_RECIPES = {
       id: 'dn-prawn-linguine',
       name: 'Garlic Butter, Chilli & Lemon King Prawn Linguine',
       tag: 'Shellfish · 15 min',
-      note: 'Sizzle king prawns with garlic butter, chilli flakes, cherry tomatoes, lemon zest & fresh spinach; toss with linguine.',
+      note: 'Sizzle king prawns with garlic butter, chilli flakes, cherry tomatoes, lemon zest & fresh spinach; toss with pasta.',
       nutrients: 'Selenium, iodine & Vitamin C · Fast recovery carbs',
       items: [
-        { cat: 'Meat, Fish & Shellfish', item: 'Raw or cooked king prawns (big pack)' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Linguine or spaghetti' },
-        { cat: 'Veg, Salad & Fruit', item: 'Cherry tomatoes, baby spinach & garlic' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Raw king prawns' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Pasta (linguine or penne)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Cherry tomatoes' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baby spinach' },
         { cat: 'Veg, Salad & Fruit', item: 'Fresh lemons' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Butter / garlic butter' }
+        { cat: 'Veg, Salad & Fruit', item: 'Garlic' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Butter' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Chilli flakes / sriracha', pantry: true }
       ]
     },
     {
       id: 'dn-sticky-pork',
       name: 'Sticky Honey-Garlic Pork Stir-Fry & Noodles',
       tag: 'Pork · 18 min',
-      note: 'Pork strips seared hot with ginger, garlic, honey, soy & rice vinegar, tossed with egg noodles, peppers & tenderstem broccoli.',
+      note: 'Pork strips seared hot with ginger, garlic, honey & soy, tossed with egg noodles, peppers & tenderstem broccoli.',
       nutrients: 'B1/zinc (pork) · Vitamin C & K (greens/peppers)',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Pork loin steaks or stir-fry strips' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Straight-to-wok egg noodles' },
-        { cat: 'Veg, Salad & Fruit', item: 'Tenderstem broccoli & mixed peppers' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Soy sauce, honey & fresh ginger' }
+        { cat: 'Carbs, Pasta & Bakery', item: 'Egg noodles' },
+        { cat: 'Veg, Salad & Fruit', item: 'Tenderstem broccoli' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers' },
+        { cat: 'Veg, Salad & Fruit', item: 'Garlic' },
+        { cat: 'Veg, Salad & Fruit', item: 'Fresh ginger' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Soy sauce', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Honey', pantry: true }
       ]
     },
     {
       id: 'dn-cajun-salmon',
-      name: 'Crispy Cajun Salmon Traybake, Baby Potatoes & Greens',
+      name: 'Crispy Cajun Salmon Traybake, Baby Potatoes & Broccoli',
       tag: 'Fish · 22 min',
-      note: 'Roast halved baby potatoes with olive oil & Cajun spice; add salmon fillets for the last 12 min + tenderstem broccoli & sweetcorn.',
+      note: 'Roast halved baby potatoes with olive oil & Cajun spice; add salmon fillets for the last 12 min + tenderstem broccoli.',
       nutrients: 'Natural Vitamin D & Omega-3 · Potassium',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Salmon fillets (2-pack)' },
         { cat: 'Veg, Salad & Fruit', item: 'Baby potatoes' },
         { cat: 'Veg, Salad & Fruit', item: 'Tenderstem broccoli' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Cajun seasoning & olive oil' }
+        { cat: 'Cupboard & Sweet Treats', item: 'Cajun seasoning', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Olive oil', pantry: true }
       ]
     },
     {
       id: 'dn-chicken-chorizo-pasta',
       name: 'Creamy Chicken, Chorizo & Spinach Pesto Pasta',
       tag: 'Chicken + Pork · 20 min',
-      note: 'Fry diced chorizo & chicken breast, stir through green/red pesto, light crème fraîche & spinach. Make double for tomorrow’s hot lunch!',
+      note: 'Fry diced chorizo & chicken breast, stir through pesto, light crème fraîche & spinach. Make double for tomorrow’s hot lunch!',
       nutrients: '40g+ protein · Iron & Vitamin A (spinach)',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Chicken breasts' },
         { cat: 'Meat, Fish & Shellfish', item: 'Cooking chorizo ring' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Penne or fusilli pasta' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Green or red pesto jar' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Pasta (linguine or penne)' },
         { cat: 'Dairy, Eggs & Chilled', item: 'Light crème fraîche' },
-        { cat: 'Veg, Salad & Fruit', item: 'Baby spinach bag' }
+        { cat: 'Veg, Salad & Fruit', item: 'Baby spinach' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Pesto jar', pantry: true }
       ]
     },
     {
       id: 'dn-beef-teriyaki',
-      name: 'Sizzling Beef Teriyaki, Peppers & Sesame Jasmine Rice',
+      name: 'Sizzling Beef Teriyaki, Peppers & Jasmine Rice',
       tag: 'Beef · 15 min',
-      note: 'Quick-fry steak strips with teriyaki glaze, onions, peppers & mange tout over fluffy jasmine rice.',
+      note: 'Quick-fry steak strips with teriyaki glaze, mixed peppers & peas/mange tout over fluffy jasmine rice.',
       nutrients: 'High iron & B12 (beef) · Vitamin C (peppers)',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Sirloin or rump steak strips' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Jasmine rice (microwave pouches or dry)' },
-        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers & mange tout' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Teriyaki glaze & sesame seeds' }
+        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave rice pouches' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mange tout or baby corn' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Teriyaki glaze', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Sesame seeds', pantry: true }
       ]
     },
     {
       id: 'dn-crispy-chicken-thighs',
-      name: 'Honey-Mustard Chicken Thighs, Herb Wedges & Peas/Corn',
+      name: 'Honey-Mustard Chicken Thighs, Herb Wedges & Sweetcorn',
       tag: 'Chicken · 25 min',
-      note: 'Juicy boneless chicken thighs glazed in honey, garlic & wholegrain mustard with paprika potato wedges and buttered peas.',
+      note: 'Juicy boneless chicken thighs (great value!) glazed in honey, garlic & mustard with paprika potato wedges, peas & sweetcorn.',
       nutrients: 'Deep flavor · Zinc, Vitamin C & slow carbs',
       items: [
-        { cat: 'Meat, Fish & Shellfish', item: 'Boneless skinless chicken thighs' },
-        { cat: 'Veg, Salad & Fruit', item: 'Baking potatoes or Maris Pipers' },
-        { cat: 'Veg, Salad & Fruit', item: 'Frozen peas / sweetcorn' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Smoked paprika, honey & mustard' }
+        { cat: 'Meat, Fish & Shellfish', item: 'Boneless chicken thighs' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baking / jacket potatoes' },
+        { cat: 'Veg, Salad & Fruit', item: 'Sweetcorn (tinned or frozen)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Frozen peas' },
+        { cat: 'Veg, Salad & Fruit', item: 'Garlic' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Honey', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Wholegrain mustard', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Smoked paprika', pantry: true }
       ]
     },
     {
       id: 'dn-thai-prawn-curry',
       name: 'Fragrant Thai Red King Prawn & Veg Curry w/ Rice',
       tag: 'Shellfish · 15 min',
-      note: 'Thai red curry paste simmered with light coconut milk, king prawns, baby corn, peppers & lime juice over rice.',
+      note: 'Thai red curry paste simmered with light coconut milk, raw king prawns, peppers, baby corn & lime juice over rice.',
       nutrients: 'Iodine, B12 & antioxidants · Gentle pre-run meal',
       items: [
         { cat: 'Meat, Fish & Shellfish', item: 'Raw king prawns' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Thai red curry paste & light coconut milk' },
-        { cat: 'Veg, Salad & Fruit', item: 'Baby corn & red peppers' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave basmati/jasmine rice pouches' }
+        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mange tout or baby corn' },
+        { cat: 'Veg, Salad & Fruit', item: 'Fresh limes' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave rice pouches' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Thai red curry paste', pantry: true },
+        { cat: 'Cupboard & Sweet Treats', item: 'Light coconut milk', pantry: true }
       ]
     },
     {
@@ -2088,9 +2112,11 @@ const MEAL_RECIPES = {
       note: 'Beef or crispy chicken brioche burger with oven chips & slaw—or your favourite restaurant meal with plenty of carbs & water.',
       nutrients: 'Social balance · Glycogen top-up for Sat run',
       items: [
-        { cat: 'Meat, Fish & Shellfish', item: 'Quality beef burgers or chicken fillets' },
-        { cat: 'Carbs, Pasta & Bakery', item: 'Brioche burger buns & oven chips' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Burger cheese & coleslaw' }
+        { cat: 'Meat, Fish & Shellfish', item: 'Beef burgers or chicken fillets' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Brioche burger buns' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Oven chips' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese (block)' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Coleslaw' }
       ]
     }
   ],
@@ -2102,9 +2128,9 @@ const MEAL_RECIPES = {
       note: 'Warm frozen berries for 45s so they go syrupy, spoon over thick Greek yoghurt & grate 2 squares of dark chocolate on top.',
       nutrients: 'Calcium, Vitamin C & antioxidants',
       items: [
-        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt (big tub)' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt (large tub)' },
         { cat: 'Veg, Salad & Fruit', item: 'Berries (fresh or frozen)' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Dark chocolate bar (70%)' }
+        { cat: 'Cupboard & Sweet Treats', item: 'Dark chocolate (70%)' }
       ]
     },
     {
@@ -2114,9 +2140,9 @@ const MEAL_RECIPES = {
       note: '2 dark or milk chocolate rice cakes topped with sliced banana and a thin drizzle of peanut butter.',
       nutrients: 'Fast pre-run energy · Potassium & crunch',
       items: [
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Chocolate-coated rice cakes' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Chocolate rice cakes' },
         { cat: 'Veg, Salad & Fruit', item: 'Bananas' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Peanut butter' }
+        { cat: 'Cupboard & Sweet Treats', item: 'Peanut butter', pantry: true }
       ]
     },
     {
@@ -2127,7 +2153,8 @@ const MEAL_RECIPES = {
       nutrients: 'Low-fat energy · Iron & Vitamin C',
       items: [
         { cat: 'Carbs, Pasta & Bakery', item: 'Malt loaf (Soreen)' },
-        { cat: 'Veg, Salad & Fruit', item: 'Clementines / easy peelers' }
+        { cat: 'Veg, Salad & Fruit', item: 'Clementines / easy peelers' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Butter' }
       ]
     },
     {
@@ -2138,7 +2165,7 @@ const MEAL_RECIPES = {
       nutrients: '15–20g protein · Satisfies real sweet cravings',
       items: [
         { cat: 'Dairy, Eggs & Chilled', item: 'Chilled protein puddings / mousses' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Biscoff or favourite biscuits' }
+        { cat: 'Cupboard & Sweet Treats', item: 'Biscoff or favourite biscuits' }
       ]
     },
     {
@@ -2149,11 +2176,35 @@ const MEAL_RECIPES = {
       nutrients: 'Fibre, calcium & steady blood sugar',
       items: [
         { cat: 'Veg, Salad & Fruit', item: 'Pink Lady apples' },
-        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
-        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Oat flapjack bites' }
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese (block)' },
+        { cat: 'Cupboard & Sweet Treats', item: 'Oat flapjack bites' }
       ]
     }
   ]
+};
+
+const SHOPPING_PACK_HINTS = {
+  'Cucumber': '1 whole',
+  'Tenderstem broccoli': '1–2 packs',
+  'Baby spinach': '1 large bag',
+  'Mixed peppers': '1 pack of 3',
+  'Cherry tomatoes': '1 punnet',
+  'Spring onions': '1 bunch',
+  'Baking / jacket potatoes': '1 bag (4-pack)',
+  'Mature cheddar cheese (block)': '1 block',
+  'Pasta (linguine or penne)': '1 bag (500g)',
+  'Microwave rice pouches': '3 pouches',
+  'Sweetcorn (tinned or frozen)': '1 tin / frozen bag',
+  'Frozen peas': '1 bag',
+  'Raw king prawns': '1–2 packs',
+  'Garlic': '1 bulb',
+  'Butter': '1 pack',
+  'Fresh limes': '1–2 limes',
+  'Fresh lemons': '1–2 lemons',
+  'Deli ham or sliced roast pork': '1–2 packs',
+  'Greek yoghurt (large tub)': '1 big tub',
+  'Berries (fresh or frozen)': '1–2 bags/punnets',
+  'Bananas': '1 bunch (5–6)'
 };
 
 const FUEL_ITEMS = [
@@ -3577,8 +3628,8 @@ function getDefaultMealPlan() {
   return {
     Mon: { breakfast: bf, lunch: 'ln-soup-toastie',    dinner: 'dn-chicken-chorizo-pasta', snack: 'sn-banana-choc-ricecake' },
     Tue: { breakfast: bf, lunch: 'ln-leftover-pasta',  dinner: 'dn-cajun-salmon',          snack: 'sn-yoghurt-berries-choc' },
-    Wed: { breakfast: bf, lunch: 'ln-jacket-tuna',     dinner: 'dn-beef-teriyaki',         snack: 'sn-banana-choc-ricecake' },
-    Thu: { breakfast: bf, lunch: 'ln-prawn-noodle-pot',dinner: 'dn-sticky-pork',           snack: 'sn-maltloaf-clementine' },
+    Wed: { breakfast: bf, lunch: 'ln-jacket-tuna',     dinner: 'dn-sticky-pork',           snack: 'sn-banana-choc-ricecake' },
+    Thu: { breakfast: bf, lunch: 'ln-prawn-noodle-pot',dinner: 'dn-thai-prawn-curry',      snack: 'sn-maltloaf-clementine' },
     Fri: { breakfast: bf, lunch: 'ln-bagel-salmon',    dinner: 'dn-friday-social',         snack: 'sn-apple-cheddar' },
     Sat: { breakfast: 'bf-banana-porridge', lunch: 'ln-sweet-chilli-rice', dinner: 'dn-prawn-linguine', snack: 'sn-biscoff-mousse' },
     Sun: { breakfast: bf, lunch: 'ln-ciabatta-pork',   dinner: 'dn-crispy-chicken-thighs', snack: 'sn-yoghurt-berries-choc' }
@@ -3642,53 +3693,73 @@ function buildShoppingListData() {
     ['breakfast', 'lunch', 'dinner', 'snack'].forEach(cat => {
       const r = findRecipe(cat, dayPlan[cat]);
       (r.items || []).forEach(ing => {
-        const k = `${ing.cat}::${ing.item}`;
-        if (!counts.has(k)) counts.set(k, { cat: ing.cat, item: ing.item, count: 0 });
-        counts.get(k).count++;
+        // Key purely on canonical lowercase ingredient name so no duplicate ever appears
+        const normKey = ing.item.trim().toLowerCase();
+        if (!counts.has(normKey)) {
+          counts.set(normKey, { cat: ing.cat, item: ing.item, pantry: !!ing.pantry, count: 0 });
+        }
+        counts.get(normKey).count++;
       });
     });
   });
 
-  const groups = [
+  const freshGroups = [
     'Meat, Fish & Shellfish',
     'Veg, Salad & Fruit',
     'Carbs, Pasta & Bakery',
     'Dairy, Eggs & Chilled',
-    'Cupboard, Spices & Sweet Treats'
+    'Cupboard & Sweet Treats'
   ];
 
   const grouped = {};
-  groups.forEach(g => { grouped[g] = []; });
+  freshGroups.forEach(g => { grouped[g] = []; });
+  const pantryItems = [];
+  let sharedCount = 0;
+
   counts.forEach(entry => {
-    if (!grouped[entry.cat]) grouped[entry.cat] = [];
-    grouped[entry.cat].push(entry);
+    if (entry.count > 1 && !entry.pantry) sharedCount++;
+    if (entry.pantry) {
+      pantryItems.push(entry);
+    } else {
+      if (!grouped[entry.cat]) grouped[entry.cat] = [];
+      grouped[entry.cat].push(entry);
+    }
   });
 
-  return { groups, grouped };
+  return { groups: freshGroups, grouped, pantryItems, sharedCount };
+}
+
+function formatShoppingEntryLabel(entry) {
+  const pack = SHOPPING_PACK_HINTS[entry.item];
+  if (pack && entry.count > 1) return `${pack} · covers ${entry.count} meals`;
+  if (pack) return pack;
+  if (entry.count > 1) return `covers ${entry.count} meals`;
+  return '';
 }
 
 function renderShoppingList() {
   const card = document.getElementById('shoppingListCard');
   if (card.style.display === 'none') return;
-  const { groups, grouped } = buildShoppingListData();
+  const { groups, grouped, pantryItems, sharedCount } = buildShoppingListData();
   if (!STATE.shoppingChecked) STATE.shoppingChecked = {};
 
-  let totalItems = 0;
+  let totalFresh = 0;
   const html = groups.map(g => {
     const items = grouped[g] || [];
     if (!items.length) return '';
-    totalItems += items.length;
+    totalFresh += items.length;
     return `
       <div style="margin-top:10px;">
         <div style="font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; color:var(--stirling-emerald); letter-spacing:0.03em; margin-bottom:4px;">${g}</div>
         ${items.map(entry => {
-          const chkKey = `${g}::${entry.item}`;
+          const chkKey = `fresh::${entry.item.toLowerCase()}`;
           const checked = !!STATE.shoppingChecked[chkKey];
-          const qtyLabel = entry.count > 1 ? ` <span class="tabular" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-muted);">(×${entry.count} meals)</span>` : '';
+          const hint = formatShoppingEntryLabel(entry);
+          const hintHtml = hint ? ` <span class="tabular" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-muted);">(${hint})</span>` : '';
           return `
             <div class="chk-row ${checked ? 'checked' : ''}" data-shop-key="${chkKey.replace(/"/g, '&quot;')}" style="min-height:36px; padding:5px 0;">
               <div class="chk-box">${checkSvg()}</div>
-              <div class="chk-text" style="font-size:13px;">${entry.item}${qtyLabel}</div>
+              <div class="chk-text" style="font-size:13px;">${entry.item}${hintHtml}</div>
             </div>
           `;
         }).join('')}
@@ -3696,9 +3767,29 @@ function renderShoppingList() {
     `;
   }).join('');
 
-  document.getElementById('shoppingListMeta').textContent = `${totalItems} essentials from your 7-day menu · Tap to tick or copy`;
+  const pantryHtml = pantryItems.length ? `
+    <div style="margin-top:12px; padding-top:8px; border-top:1px solid var(--border-subtle);">
+      <div style="font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; color:var(--ochil-gold); letter-spacing:0.03em; margin-bottom:4px;">Check Cupboard First (Only buy if low)</div>
+      ${pantryItems.map(entry => {
+        const chkKey = `pantry::${entry.item.toLowerCase()}`;
+        const checked = !!STATE.shoppingChecked[chkKey];
+        return `
+          <div class="chk-row ${checked ? 'checked' : ''}" data-shop-key="${chkKey.replace(/"/g, '&quot;')}" style="min-height:34px; padding:4px 0;">
+            <div class="chk-box">${checkSvg()}</div>
+            <div class="chk-text" style="font-size:12.5px; color:var(--ink-dim);">${entry.item}</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  ` : '';
+
+  const bannerHtml = sharedCount > 0
+    ? `<div class="callout-note callout-green" style="margin-bottom:6px; font-size:12px;"><strong>Budget-Smart Overlap:</strong> ${sharedCount} fresh ingredients are reused across multiple meals this week to cut cost &amp; waste.</div>`
+    : '';
+
+  document.getElementById('shoppingListMeta').textContent = `${totalFresh} weekly buys + ${pantryItems.length} pantry checks · No duplicates`;
   const body = document.getElementById('shoppingListBody');
-  body.innerHTML = html;
+  body.innerHTML = bannerHtml + html + pantryHtml;
 
   body.querySelectorAll('[data-shop-key]').forEach(row => {
     row.addEventListener('click', () => {
@@ -4730,30 +4821,40 @@ document.getElementById('defaultBreakfastSelect').addEventListener('change', (e)
 
 document.getElementById('shuffleMealWeekBtn').addEventListener('click', () => {
   const bf = STATE.defaultBreakfastId || 'bf-eggwhite-mincemeat';
-  const lunches = MEAL_RECIPES.lunch.filter(l => l.id !== 'ln-leftover-pasta').slice();
-  const dinners = MEAL_RECIPES.dinner.filter(d => d.id !== 'dn-friday-social').slice();
-  const snacks = MEAL_RECIPES.snack.slice();
-  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
-  shuffle(lunches);
-  shuffle(dinners);
-  shuffle(snacks);
+  // Budget-smart rotating templates that share fresh produce & proteins cleanly
+  const smartRotations = [
+    {
+      lunches: ['ln-soup-toastie', 'ln-leftover-pasta', 'ln-jacket-tuna', 'ln-prawn-noodle-pot', 'ln-bagel-salmon', 'ln-sweet-chilli-rice', 'ln-ciabatta-pork'],
+      dinners: ['dn-chicken-chorizo-pasta', 'dn-cajun-salmon', 'dn-sticky-pork', 'dn-thai-prawn-curry', 'dn-friday-social', 'dn-prawn-linguine', 'dn-crispy-chicken-thighs'],
+      snacks:  ['sn-banana-choc-ricecake', 'sn-yoghurt-berries-choc', 'sn-banana-choc-ricecake', 'sn-maltloaf-clementine', 'sn-apple-cheddar', 'sn-biscoff-mousse', 'sn-yoghurt-berries-choc']
+    },
+    {
+      lunches: ['ln-ciabatta-pork', 'ln-leftover-pasta', 'ln-sweet-chilli-rice', 'ln-jacket-tuna', 'ln-soup-toastie', 'ln-bagel-salmon', 'ln-prawn-noodle-pot'],
+      dinners: ['dn-chicken-chorizo-pasta', 'dn-beef-teriyaki', 'dn-thai-prawn-curry', 'dn-crispy-chicken-thighs', 'dn-friday-social', 'dn-cajun-salmon', 'dn-sticky-pork'],
+      snacks:  ['sn-apple-cheddar', 'sn-biscoff-mousse', 'sn-banana-choc-ricecake', 'sn-maltloaf-clementine', 'sn-yoghurt-berries-choc', 'sn-banana-choc-ricecake', 'sn-biscoff-mousse']
+    },
+    {
+      lunches: ['ln-bagel-salmon', 'ln-sweet-chilli-rice', 'ln-leftover-pasta', 'ln-soup-toastie', 'ln-jacket-tuna', 'ln-ciabatta-pork', 'ln-prawn-noodle-pot'],
+      dinners: ['dn-prawn-linguine', 'dn-chicken-chorizo-pasta', 'dn-beef-teriyaki', 'dn-cajun-salmon', 'dn-friday-social', 'dn-sticky-pork', 'dn-crispy-chicken-thighs'],
+      snacks:  ['sn-yoghurt-berries-choc', 'sn-maltloaf-clementine', 'sn-apple-cheddar', 'sn-banana-choc-ricecake', 'sn-biscoff-mousse', 'sn-banana-choc-ricecake', 'sn-yoghurt-berries-choc']
+    }
+  ];
+
+  // Pick a rotation different from current Monday dinner when possible
+  const currMonDin = ensureMealPlan().Mon.dinner;
+  const candidates = smartRotations.filter(r => r.dinners[0] !== currMonDin);
+  const chosen = candidates[Math.floor(Math.random() * candidates.length)] || smartRotations[0];
 
   const nextPlan = {};
   MEAL_DAYS.forEach((d, i) => {
     nextPlan[d] = {
       breakfast: d === 'Sat' ? 'bf-banana-porridge' : bf,
-      lunch: lunches[i % lunches.length].id,
-      dinner: d === 'Fri' ? 'dn-friday-social' : dinners[i % dinners.length].id,
-      snack: snacks[i % snacks.length].id
+      lunch: chosen.lunches[i],
+      dinner: chosen.dinners[i],
+      snack: chosen.snacks[i]
     };
   });
-  // Pair leftover pasta nicely if Chorizo Chicken Pasta lands Mon–Thu
-  for (let i = 0; i < 4; i++) {
-    if (nextPlan[MEAL_DAYS[i]].dinner === 'dn-chicken-chorizo-pasta') {
-      nextPlan[MEAL_DAYS[i + 1]].lunch = 'ln-leftover-pasta';
-      break;
-    }
-  }
+
   STATE.mealPlan = nextPlan;
   STATE.shoppingChecked = {};
   saveState();
@@ -4776,18 +4877,26 @@ document.getElementById('closeShoppingListBtn').addEventListener('click', () => 
 });
 
 document.getElementById('copyShoppingListBtn').addEventListener('click', async () => {
-  const { groups, grouped } = buildShoppingListData();
+  const { groups, grouped, pantryItems } = buildShoppingListData();
   const lines = ['ROUTE TO STIRLING — WEEKLY SHOPPING LIST', ''];
   groups.forEach(g => {
     const items = grouped[g] || [];
     if (!items.length) return;
     lines.push(g.toUpperCase());
     items.forEach(entry => {
-      const suffix = entry.count > 1 ? ` (x${entry.count} meals)` : '';
+      const hint = formatShoppingEntryLabel(entry);
+      const suffix = hint ? ` (${hint})` : '';
       lines.push(`- [ ] ${entry.item}${suffix}`);
     });
     lines.push('');
   });
+  if (pantryItems.length) {
+    lines.push('CHECK CUPBOARD FIRST (ONLY BUY IF LOW)');
+    pantryItems.forEach(entry => {
+      lines.push(`- [ ] ${entry.item}`);
+    });
+    lines.push('');
+  }
   const text = lines.join('\n');
   const statusEl = document.getElementById('shoppingCopyStatus');
   try {
