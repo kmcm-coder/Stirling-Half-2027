@@ -1227,6 +1227,23 @@
         </div>
 
         <div class="card" style="padding:12px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px;">
+            <h2 class="section-title" style="font-size:16px;">Daily Water Log</h2>
+            <span class="tabular" style="font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--stirling-emerald);" id="waterReadoutText">0 / 2,000 ml</span>
+          </div>
+          <div class="meta-line" id="waterTargetHint" style="margin-top:2px;">Rest / Strength day target: 2.0L</div>
+          <div class="coach-progress-track" style="height:8px; background:var(--surface-subtle); border:1px solid var(--border-subtle); margin:8px 0;">
+            <div class="coach-progress-fill" id="waterFillBar" style="width:0%; background:var(--stirling-emerald);"></div>
+          </div>
+          <input type="range" min="0" max="3000" step="100" value="0" class="range-input" id="waterSlider" aria-label="Daily water intake in millilitres" style="accent-color:var(--stirling-emerald);">
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">
+            <button type="button" class="btn btn-primary btn-sm" id="waterAdd250Btn">+250ml Glass</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="waterAdd500Btn">+500ml Bottle</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="waterSub250Btn">-250ml</button>
+          </div>
+        </div>
+
+        <div class="card" style="padding:12px 14px;">
           <div style="font-weight:600; font-size:13.5px; color:var(--ink);" id="phaseTitleText">Phase 1 · First Steps</div>
           <div style="font-size:12.5px; color:var(--ink-dim); margin-top:3px;" id="phaseSummaryText"></div>
         </div>
@@ -1425,24 +1442,34 @@
     <div id="prep-sub-fuel">
       <div class="grid-two-col">
         <div>
-          <!-- Long-Run Carb & Hydration Calculator -->
+          <!-- Today-Aware Daily Plate & Winter Vitamin Focus -->
           <div class="card card-hero" style="padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <h2 class="section-title" style="font-size:16.5px;" id="todayPlateTitle">Today’s Fuel Plate</h2>
+              <button type="button" class="coach-btn-outline" id="vitDToggleBtn" style="min-height:32px; padding:4px 10px; font-size:11.5px;">Vit D: To Do</button>
+            </div>
+            <div style="font-size:13px; color:#F7D488; font-weight:600; margin-top:4px;" id="todayPlateRatio"></div>
+            <div style="font-size:12px; color:#C7E3D1; margin-top:4px; line-height:1.4;" id="todayPlateCue"></div>
+          </div>
+
+          <!-- Long-Run Carb & Hydration Calculator -->
+          <div class="card" style="padding:14px;">
             <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap;">
-              <h2 class="section-title" style="font-size:16.5px;">Long-Run Fuel Calculator</h2>
-              <span class="tabular" style="font-family:var(--font-mono); font-size:14px; font-weight:700; color:#F7D488;" id="fuelCarbResult">Water only</span>
+              <h3 class="section-title" style="font-size:15.5px;">Long-Run Gel Calculator</h3>
+              <span class="tabular" style="font-family:var(--font-mono); font-size:13.5px; font-weight:700; color:var(--stirling-emerald);" id="fuelCarbResult">Water only</span>
             </div>
             <input type="range" min="20" max="135" step="5" value="60" class="range-input" id="fuelDurationSlider" style="margin:6px 0 4px;">
-            <div style="display:flex; justify-content:space-between; gap:8px; font-size:12px; color:#C7E3D1;">
-              <span class="tabular" style="font-weight:700; color:#FFFFFF;" id="fuelDurationLabel">60 min</span>
+            <div style="display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--ink-dim);">
+              <span class="tabular" style="font-weight:700; color:var(--ink);" id="fuelDurationLabel">60 min</span>
               <span id="fuelAdviceText" style="text-align:right;"></span>
             </div>
           </div>
 
-          <!-- Sunday 30-Min Prep Drawer -->
+          <!-- Sunday 20-Min Prep Drawer -->
           <div class="card" style="padding:10px 14px;">
             <button class="drawer-trigger" id="sundayPrepToggleBtn" type="button">
               <div>
-                <div style="font-weight:600; font-size:14.5px;">Sunday 30-Min Workweek Prep</div>
+                <div style="font-weight:600; font-size:14.5px;">Sunday 20-Min Workweek Prep</div>
                 <div class="meta-line" id="sundayPrepMeta" style="margin-top:1px;">0/4 ready for Mon–Fri</div>
               </div>
               <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="sundayPrepToggleLbl">Show</span>
@@ -1454,16 +1481,64 @@
         </div>
 
         <div>
+          <!-- Flavor-First Weekly Menu & Shopping List Generator -->
           <div class="card">
-            <h3 class="section-title" style="font-size:16.5px; margin-bottom:8px;">9–5 &amp; Social Meal Ideas</h3>
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+              <div>
+                <h2 class="section-title" style="font-size:17px;">Weekly Flavor Menu</h2>
+                <div class="meta-line" style="margin-top:1px;">Hot &amp; cold lunches · Chicken, pork, beef, fish &amp; shellfish + snacks</div>
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" id="shuffleMealWeekBtn">Shuffle Week</button>
+                <button type="button" class="btn btn-primary btn-sm" id="createShoppingListBtn">Create Shopping List</button>
+              </div>
+            </div>
+
+            <div class="swap-field" style="margin-bottom:10px;">
+              <label for="defaultBreakfastSelect">Go-To Breakfast (tap any day below to swap)</label>
+              <select id="defaultBreakfastSelect" class="select-input"></select>
+            </div>
+
+            <div class="filter-bar" id="mealDayTabs" style="margin-bottom:10px;"></div>
+            <div id="activeMealDayCard"></div>
+
+            <div style="margin-top:10px; border-top:1px solid var(--border-subtle); padding-top:8px;">
+              <button class="drawer-trigger" id="allWeekMealsToggleBtn" type="button" style="min-height:38px;">
+                <span style="font-weight:600; font-size:13.5px;">See Full 7-Day Summary (Screenshot View)</span>
+                <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="allWeekMealsLbl">Show</span>
+              </button>
+              <div id="allWeekMealsDrawer" style="display:none; margin-top:8px;"></div>
+            </div>
+          </div>
+
+          <!-- Generated Shopping List Card -->
+          <div class="card" id="shoppingListCard" style="display:none; border-color:var(--stirling-emerald);">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+              <div>
+                <h3 class="section-title" style="font-size:16.5px;">Weekly Shopping List</h3>
+                <div class="meta-line" id="shoppingListMeta" style="margin-top:1px;">Built from your 7-day menu · Screenshot or copy</div>
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-primary btn-sm" id="copyShoppingListBtn">Copy for Notes</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="closeShoppingListBtn">Hide</button>
+              </div>
+            </div>
+            <div class="meta-line" id="shoppingCopyStatus" style="margin-top:0; margin-bottom:6px; color:var(--stirling-emerald);"></div>
+            <div id="shoppingListBody"></div>
+          </div>
+
+          <!-- Searchable Flavor & Snack Bank -->
+          <div class="card">
+            <h3 class="section-title" style="font-size:16.5px; margin-bottom:8px;">Flavor Ideas, Snacks &amp; Socials</h3>
             <div class="filter-bar" id="fuelFilterBar">
               <button class="filter-tab active" data-fuelcat="all">All</button>
-              <button class="filter-tab" data-fuelcat="prerun">Pre-Run</button>
-              <button class="filter-tab" data-fuelcat="lunch">Lunch</button>
+              <button class="filter-tab" data-fuelcat="breakfast">Breakfast</button>
+              <button class="filter-tab" data-fuelcat="lunch">Office Lunch</button>
               <button class="filter-tab" data-fuelcat="dinner">Dinner</button>
+              <button class="filter-tab" data-fuelcat="snack">Snacks &amp; Treats</button>
               <button class="filter-tab" data-fuelcat="social">Social</button>
             </div>
-            <input type="text" id="fuelSearchInput" class="text-input" placeholder="Search oats, pasta, eating out…" style="margin-bottom:8px;">
+            <input type="text" id="fuelSearchInput" class="text-input" placeholder="Search porridge, prawn, pork, soup, chocolate…" style="margin-bottom:8px;">
             <div id="fuelMealsList"></div>
           </div>
         </div>
@@ -1771,27 +1846,343 @@ const DESK_WARMUP_ITEMS = [
   '1 min: Brisk walk before starting interval 1'
 ];
 
-/* ================= FUEL, 9-5 MEALS & SOCIAL GUIDE ================= */
+/* ================= FUEL, FLAVOR-FIRST MEAL PLANNER & SHOPPING LIST DATA ================= */
+const MEAL_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const MEAL_RECIPES = {
+  breakfast: [
+    {
+      id: 'bf-eggwhite-mincemeat',
+      name: 'Egg White Porridge + Christmas Mincemeat',
+      tag: 'High Protein · 5 min',
+      note: '45g porridge oats cooked with milk/water, stir in 120ml liquid egg whites over low heat until thick, swirl in 1–2 tbsp mincemeat.',
+      nutrients: '24g protein · Slow carbs · Iron & B vitamins',
+      items: [
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Porridge oats' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Carton liquid egg whites' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Christmas mincemeat jar' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' }
+      ]
+    },
+    {
+      id: 'bf-banana-porridge',
+      name: 'Warm Banana & Cinnamon Porridge',
+      tag: 'Run-Day Fuel · 5 min',
+      note: '45g oats with milk, sliced ripe banana, pinch of cinnamon, plus optional spoonful of Greek yoghurt or honey.',
+      nutrients: 'Potassium · Fast & slow carbs · Calcium',
+      items: [
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Porridge oats' },
+        { cat: 'Veg, Salad & Fruit', item: 'Bananas' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt' }
+      ]
+    },
+    {
+      id: 'bf-cereal-berries',
+      name: 'Crunchy Cereal, Milk & Berries',
+      tag: 'Zero-Cook · 2 min',
+      note: 'Favourite high-fibre or granola cereal with cold milk and fresh berries or dried fruit.',
+      nutrients: 'Fortified iron & B12 · Vitamin C',
+      items: [
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Breakfast cereal / granola' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Milk (or fortified oat milk)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Berries (fresh or frozen)' }
+      ]
+    }
+  ],
+  lunch: [
+    {
+      id: 'ln-soup-toastie',
+      name: 'Roasted Tomato & Chorizo Soup + Cheese Toastie',
+      tag: 'Hot Lunch · 4 min',
+      temp: 'Hot',
+      note: 'Warm carton soup (roasted tomato, chicken & veg, or spiced butternut) paired with a crusty cheddar & ham toastie on sourdough.',
+      nutrients: 'Lycopene (Vit C/A) · Protein & carbs',
+      items: [
+        { cat: 'Dairy, Eggs & Chilled', item: 'Fresh soup carton (tomato/chicken/veg)' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Sourdough loaf or crusty rolls' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Cooked ham or chorizo slices' }
+      ]
+    },
+    {
+      id: 'ln-jacket-tuna',
+      name: 'Hot Jacket Potato w/ Tuna Mayo, Sweetcorn & Cheddar',
+      tag: 'Hot Lunch · 8 min',
+      temp: 'Hot',
+      note: 'Microwave baking potato at the office; load with spring-onion tuna mayo, sweetcorn, melted cheddar & side greens.',
+      nutrients: 'Omega-3 · Vitamin B6 & potassium · Iron',
+      items: [
+        { cat: 'Veg, Salad & Fruit', item: 'Baking potatoes' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Tinned tuna' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Tinned sweetcorn' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Light mayo & spring onions' }
+      ]
+    },
+    {
+      id: 'ln-prawn-noodle-pot',
+      name: 'Hot King Prawn, Chilli & Ginger Miso Noodle Pot',
+      tag: 'Hot Lunch · 4 min',
+      temp: 'Hot',
+      note: 'Pre-cooked rice noodles in a tub with miso paste, sweet chilli/sriracha, frozen edamame/peas, spring onion & king prawns—just add boiling kettle water!',
+      nutrients: 'Lean shellfish protein · Zinc & selenium',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Cooked king prawns' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Quick rice noodle nests' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Miso paste & chilli flakes / sriracha' },
+        { cat: 'Veg, Salad & Fruit', item: 'Spring onions & sugar snap peas' }
+      ]
+    },
+    {
+      id: 'ln-leftover-pasta',
+      name: 'Hot Leftover Chicken, Chorizo & Pesto Pasta',
+      tag: 'Hot Leftovers · 3 min',
+      temp: 'Hot',
+      note: 'Reheat an extra portion from dinner—creamy pesto, smoky chorizo, tender chicken & wilted spinach.',
+      nutrients: 'Zero extra Sunday prep · Iron & folate',
+      items: []
+    },
+    {
+      id: 'ln-bagel-salmon',
+      name: 'Smoked Salmon, Cream Cheese & Cucumber Bagel Box',
+      tag: 'Cold Lunch · 3 min',
+      temp: 'Cold',
+      note: 'Toasted or fresh bagel with herb cream cheese, smoked salmon, cucumber ribbons, lemon & black pepper + cherry tomatoes.',
+      nutrients: 'Omega-3 & Vitamin D · Joint-friendly fats',
+      items: [
+        { cat: 'Carbs, Pasta & Bakery', item: 'Bagels (pack of 4–5)' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Smoked salmon slices' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Soft cream cheese' },
+        { cat: 'Veg, Salad & Fruit', item: 'Cucumber & cherry tomatoes' }
+      ]
+    },
+    {
+      id: 'ln-sweet-chilli-rice',
+      name: 'Cold Sweet-Chilli Chicken, Mango & Crispy Noodle/Rice Bowl',
+      tag: 'Cold Lunch · 4 min',
+      temp: 'Cold',
+      note: 'Flavoured microwave rice pouch (cooled) tossed with chargrilled chicken, red pepper, cucumber, sweet chilli & lime.',
+      nutrients: 'Vitamin C (peppers/lime) · High-energy carbs',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Pre-cooked chargrilled chicken strips' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave basmati/coconut rice pouches' },
+        { cat: 'Veg, Salad & Fruit', item: 'Red peppers & cucumber' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Sweet chilli sauce & fresh lime' }
+      ]
+    },
+    {
+      id: 'ln-ciabatta-pork',
+      name: 'Honey-Mustard Roast Pork, Crispy Bacon & Rocket Ciabatta',
+      tag: 'Cold/Toasted · 4 min',
+      temp: 'Cold',
+      note: 'Warm or cold crusty ciabatta roll with sliced roast pork or ham, honey mustard, crispy bacon bits & peppery rocket.',
+      nutrients: 'B1 & B12 vitamins · Satisfying crunch',
+      items: [
+        { cat: 'Carbs, Pasta & Bakery', item: 'Ciabatta rolls' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Sliced roast pork or deli ham' },
+        { cat: 'Veg, Salad & Fruit', item: 'Rocket / baby spinach bag' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Wholegrain honey mustard' }
+      ]
+    }
+  ],
+  dinner: [
+    {
+      id: 'dn-prawn-linguine',
+      name: 'Garlic Butter, Chilli & Lemon King Prawn Linguine',
+      tag: 'Shellfish · 15 min',
+      note: 'Sizzle king prawns with garlic butter, chilli flakes, cherry tomatoes, lemon zest & fresh spinach; toss with linguine.',
+      nutrients: 'Selenium, iodine & Vitamin C · Fast recovery carbs',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Raw or cooked king prawns (big pack)' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Linguine or spaghetti' },
+        { cat: 'Veg, Salad & Fruit', item: 'Cherry tomatoes, baby spinach & garlic' },
+        { cat: 'Veg, Salad & Fruit', item: 'Fresh lemons' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Butter / garlic butter' }
+      ]
+    },
+    {
+      id: 'dn-sticky-pork',
+      name: 'Sticky Honey-Garlic Pork Stir-Fry & Noodles',
+      tag: 'Pork · 18 min',
+      note: 'Pork strips seared hot with ginger, garlic, honey, soy & rice vinegar, tossed with egg noodles, peppers & tenderstem broccoli.',
+      nutrients: 'B1/zinc (pork) · Vitamin C & K (greens/peppers)',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Pork loin steaks or stir-fry strips' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Straight-to-wok egg noodles' },
+        { cat: 'Veg, Salad & Fruit', item: 'Tenderstem broccoli & mixed peppers' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Soy sauce, honey & fresh ginger' }
+      ]
+    },
+    {
+      id: 'dn-cajun-salmon',
+      name: 'Crispy Cajun Salmon Traybake, Baby Potatoes & Greens',
+      tag: 'Fish · 22 min',
+      note: 'Roast halved baby potatoes with olive oil & Cajun spice; add salmon fillets for the last 12 min + tenderstem broccoli & sweetcorn.',
+      nutrients: 'Natural Vitamin D & Omega-3 · Potassium',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Salmon fillets (2-pack)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baby potatoes' },
+        { cat: 'Veg, Salad & Fruit', item: 'Tenderstem broccoli' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Cajun seasoning & olive oil' }
+      ]
+    },
+    {
+      id: 'dn-chicken-chorizo-pasta',
+      name: 'Creamy Chicken, Chorizo & Spinach Pesto Pasta',
+      tag: 'Chicken + Pork · 20 min',
+      note: 'Fry diced chorizo & chicken breast, stir through green/red pesto, light crème fraîche & spinach. Make double for tomorrow’s hot lunch!',
+      nutrients: '40g+ protein · Iron & Vitamin A (spinach)',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Chicken breasts' },
+        { cat: 'Meat, Fish & Shellfish', item: 'Cooking chorizo ring' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Penne or fusilli pasta' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Green or red pesto jar' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Light crème fraîche' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baby spinach bag' }
+      ]
+    },
+    {
+      id: 'dn-beef-teriyaki',
+      name: 'Sizzling Beef Teriyaki, Peppers & Sesame Jasmine Rice',
+      tag: 'Beef · 15 min',
+      note: 'Quick-fry steak strips with teriyaki glaze, onions, peppers & mange tout over fluffy jasmine rice.',
+      nutrients: 'High iron & B12 (beef) · Vitamin C (peppers)',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Sirloin or rump steak strips' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Jasmine rice (microwave pouches or dry)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Mixed peppers & mange tout' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Teriyaki glaze & sesame seeds' }
+      ]
+    },
+    {
+      id: 'dn-crispy-chicken-thighs',
+      name: 'Honey-Mustard Chicken Thighs, Herb Wedges & Peas/Corn',
+      tag: 'Chicken · 25 min',
+      note: 'Juicy boneless chicken thighs glazed in honey, garlic & wholegrain mustard with paprika potato wedges and buttered peas.',
+      nutrients: 'Deep flavor · Zinc, Vitamin C & slow carbs',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Boneless skinless chicken thighs' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baking potatoes or Maris Pipers' },
+        { cat: 'Veg, Salad & Fruit', item: 'Frozen peas / sweetcorn' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Smoked paprika, honey & mustard' }
+      ]
+    },
+    {
+      id: 'dn-thai-prawn-curry',
+      name: 'Fragrant Thai Red King Prawn & Veg Curry w/ Rice',
+      tag: 'Shellfish · 15 min',
+      note: 'Thai red curry paste simmered with light coconut milk, king prawns, baby corn, peppers & lime juice over rice.',
+      nutrients: 'Iodine, B12 & antioxidants · Gentle pre-run meal',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Raw king prawns' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Thai red curry paste & light coconut milk' },
+        { cat: 'Veg, Salad & Fruit', item: 'Baby corn & red peppers' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Microwave basmati/jasmine rice pouches' }
+      ]
+    },
+    {
+      id: 'dn-friday-social',
+      name: 'Friday Flex: Loaded Brioche Burger / Eating Out',
+      tag: 'Social / Pre-Long-Run',
+      note: 'Beef or crispy chicken brioche burger with oven chips & slaw—or your favourite restaurant meal with plenty of carbs & water.',
+      nutrients: 'Social balance · Glycogen top-up for Sat run',
+      items: [
+        { cat: 'Meat, Fish & Shellfish', item: 'Quality beef burgers or chicken fillets' },
+        { cat: 'Carbs, Pasta & Bakery', item: 'Brioche burger buns & oven chips' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Burger cheese & coleslaw' }
+      ]
+    }
+  ],
+  snack: [
+    {
+      id: 'sn-yoghurt-berries-choc',
+      name: 'Greek Yoghurt, Warm Berries & Dark Choc Drizzle',
+      tag: 'Sweet Tooth · High Protein',
+      note: 'Warm frozen berries for 45s so they go syrupy, spoon over thick Greek yoghurt & grate 2 squares of dark chocolate on top.',
+      nutrients: 'Calcium, Vitamin C & antioxidants',
+      items: [
+        { cat: 'Dairy, Eggs & Chilled', item: 'Greek yoghurt (big tub)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Berries (fresh or frozen)' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Dark chocolate bar (70%)' }
+      ]
+    },
+    {
+      id: 'sn-banana-choc-ricecake',
+      name: 'Chocolate Rice Cakes + Banana + Peanut Butter',
+      tag: 'Pre-Run / 4 PM Desk',
+      note: '2 dark or milk chocolate rice cakes topped with sliced banana and a thin drizzle of peanut butter.',
+      nutrients: 'Fast pre-run energy · Potassium & crunch',
+      items: [
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Chocolate-coated rice cakes' },
+        { cat: 'Veg, Salad & Fruit', item: 'Bananas' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Peanut butter' }
+      ]
+    },
+    {
+      id: 'sn-maltloaf-clementine',
+      name: 'Buttered Malt Loaf + 2 Clementines',
+      tag: 'Sweet & Runner Classic',
+      note: '2 chewy slices of Soreen malt loaf with a scrape of butter, plus sweet clementines for a Vitamin C hit.',
+      nutrients: 'Low-fat energy · Iron & Vitamin C',
+      items: [
+        { cat: 'Carbs, Pasta & Bakery', item: 'Malt loaf (Soreen)' },
+        { cat: 'Veg, Salad & Fruit', item: 'Clementines / easy peelers' }
+      ]
+    },
+    {
+      id: 'sn-biscoff-mousse',
+      name: 'Protein Chocolate/Salted Caramel Mousse + Crushed Biscuit',
+      tag: 'Evening Sweet Treat',
+      note: 'Chilled supermarket protein pudding/mousse with 1 crumbled Biscoff or digestive biscuit on top.',
+      nutrients: '15–20g protein · Satisfies real sweet cravings',
+      items: [
+        { cat: 'Dairy, Eggs & Chilled', item: 'Chilled protein puddings / mousses' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Biscoff or favourite biscuits' }
+      ]
+    },
+    {
+      id: 'sn-apple-cheddar',
+      name: 'Crisp Pink Lady Apple, Cheddar Cubes & Flapjack Bite',
+      tag: 'Afternoon Desk Combo',
+      note: 'Sweet-savoury desk snack that keeps 4 PM energy steady + a mini oaty flapjack.',
+      nutrients: 'Fibre, calcium & steady blood sugar',
+      items: [
+        { cat: 'Veg, Salad & Fruit', item: 'Pink Lady apples' },
+        { cat: 'Dairy, Eggs & Chilled', item: 'Mature cheddar cheese' },
+        { cat: 'Cupboard, Spices & Sweet Treats', item: 'Oat flapjack bites' }
+      ]
+    }
+  ]
+};
+
 const FUEL_ITEMS = [
-  { cat: 'prerun', title: '5:30 PM Pre-Run Bridge: Banana + Toast', timing: '45–60 min pre-run', body: '1 slice toast with honey/jam or 1 ripe banana + glass of water. Fast energy after a 1 PM lunch without feeling heavy.' },
-  { cat: 'prerun', title: 'Saturday Breakfast: Porridge or Bagel', timing: '60–90 min pre-run', body: '45g oats with milk/water + berries & honey, OR 1 toasted bagel with jam and a little peanut butter.' },
-  { cat: 'prerun', title: '20-Min Late-Work Top-Up', timing: '15–20 min prior', body: 'Half a banana, 2 Medjool dates, or a small cereal bar when work ran late.' },
-  { cat: 'lunch', title: '10-Min Desk Lunch: Chicken & Avocado Bowl', timing: 'Workday lunch', body: 'Microwave pouch rice/quinoa, pre-cooked chicken or black beans, sweetcorn, salsa, spinach, and Greek yoghurt.' },
-  { cat: 'lunch', title: 'Tuna, Sweetcorn & Salad Wrap', timing: 'Packable office lunch', body: 'Tuna mixed with light mayo + Greek yoghurt, sweetcorn, lettuce, and fruit for steady afternoon energy.' },
-  { cat: 'lunch', title: 'Overnight Protein Oats (Prep 3 Jars)', timing: 'Zero morning effort', body: '50g oats, 150g Greek yoghurt, splash of milk, chia seeds, berries, 1 tbsp peanut butter.' },
-  { cat: 'dinner', title: '20-Min Pasta: Chicken Pesto & Spinach', timing: 'Weeknight recovery', body: 'Boil pasta; stir through cooked chicken, green pesto, cherry tomatoes, and wilted spinach. Batch extra for lunch.' },
-  { cat: 'dinner', title: 'Loaded Jacket Potato', timing: '12 min · High carb & iron', body: 'Microwave baking potato 8 min then crisp 5 min; top with baked beans & cheddar or tuna sweetcorn.' },
-  { cat: 'dinner', title: '15-Min Sheet-Pan Fajitas / Stir-Fry', timing: 'Minimal washing up', body: 'Frozen sliced peppers/onions + chicken or tofu + fajita spice or soy sauce with wraps or noodles.' },
-  { cat: 'social', title: 'Friday Drinks & Work Socials', timing: 'Permanent rest day', body: 'Alternate alcoholic drinks 1:1 with sparkling water, eat a carb + protein meal before bed, and slide Sat run to Sun if needed.' },
-  { cat: 'social', title: 'Restaurants Night Before Long Run', timing: 'Saturday prep', body: 'Pick familiar carb-rich mains (pasta, rice bowls, pizza, burgers without heavy cream/chilli) + extra water.' },
-  { cat: 'social', title: 'Brunch Dates After Saturday Run', timing: 'Post-run recovery', body: 'Schedule brunch after your Saturday morning run—eggs on sourdough or pancakes with fruit refill glycogen naturally.' }
+  { cat: 'breakfast', title: 'Egg White Porridge + Christmas Mincemeat', timing: '5 min · ~24g protein', body: 'Your signature morning bowl: 45g oats cooked gently with 120ml egg whites stirred in at the end + 1–2 tbsp mincemeat.' },
+  { cat: 'breakfast', title: 'Warm Banana & Cinnamon Porridge', timing: '5 min · Run morning', body: 'Normal porridge with sliced banana and a spoonful of Greek yoghurt or honey 60–90 min before Saturday long runs.' },
+  { cat: 'breakfast', title: 'Crunchy Cereal, Milk & Berries', timing: '2 min · Busy mornings', body: 'Quick cereal with fortified milk and a handful of berries for effortless Vitamin C + iron.' },
+  { cat: 'lunch', title: 'Hot: Tomato & Chorizo Soup + Cheddar Toastie', timing: '4 min · Cold-day comfort', body: 'Warm rich soup paired with melted cheddar & ham on crusty sourdough—zero soggy salads on freezing days.' },
+  { cat: 'lunch', title: 'Hot: Jacket Potato w/ Tuna Mayo, Sweetcorn & Cheese', timing: '8 min · Office microwave', body: 'High-carb comfort loaded with omega-3 tuna, sweetcorn, melted cheese & black pepper.' },
+  { cat: 'lunch', title: 'Hot: King Prawn, Chilli & Miso Noodle Tub', timing: '4 min · Kettle only', body: 'Rice noodles, miso paste, sriracha, peas & cooked king prawns—just pour boiling office water on top.' },
+  { cat: 'lunch', title: 'Cold: Smoked Salmon & Cream Cheese Bagel Box', timing: '3 min · Grab & go', body: 'Bagel with herb cream cheese, smoked salmon, cucumber & cherry tomatoes for an omega-3 + Vitamin D boost.' },
+  { cat: 'lunch', title: 'Cold: Sweet-Chilli Chicken & Mango/Pepper Rice Bowl', timing: '4 min · Vibrant flavour', body: 'Flavoured rice pouch + chargrilled chicken strips, crunchy red pepper, cucumber, lime & sweet chilli sauce.' },
+  { cat: 'dinner', title: 'Garlic Butter & Chilli King Prawn Linguine', timing: '15 min · Bold & fast', body: 'Juicy prawns sizzling in garlic butter, chilli flakes, lemon zest, cherry tomatoes & fresh spinach.' },
+  { cat: 'dinner', title: 'Sticky Honey-Garlic Pork Stir-Fry & Noodles', timing: '18 min · Savoury-sweet', body: 'Seared pork strips in honey, soy, garlic & ginger with noodles, tenderstem broccoli & crunchy peppers.' },
+  { cat: 'dinner', title: 'Crispy Cajun Salmon Traybake & Baby Potatoes', timing: '22 min · One tray', body: 'Spiced roast potatoes & salmon fillets with broccoli—loaded with natural Vitamin D & omega-3.' },
+  { cat: 'dinner', title: 'Creamy Chicken, Chorizo & Spinach Pesto Pasta', timing: '20 min · Doubles as lunch', body: 'Smoky chorizo + chicken in creamy pesto & spinach. Cook 1 extra portion for tomorrow’s hot office lunch.' },
+  { cat: 'dinner', title: 'Beef Teriyaki, Peppers & Jasmine Rice', timing: '15 min · High iron', body: 'Quick-seared steak strips glazed in sticky teriyaki with mange tout & red peppers.' },
+  { cat: 'snack', title: 'Greek Yoghurt, Warm Syrupy Berries & Dark Chocolate', timing: 'Evening sweet treat', body: 'Microwave frozen berries 45s so they turn jammy, pour over thick yoghurt & shave dark chocolate on top.' },
+  { cat: 'snack', title: 'Chocolate Rice Cakes + Banana + Peanut Butter', timing: '5:30 PM Pre-Run Snack', body: 'Sweet, crunchy carb bridge before evening runs so you never run hungry after a 1 PM lunch.' },
+  { cat: 'snack', title: 'Protein Caramel/Choc Mousse + Crumbled Biscuit', timing: 'Sweet tooth fix', body: '20g protein dessert with 1 crumbled Biscoff on top—hits real sweet cravings while supporting muscle repair.' },
+  { cat: 'snack', title: 'Buttered Malt Loaf + 2 Clementines', timing: '3 PM Desk Snack', body: 'Chewy Soreen malt loaf + sweet clementines for iron, Vitamin C, and steady afternoon energy.' },
+  { cat: 'social', title: 'Friday Drinks & Work Socials', timing: 'Permanent rest day', body: 'Alternate drinks 1:1 with sparkling water, eat a carb + protein dinner before bed, and slide Sat run to Sun if needed.' },
+  { cat: 'social', title: 'Eating Out Before Long Runs', timing: 'Friday / Saturday night', body: 'Choose pasta, rice bowls, steak & chips, burgers, or pizza + extra water—familiar food beats strict dieting.' }
 ];
 
 const SUNDAY_PREP_ITEMS = [
-  'Portion 1 batch of grains/pasta/potatoes for Mon–Wed lunches',
-  'Stock 5:30 PM desk/bag snacks (bananas, oat bars, dates)',
-  'Lay out Mon/Wed evening kit before the workweek starts',
-  'Lock in which rest evening (Tue or Fri) is for friends/social plans'
+  'Pick your 7-day menu & tap "Create Shopping List" before the shop',
+  'Stock 5:30 PM desk snacks (bananas, chocolate rice cakes, malt loaf, clementines)',
+  'Freeze/chill 2 extra dinner portions (like Chorizo Chicken Pasta) for effortless hot lunches',
+  'Keep 10 µg Vitamin D next to your breakfast bowl / kettle'
 ];
 
 /* ================= RACE & HIP PLAYBOOK ================= */
@@ -2238,6 +2629,11 @@ let STATE = {
   coachEasyOverride: {},
   coachVoice: true,
   coachWakeLock: true,
+  waterLog: {},
+  vitDLog: {},
+  defaultBreakfastId: 'bf-eggwhite-mincemeat',
+  mealPlan: null,
+  shoppingChecked: {},
   selectedTargetRace: null
 };
 
@@ -2249,6 +2645,7 @@ let activePlanFilter = 'all';
 let activeRouteFilter = 'all';
 let activeStrengthSplit = 0;
 let activeFuelCategory = 'all';
+let activeMealDay = 'Mon';
 let swapPanelOpen = false;
 let runNotesPanelOpen = false;
 let coachOpen = false;
@@ -2885,7 +3282,70 @@ function renderToday() {
   document.getElementById('overallStatsShort').textContent = `${pct}%`;
   document.getElementById('overallCountShort').textContent = `${totalDone} / 96 sessions`;
 
+  renderWaterTracker();
   loadCoachRun();
+}
+
+/* ================= DAILY WATER LOG (DASHBOARD) ================= */
+function getTodayIsoKey() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function getTodayDayShort() {
+  const map = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return map[new Date().getDay()];
+}
+
+function isTodayRunDay() {
+  const sched = getWeekSchedule(realCurrentWeek());
+  const todayShort = getTodayDayShort();
+  return sched.satRun === todayShort || sched.wedRun === todayShort;
+}
+
+function getTodayWaterTargetMl() {
+  return isTodayRunDay() ? 2500 : 2000;
+}
+
+function renderWaterTracker() {
+  if (!STATE.waterLog) STATE.waterLog = {};
+  const key = getTodayIsoKey();
+  const ml = Math.max(0, Math.min(3500, Number(STATE.waterLog[key] || 0)));
+  const target = getTodayWaterTargetMl();
+  const pct = Math.min(100, Math.round((ml / target) * 100));
+
+  const readEl = document.getElementById('waterReadoutText');
+  const hintEl = document.getElementById('waterTargetHint');
+  const barEl = document.getElementById('waterFillBar');
+  const sliderEl = document.getElementById('waterSlider');
+
+  if (readEl) readEl.textContent = `${ml.toLocaleString()} / ${target.toLocaleString()} ml`;
+  if (hintEl) {
+    if (ml >= target) {
+      hintEl.textContent = `Target hit! (${(target / 1000).toFixed(1)}L reached — joints & recovery love this)`;
+    } else {
+      const left = target - ml;
+      hintEl.textContent = `${isTodayRunDay() ? 'Run day' : 'Rest / Strength day'} target: ${(target / 1000).toFixed(1)}L · ${left} ml to go`;
+    }
+  }
+  if (barEl) {
+    barEl.style.width = `${pct}%`;
+    barEl.style.background = ml >= target ? '#0B3B24' : '#14633B';
+  }
+  if (sliderEl && document.activeElement !== sliderEl) {
+    sliderEl.value = String(Math.min(3000, ml));
+  }
+}
+
+function setTodayWaterMl(nextMl) {
+  if (!STATE.waterLog) STATE.waterLog = {};
+  const key = getTodayIsoKey();
+  STATE.waterLog[key] = Math.max(0, Math.min(3500, Math.round(nextMl)));
+  saveState();
+  renderWaterTracker();
 }
 
 /* ================= RENDER: 24-WEEK PLAN ================= */
@@ -3111,8 +3571,229 @@ function startLiftTimer(sec) {
   }, 1000);
 }
 
-/* ================= RENDER: FUEL & LIFE ================= */
+/* ================= RENDER: FUEL, FLAVOR PLANNER & SHOPPING LIST ================= */
+function getDefaultMealPlan() {
+  const bf = STATE.defaultBreakfastId || 'bf-eggwhite-mincemeat';
+  return {
+    Mon: { breakfast: bf, lunch: 'ln-soup-toastie',    dinner: 'dn-chicken-chorizo-pasta', snack: 'sn-banana-choc-ricecake' },
+    Tue: { breakfast: bf, lunch: 'ln-leftover-pasta',  dinner: 'dn-cajun-salmon',          snack: 'sn-yoghurt-berries-choc' },
+    Wed: { breakfast: bf, lunch: 'ln-jacket-tuna',     dinner: 'dn-beef-teriyaki',         snack: 'sn-banana-choc-ricecake' },
+    Thu: { breakfast: bf, lunch: 'ln-prawn-noodle-pot',dinner: 'dn-sticky-pork',           snack: 'sn-maltloaf-clementine' },
+    Fri: { breakfast: bf, lunch: 'ln-bagel-salmon',    dinner: 'dn-friday-social',         snack: 'sn-apple-cheddar' },
+    Sat: { breakfast: 'bf-banana-porridge', lunch: 'ln-sweet-chilli-rice', dinner: 'dn-prawn-linguine', snack: 'sn-biscoff-mousse' },
+    Sun: { breakfast: bf, lunch: 'ln-ciabatta-pork',   dinner: 'dn-crispy-chicken-thighs', snack: 'sn-yoghurt-berries-choc' }
+  };
+}
+
+function ensureMealPlan() {
+  if (!STATE.mealPlan || typeof STATE.mealPlan !== 'object') {
+    STATE.mealPlan = getDefaultMealPlan();
+  }
+  MEAL_DAYS.forEach(d => {
+    if (!STATE.mealPlan[d]) STATE.mealPlan[d] = getDefaultMealPlan()[d];
+  });
+  return STATE.mealPlan;
+}
+
+function findRecipe(cat, id) {
+  return (MEAL_RECIPES[cat] || []).find(r => r.id === id) || MEAL_RECIPES[cat][0];
+}
+
+function renderTodayPlateCard() {
+  const sched = getWeekSchedule(viewingWeek);
+  const todayShort = getTodayDayShort();
+  const isLong = sched.satRun === todayShort;
+  const isMid = sched.wedRun === todayShort;
+  const isLift = sched.liftA === todayShort || sched.liftB === todayShort;
+
+  const titleEl = document.getElementById('todayPlateTitle');
+  const ratioEl = document.getElementById('todayPlateRatio');
+  const cueEl = document.getElementById('todayPlateCue');
+  const vitBtn = document.getElementById('vitDToggleBtn');
+
+  if (isLong) {
+    titleEl.textContent = `Today (${todayShort}) · Long Run Fuel Plate`;
+    ratioEl.textContent = '½ Carbs · ¼ Protein · ¼ Colourful Veg/Fruit';
+    cueEl.textContent = 'Eat banana porridge or mincemeat oats 60–90m prior, hit 2.5L water, and reward yourself with a proper recovery dinner + sweet treat.';
+  } else if (isMid || isLift) {
+    titleEl.textContent = `Today (${todayShort}) · ${isMid ? 'Midweek Run' : 'Strength'} Plate`;
+    ratioEl.textContent = '⅓ Carbs · ⅓ Protein · ⅓ Veg + 5:30 PM Snack';
+    cueEl.textContent = isMid
+      ? 'Have your 4–5 PM banana/chocolate rice cake bridge before running after work so energy stays steady.'
+      : 'Hit strong protein at lunch & dinner (chicken, pork, beef, fish, or shellfish) to repair hips and muscles.';
+  } else {
+    titleEl.textContent = `Today (${todayShort}) · Rest & Vitamin Plate`;
+    ratioEl.textContent = '½ Veg & Fruit · ¼ Protein · ¼ Carbs';
+    cueEl.textContent = 'Great day for Vitamin C rich veg (peppers, broccoli, berries), omega-3 fish, 2.0L water, and your planned sweet treat.';
+  }
+
+  const vitDone = !!(STATE.vitDLog && STATE.vitDLog[getTodayIsoKey()]);
+  vitBtn.textContent = vitDone ? 'Vit D 10µg ✓' : 'Vit D: To Do';
+  vitBtn.style.borderColor = vitDone ? 'rgba(247,212,136,0.75)' : 'rgba(255,255,255,0.28)';
+  vitBtn.style.color = vitDone ? '#F7D488' : '#FFFFFF';
+  vitBtn.style.background = vitDone ? 'rgba(247,212,136,0.14)' : 'rgba(255,255,255,0.08)';
+}
+
+function buildShoppingListData() {
+  const plan = ensureMealPlan();
+  const counts = new Map();
+  MEAL_DAYS.forEach(d => {
+    const dayPlan = plan[d];
+    ['breakfast', 'lunch', 'dinner', 'snack'].forEach(cat => {
+      const r = findRecipe(cat, dayPlan[cat]);
+      (r.items || []).forEach(ing => {
+        const k = `${ing.cat}::${ing.item}`;
+        if (!counts.has(k)) counts.set(k, { cat: ing.cat, item: ing.item, count: 0 });
+        counts.get(k).count++;
+      });
+    });
+  });
+
+  const groups = [
+    'Meat, Fish & Shellfish',
+    'Veg, Salad & Fruit',
+    'Carbs, Pasta & Bakery',
+    'Dairy, Eggs & Chilled',
+    'Cupboard, Spices & Sweet Treats'
+  ];
+
+  const grouped = {};
+  groups.forEach(g => { grouped[g] = []; });
+  counts.forEach(entry => {
+    if (!grouped[entry.cat]) grouped[entry.cat] = [];
+    grouped[entry.cat].push(entry);
+  });
+
+  return { groups, grouped };
+}
+
+function renderShoppingList() {
+  const card = document.getElementById('shoppingListCard');
+  if (card.style.display === 'none') return;
+  const { groups, grouped } = buildShoppingListData();
+  if (!STATE.shoppingChecked) STATE.shoppingChecked = {};
+
+  let totalItems = 0;
+  const html = groups.map(g => {
+    const items = grouped[g] || [];
+    if (!items.length) return '';
+    totalItems += items.length;
+    return `
+      <div style="margin-top:10px;">
+        <div style="font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; color:var(--stirling-emerald); letter-spacing:0.03em; margin-bottom:4px;">${g}</div>
+        ${items.map(entry => {
+          const chkKey = `${g}::${entry.item}`;
+          const checked = !!STATE.shoppingChecked[chkKey];
+          const qtyLabel = entry.count > 1 ? ` <span class="tabular" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-muted);">(×${entry.count} meals)</span>` : '';
+          return `
+            <div class="chk-row ${checked ? 'checked' : ''}" data-shop-key="${chkKey.replace(/"/g, '&quot;')}" style="min-height:36px; padding:5px 0;">
+              <div class="chk-box">${checkSvg()}</div>
+              <div class="chk-text" style="font-size:13px;">${entry.item}${qtyLabel}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('shoppingListMeta').textContent = `${totalItems} essentials from your 7-day menu · Tap to tick or copy`;
+  const body = document.getElementById('shoppingListBody');
+  body.innerHTML = html;
+
+  body.querySelectorAll('[data-shop-key]').forEach(row => {
+    row.addEventListener('click', () => {
+      const k = row.dataset.shopKey;
+      STATE.shoppingChecked[k] = !STATE.shoppingChecked[k];
+      saveState();
+      playCue(STATE.shoppingChecked[k] ? 'check' : 'walk');
+      renderShoppingList();
+    });
+  });
+}
+
+function renderMealPlanner() {
+  const plan = ensureMealPlan();
+
+  const bfSel = document.getElementById('defaultBreakfastSelect');
+  bfSel.innerHTML = MEAL_RECIPES.breakfast.map(b =>
+    `<option value="${b.id}" ${(STATE.defaultBreakfastId || 'bf-eggwhite-mincemeat') === b.id ? 'selected' : ''}>${b.name}</option>`
+  ).join('');
+
+  const sched = getWeekSchedule(viewingWeek);
+  document.getElementById('mealDayTabs').innerHTML = MEAL_DAYS.map(d => {
+    const isRun = sched.satRun === d || sched.wedRun === d;
+    const active = d === activeMealDay;
+    return `<button type="button" class="filter-tab ${active ? 'active' : ''}" data-meal-day="${d}">${d}${isRun ? ' · Run' : ''}</button>`;
+  }).join('');
+
+  document.querySelectorAll('#mealDayTabs [data-meal-day]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeMealDay = btn.dataset.mealDay;
+      renderMealPlanner();
+    });
+  });
+
+  const dayPlan = plan[activeMealDay];
+  const slots = [
+    { key: 'breakfast', label: 'Breakfast' },
+    { key: 'lunch',     label: 'Office Lunch' },
+    { key: 'dinner',    label: 'Dinner' },
+    { key: 'snack',     label: 'Snack & Sweet Treat' }
+  ];
+
+  const dayBox = document.getElementById('activeMealDayCard');
+  dayBox.innerHTML = slots.map(slot => {
+    const rec = findRecipe(slot.key, dayPlan[slot.key]);
+    const options = MEAL_RECIPES[slot.key];
+    return `
+      <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; color:var(--stirling-emerald);">${slot.label} · ${rec.tag}</span>
+          <select class="select-input meal-slot-select" data-slot="${slot.key}" aria-label="Choose ${slot.label} for ${activeMealDay}" style="min-height:36px; padding:4px 8px; font-size:12.5px; width:auto; max-width:100%;">
+            ${options.map(opt => `<option value="${opt.id}" ${opt.id === rec.id ? 'selected' : ''}>${opt.name}</option>`).join('')}
+          </select>
+        </div>
+        <div style="font-weight:600; font-size:14.5px; color:var(--ink); margin-top:4px;">${rec.name}</div>
+        <div style="font-size:12.5px; color:var(--ink-dim); margin-top:2px; line-height:1.4;">${rec.note}</div>
+        <div class="meta-line" style="margin-top:3px; font-size:11.5px; color:var(--ochil-gold); font-weight:600;">${rec.nutrients}</div>
+      </div>
+    `;
+  }).join('');
+
+  dayBox.querySelectorAll('.meal-slot-select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      plan[activeMealDay][sel.dataset.slot] = sel.value;
+      saveState();
+      renderMealPlanner();
+      renderShoppingList();
+    });
+  });
+
+  // Full 7-Day Screenshot Drawer
+  document.getElementById('allWeekMealsDrawer').innerHTML = MEAL_DAYS.map(d => {
+    const dp = plan[d];
+    const bf = findRecipe('breakfast', dp.breakfast);
+    const ln = findRecipe('lunch', dp.lunch);
+    const dn = findRecipe('dinner', dp.dinner);
+    const sn = findRecipe('snack', dp.snack);
+    return `
+      <div style="padding:7px 0; border-bottom:1px solid var(--border-subtle); font-size:12px;">
+        <div style="font-weight:700; color:var(--stirling-green);">${d} <span style="font-weight:500; color:var(--ink-muted);">(${ln.temp || 'Meal'})</span></div>
+        <div style="color:var(--ink-dim); margin-top:2px;"><strong>B:</strong> ${bf.name}</div>
+        <div style="color:var(--ink-dim);"><strong>L:</strong> ${ln.name}</div>
+        <div style="color:var(--ink-dim);"><strong>D:</strong> ${dn.name}</div>
+        <div style="color:var(--ink-dim);"><strong>S:</strong> ${sn.name}</div>
+      </div>
+    `;
+  }).join('');
+
+  renderShoppingList();
+}
+
 function renderFuel() {
+  renderTodayPlateCard();
+  renderMealPlanner();
+
   const q = (document.getElementById('fuelSearchInput').value || '').toLowerCase().trim();
   const filtered = FUEL_ITEMS.filter(item => {
     const catOk = activeFuelCategory === 'all' || item.cat === activeFuelCategory;
@@ -4010,6 +4691,125 @@ document.getElementById('importJsonInput').addEventListener('change', (e) => {
   reader.readAsText(file);
 });
 
+document.getElementById('waterAdd250Btn').addEventListener('click', () => {
+  const key = getTodayIsoKey();
+  setTodayWaterMl((STATE.waterLog?.[key] || 0) + 250);
+  playCue('check');
+});
+document.getElementById('waterAdd500Btn').addEventListener('click', () => {
+  const key = getTodayIsoKey();
+  setTodayWaterMl((STATE.waterLog?.[key] || 0) + 500);
+  playCue('check');
+});
+document.getElementById('waterSub250Btn').addEventListener('click', () => {
+  const key = getTodayIsoKey();
+  setTodayWaterMl((STATE.waterLog?.[key] || 0) - 250);
+});
+document.getElementById('waterSlider').addEventListener('input', (e) => {
+  setTodayWaterMl(+e.target.value);
+});
+
+document.getElementById('vitDToggleBtn').addEventListener('click', () => {
+  if (!STATE.vitDLog) STATE.vitDLog = {};
+  const k = getTodayIsoKey();
+  STATE.vitDLog[k] = !STATE.vitDLog[k];
+  saveState();
+  playCue(STATE.vitDLog[k] ? 'check' : 'walk');
+  renderTodayPlateCard();
+});
+
+document.getElementById('defaultBreakfastSelect').addEventListener('change', (e) => {
+  STATE.defaultBreakfastId = e.target.value;
+  const plan = ensureMealPlan();
+  MEAL_DAYS.forEach(d => {
+    if (d !== 'Sat') plan[d].breakfast = e.target.value;
+  });
+  saveState();
+  renderMealPlanner();
+});
+
+document.getElementById('shuffleMealWeekBtn').addEventListener('click', () => {
+  const bf = STATE.defaultBreakfastId || 'bf-eggwhite-mincemeat';
+  const lunches = MEAL_RECIPES.lunch.filter(l => l.id !== 'ln-leftover-pasta').slice();
+  const dinners = MEAL_RECIPES.dinner.filter(d => d.id !== 'dn-friday-social').slice();
+  const snacks = MEAL_RECIPES.snack.slice();
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+  shuffle(lunches);
+  shuffle(dinners);
+  shuffle(snacks);
+
+  const nextPlan = {};
+  MEAL_DAYS.forEach((d, i) => {
+    nextPlan[d] = {
+      breakfast: d === 'Sat' ? 'bf-banana-porridge' : bf,
+      lunch: lunches[i % lunches.length].id,
+      dinner: d === 'Fri' ? 'dn-friday-social' : dinners[i % dinners.length].id,
+      snack: snacks[i % snacks.length].id
+    };
+  });
+  // Pair leftover pasta nicely if Chorizo Chicken Pasta lands Mon–Thu
+  for (let i = 0; i < 4; i++) {
+    if (nextPlan[MEAL_DAYS[i]].dinner === 'dn-chicken-chorizo-pasta') {
+      nextPlan[MEAL_DAYS[i + 1]].lunch = 'ln-leftover-pasta';
+      break;
+    }
+  }
+  STATE.mealPlan = nextPlan;
+  STATE.shoppingChecked = {};
+  saveState();
+  playCue('check');
+  renderMealPlanner();
+});
+
+wireSimpleDrawer('allWeekMealsToggleBtn', 'allWeekMealsDrawer', 'allWeekMealsLbl');
+
+document.getElementById('createShoppingListBtn').addEventListener('click', () => {
+  const card = document.getElementById('shoppingListCard');
+  card.style.display = 'block';
+  document.getElementById('shoppingCopyStatus').textContent = '';
+  renderShoppingList();
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 40);
+});
+
+document.getElementById('closeShoppingListBtn').addEventListener('click', () => {
+  document.getElementById('shoppingListCard').style.display = 'none';
+});
+
+document.getElementById('copyShoppingListBtn').addEventListener('click', async () => {
+  const { groups, grouped } = buildShoppingListData();
+  const lines = ['ROUTE TO STIRLING — WEEKLY SHOPPING LIST', ''];
+  groups.forEach(g => {
+    const items = grouped[g] || [];
+    if (!items.length) return;
+    lines.push(g.toUpperCase());
+    items.forEach(entry => {
+      const suffix = entry.count > 1 ? ` (x${entry.count} meals)` : '';
+      lines.push(`- [ ] ${entry.item}${suffix}`);
+    });
+    lines.push('');
+  });
+  const text = lines.join('\n');
+  const statusEl = document.getElementById('shoppingCopyStatus');
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    statusEl.textContent = 'Copied! Paste straight into your Apple Notes app.';
+    playCue('check');
+  } catch {
+    statusEl.textContent = 'Ready to screenshot directly below!';
+  }
+});
+
 document.getElementById('resetInitBtn').addEventListener('click', () => {
   document.getElementById('resetConfirmBar').style.display = 'flex';
 });
@@ -4017,7 +4817,7 @@ document.getElementById('resetCancelBtn').addEventListener('click', () => {
   document.getElementById('resetConfirmBar').style.display = 'none';
 });
 document.getElementById('resetConfirmBtn').addEventListener('click', () => {
-  STATE = { log: {}, schedules: {}, hipStatus: {}, repeatedWeeks: {}, treadmillWeeks: {}, routeRuns: {}, liftSets: {}, liftNotes: {}, warmups: {}, sundayPrep: {}, longRunBag: {}, raceWeekBag: {}, runNotes: {}, coachEasyOverride: {}, coachVoice: true, coachWakeLock: true, selectedTargetRace: null };
+  STATE = { log: {}, schedules: {}, hipStatus: {}, repeatedWeeks: {}, treadmillWeeks: {}, routeRuns: {}, liftSets: {}, liftNotes: {}, warmups: {}, sundayPrep: {}, longRunBag: {}, raceWeekBag: {}, runNotes: {}, coachEasyOverride: {}, coachVoice: true, coachWakeLock: true, waterLog: {}, vitDLog: {}, defaultBreakfastId: 'bf-eggwhite-mincemeat', mealPlan: null, shoppingChecked: {}, selectedTargetRace: null };
   saveState();
   document.getElementById('resetConfirmBar').style.display = 'none';
   updateCountdown();
@@ -4033,6 +4833,7 @@ document.getElementById('resetConfirmBtn').addEventListener('click', () => {
 (function init() {
   loadState();
   viewingWeek = realCurrentWeek();
+  activeMealDay = getTodayDayShort();
   const autoKey = getActiveTargetRace().key;
   const raceSel = document.getElementById('raceTargetSelect');
   if (raceSel) raceSel.value = autoKey;
