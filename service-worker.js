@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stirling-half-v5';
+const CACHE_NAME = 'stirling-half-v7';
 const APP_SHELL = [
   './',
   './index.html',

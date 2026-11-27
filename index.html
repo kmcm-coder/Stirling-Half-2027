@@ -783,6 +783,8 @@
   }
 
   .set-btn.done { background: var(--stirling-green); color: #FFFFFF; border-color: var(--stirling-green); }
+  .set-btn.optional-set { border-style: dashed; opacity: 0.72; }
+  .set-btn.optional-set.done { border-style: solid; opacity: 1; }
 
   .load-note-input {
     flex: 1 1 160px;
@@ -1083,19 +1085,25 @@
   <!-- ==================== VIEW 1: TODAY (ACTION DASHBOARD) ==================== -->
   <section class="content-view active" id="view-today">
 
-    <!-- Compact Race & Season Status Bar -->
+    <!-- Compact Multi-Race & Season Status Bar -->
     <div class="card card-hero" style="padding:14px 16px;">
       <div class="dash-status-bar">
         <div>
-          <h1 class="section-title" style="font-size:18px;">Stirling Half Marathon</h1>
+          <h1 class="section-title" style="font-size:18px;" id="heroRaceTitle">Kelpies 10K → Paisley Half</h1>
           <div class="meta-line" id="heroStatusLine" style="color:#F7D488; font-weight:600; margin-top:2px;"></div>
         </div>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;" id="milestoneChipBar">
+        <button type="button" class="coach-btn-outline" data-target-race="kelpies" style="min-height:32px; padding:4px 9px; font-size:11.5px; border-color:rgba(247,212,136,0.55); color:#F7D488;">24 Jan · Kelpies 10K</button>
+        <button type="button" class="coach-btn-outline" data-target-race="paisley" style="min-height:32px; padding:4px 9px; font-size:11.5px;">14 Mar · Paisley Half</button>
+        <button type="button" class="coach-btn-outline" data-target-race="stirling" style="min-height:32px; padding:4px 9px; font-size:11.5px;">16 May · Stirling (Waitlist)</button>
       </div>
 
       <div class="dash-metrics-row tabular" aria-label="Training dashboard metrics">
         <div class="dash-metric-cell">
           <div class="dash-metric-val" id="cdDaysMetric">-- days</div>
-          <div class="dash-metric-lbl">To 16 May 2027</div>
+          <div class="dash-metric-lbl" id="cdDateLbl">To 24 Jan 2027</div>
         </div>
         <div class="dash-metric-cell">
           <div class="dash-metric-val" id="dashWeekMetric">0 / 4</div>
@@ -1134,8 +1142,12 @@
         <button class="coach-btn-outline" id="coachSkipBtn">Next Step</button>
         <button class="coach-btn-outline" id="coachResetBtn">Reset</button>
       </div>
-      <div style="font-size:12px; color:#C7E3D1; margin-top:8px;" id="coachEffortCue">
-        Conversational pace: speak full sentences without gasping.
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center;">
+        <button class="coach-btn-outline" id="coachVoiceBtn" type="button" style="min-height:34px; padding:4px 10px; font-size:11.5px;">Voice: On</button>
+        <button class="coach-btn-outline" id="coachWakeBtn" type="button" style="min-height:34px; padding:4px 10px; font-size:11.5px;">Screen Awake: On</button>
+        <span style="font-size:11.5px; color:#C7E3D1; flex:1 1 180px;" id="coachEffortCue">
+          Conversational pace: speak full sentences without gasping.
+        </span>
       </div>
     </div>
 
@@ -1166,8 +1178,9 @@
 
           <div class="hairline-divider"></div>
 
-          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px;">
             <button class="btn btn-secondary btn-sm" id="toggleSwapBtn">Adjust Days</button>
+            <button class="btn btn-ghost btn-sm" id="toggleRunNotesBtn" type="button">Run Notes</button>
             <button class="btn btn-ghost btn-sm" id="toggleRepeatWeekBtn">Repeat / Easy Week</button>
           </div>
 
@@ -1178,6 +1191,18 @@
             </div>
             <div class="swap-grid" id="swapSelectGrid"></div>
             <div id="swapSafetyWarning" style="margin-top:8px;"></div>
+          </div>
+
+          <div class="swap-panel" id="runNotesPanel" style="display:none;">
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px;" id="runNotesPanelTitle">Week 1 Run Reflections</div>
+            <div class="swap-field" style="margin-bottom:8px;">
+              <label for="satRunNoteInput">Long Run Note (distance, route, hip feel, gels)</label>
+              <input type="text" id="satRunNoteInput" class="text-input" placeholder="e.g., 8.5 km Helix loop, hip felt solid on 4:1">
+            </div>
+            <div class="swap-field">
+              <label for="wedRunNoteInput">Midweek Run Note</label>
+              <input type="text" id="wedRunNoteInput" class="text-input" placeholder="e.g., 35 min treadmill 0.5%, legs felt light">
+            </div>
           </div>
 
           <div id="repeatWeekBanner" style="margin-top:8px;"></div>
@@ -1219,7 +1244,7 @@
       <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
         <div>
           <h2 class="section-title" style="font-size:17px;" id="routesWeekTitle">Week 1 Routes</h2>
-          <div class="meta-line" style="margin-top:1px;">Stirling every 2 weeks · Safe Paisley &amp; Renfrewshire paths</div>
+          <div class="meta-line" style="margin-top:1px;">Kelpies, Paisley &amp; Renfrewshire loops + optional Stirling</div>
         </div>
         <button class="coach-btn-outline" id="routesTreadmillToggleBtn" style="min-height:38px; padding:6px 10px; font-size:12px;">Treadmill Backup</button>
       </div>
@@ -1296,18 +1321,18 @@
       <div id="routes-sec-directory">
         <div class="filter-bar" id="routeFilterBar">
           <button class="filter-tab active" data-rfilter="all">All</button>
-          <button class="filter-tab" data-rfilter="stirling">Stirling</button>
+          <button class="filter-tab" data-rfilter="stirling">Stirling &amp; Kelpies</button>
           <button class="filter-tab" data-rfilter="renfrewshire">Paisley &amp; Renfrew</button>
           <button class="filter-tab" data-rfilter="treadmill">Treadmill</button>
           <button class="filter-tab" data-rfilter="lit">Lit 5 PM</button>
         </div>
 
-        <input type="text" id="routeSearchInput" class="text-input" placeholder="Search Barshaw, Canal, Stirling, treadmill…" style="margin-bottom:10px;">
+        <input type="text" id="routeSearchInput" class="text-input" placeholder="Search Kelpies, Barshaw, Paisley, Stirling, treadmill…" style="margin-bottom:10px;">
         <div id="routesDirectoryList"></div>
       </div>
 
       <div id="routes-sec-stirling" style="display:none;">
-        <div class="meta-line" style="margin-top:0; margin-bottom:8px;">Even weeks schedule a Saturday Stirling outing (~45 min drive or train via Queen St) so race day feels familiar.</div>
+        <div class="meta-line" style="margin-top:0; margin-bottom:8px;">Kelpies 10K prep in Jan plus optional fortnightly scenic loops around Stirling and Renfrewshire.</div>
         <div id="stirlingFortnightStrip" class="fortnight-grid"></div>
       </div>
     </div>
@@ -1319,18 +1344,18 @@
 
     <div class="card" style="padding:14px;">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap;">
-        <h2 class="section-title">24-Week Progression</h2>
-        <span class="meta-line tabular" style="margin-top:0;">28 Nov 2026 – 16 May 2027</span>
+        <h2 class="section-title">24-Week Multi-Race Plan</h2>
+        <span class="meta-line tabular" style="margin-top:0;">Kelpies 10K (24 Jan) · Paisley Half (14 Mar) · Stirling (16 May)</span>
       </div>
 
       <div class="filter-bar" id="planFilterBar" style="margin-top:10px; margin-bottom:0;">
         <button class="filter-tab active" data-filter="all">All 24</button>
-        <button class="filter-tab" data-filter="p1">W1–6</button>
-        <button class="filter-tab" data-filter="p2">W7–12</button>
-        <button class="filter-tab" data-filter="p3">W13–18</button>
-        <button class="filter-tab" data-filter="p4">W19–22</button>
-        <button class="filter-tab" data-filter="p5">W23–24</button>
-        <button class="filter-tab" data-filter="deload">Deloads</button>
+        <button class="filter-tab" data-filter="p1">W1–6 Base</button>
+        <button class="filter-tab" data-filter="p2">W7–9 Kelpies</button>
+        <button class="filter-tab" data-filter="p3">W10–16 Paisley</button>
+        <button class="filter-tab" data-filter="p4">W17–21</button>
+        <button class="filter-tab" data-filter="p5">W22–24 Stirling</button>
+        <button class="filter-tab" data-filter="deload">Races &amp; Deloads</button>
       </div>
     </div>
 
@@ -1379,8 +1404,10 @@
         <button class="filter-tab" data-split="2">15m Mobility</button>
       </div>
 
+      <div class="callout-note callout-green" id="strengthPhaseGuide" style="margin-bottom:8px;"></div>
       <div class="callout-note callout-gold" id="strengthSafetyNote" style="margin-bottom:12px;"></div>
       <div id="strengthExercisesCard"></div>
+      <div id="strengthCompleteBar" style="margin-top:12px;"></div>
     </div>
 
   </section>
@@ -1447,16 +1474,25 @@
     <div id="prep-sub-race" style="display:none;">
       <div class="grid-two-col">
         <div class="card">
-          <h2 class="section-title">Stirling 21.1 km Pace Planner</h2>
-          <div class="meta-line">Pick your run/walk rhythm for an injury-free finish.</div>
+          <h2 class="section-title" id="pacePlannerTitle">Race Pace Planner</h2>
+          <div class="meta-line">Pick your target event and hip-friendly run/walk rhythm.</div>
 
-          <div class="swap-grid" style="margin-top:10px;">
+          <div class="swap-field" style="margin-top:10px;">
+            <label for="raceTargetSelect">Target Race</label>
+            <select id="raceTargetSelect" class="select-input">
+              <option value="kelpies">Kelpies Festival 10K · Sun 24 Jan (10.0 km)</option>
+              <option value="paisley" selected>Paisley Half Marathon · Sun 14 Mar (21.1 km)</option>
+              <option value="stirling">Stirling Half (Waitlist) · Sun 16 May (21.1 km)</option>
+            </select>
+          </div>
+
+          <div class="swap-grid" style="margin-top:8px;">
             <div class="swap-field">
               <label for="paceRatioSelect">Run / Walk Rhythm</label>
               <select id="paceRatioSelect" class="select-input">
                 <option value="4:1">4 min jog / 1 min walk</option>
-                <option value="6:1" selected>6 min jog / 1 min walk</option>
-                <option value="8:1">8 min jog / 1 min walk</option>
+                <option value="5:1" selected>5 min jog / 1 min walk</option>
+                <option value="6:1">6 min jog / 1 min walk</option>
                 <option value="steady">Continuous easy jog</option>
               </select>
             </div>
@@ -1474,15 +1510,15 @@
 
           <div class="callout-note callout-green" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
             <div style="min-width:0;">
-              <div style="font-weight:700; font-size:13px;">Estimated Finish</div>
-              <div style="font-size:12px;" id="paceEffectiveSummary">6 min jog / 1 min brisk walk</div>
+              <div style="font-weight:700; font-size:13px;" id="paceEstimateTitle">Estimated Finish</div>
+              <div style="font-size:12px;" id="paceEffectiveSummary">5 min jog / 1 min brisk walk</div>
             </div>
-            <div class="tabular" style="font-family:var(--font-mono); font-size:19px; font-weight:700; flex-shrink:0;" id="estimatedFinishTime">2h 38m</div>
+            <div class="tabular" style="font-family:var(--font-mono); font-size:19px; font-weight:700; flex-shrink:0;" id="estimatedFinishTime">2h 39m</div>
           </div>
         </div>
 
         <div class="card">
-          <h3 class="section-title" style="font-size:16.5px; margin-bottom:6px;">Stirling Course Stages</h3>
+          <h3 class="section-title" style="font-size:16.5px; margin-bottom:6px;" id="courseStagesTitle">Paisley Half Course Stages</h3>
           <div id="stirlingCourseStages"></div>
         </div>
       </div>
@@ -1521,7 +1557,7 @@
           <div class="card" style="padding:10px 14px;">
             <button class="drawer-trigger" id="raceDrawerToggleBtn" type="button">
               <div>
-                <div style="font-weight:600; font-size:15px;">Race-Week Checklist (May 2027)</div>
+                <div style="font-weight:600; font-size:15px;">Race-Week Checklist (Jan / Mar / May)</div>
                 <div class="meta-line" id="raceCountMeta" style="margin-top:1px;">0/5 ready</div>
               </div>
               <span style="font-size:12px; font-weight:600; color:var(--stirling-emerald);" id="raceDrawerLbl">Show</span>
@@ -1529,6 +1565,18 @@
             <div id="raceDrawerBody" style="display:none; padding-top:8px; border-top:1px solid var(--border-subtle); margin-top:6px;">
               <div id="raceWeekChecklist"></div>
             </div>
+          </div>
+
+          <div class="card" style="padding:12px 14px;">
+            <div style="font-weight:600; font-size:15px;">iPhone Calendar &amp; Data Backup</div>
+            <div class="meta-line" style="margin-top:2px;">Add race dates to Apple Calendar or save your 24-week progress before switching URLs.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;">
+              <button class="btn btn-primary btn-sm" id="exportIcsBtn" type="button">Add Races (.ics)</button>
+              <button class="btn btn-secondary btn-sm" id="exportJsonBtn" type="button">Export Backup</button>
+              <button class="btn btn-ghost btn-sm" id="importJsonBtn" type="button">Restore Backup</button>
+              <input type="file" id="importJsonInput" accept=".json,application/json" style="display:none;">
+            </div>
+            <div class="meta-line" id="backupStatusMsg" style="margin-top:6px; color:var(--stirling-emerald);"></div>
           </div>
 
           <div style="text-align:center; margin-top:8px;">
@@ -1543,7 +1591,7 @@
     </div>
 
     <p class="footer-note">
-      Stirling Half Marathon · 16 May 2027. Always clear persistent groin or hip pain with a physiotherapist.
+      Kelpies 10K (24 Jan) · Paisley Half (14 Mar) · Stirling Waitlist (16 May 2027). Clear persistent hip/groin pain with a physiotherapist.
     </p>
   </section>
 
@@ -1574,9 +1622,53 @@
 </nav>
 
 <script>
-/* ================= CORE DATES & 24-WEEK PLAN ================= */
+/* ================= CORE DATES, TARGET RACES & 24-WEEK PLAN ================= */
 const START_DATE = new Date('2026-11-28T00:00:00'); // Saturday, 28 Nov 2026
-const RACE_DATE = new Date('2027-05-16T09:00:00');  // Sunday, 16 May 2027
+const RACE_TARGETS = {
+  kelpies: {
+    key: 'kelpies',
+    name: 'The Kelpies Festival 10K',
+    shortName: 'Kelpies 10K',
+    dateLabel: 'Sun 24 Jan 2027',
+    distKm: 10.0,
+    date: new Date('2027-01-24T09:30:00'),
+    stages: [
+      { km: '0–2.5 km', name: 'Helix Park Lagoon Start', cue: 'Start calmly at your planned 4:1 run/walk rhythm—resist the crowd rush.' },
+      { km: '2.5–5.5 km', name: 'The Kelpies & Canal Approach', cue: 'Enjoy the 30-metre horse sculptures; keep cadence quick and posture tall.' },
+      { km: '5.5–8 km', name: 'Forth & Clyde Canal Towpath', cue: 'Flat, smooth path along the water. Sip water and keep walk breaks crisp.' },
+      { km: '8–10 km', name: 'Helix Plaza Finish', cue: 'Smooth final 2 km back through the park. Finish feeling strong for Paisley prep!' }
+    ]
+  },
+  paisley: {
+    key: 'paisley',
+    name: 'Paisley Half Marathon',
+    shortName: 'Paisley Half',
+    dateLabel: 'Sun 14 Mar 2027',
+    distKm: 21.1,
+    date: new Date('2027-03-14T09:00:00'),
+    stages: [
+      { km: '0–5 km', name: 'Paisley Town & Abbey Start', cue: 'Settle straight into 5′ jog / 1′ walk from minute 5 so hip sockets stay relaxed.' },
+      { km: '5–11 km', name: 'White Cart & Barshaw Stretch', cue: 'Conversational breathing. Sip water at aid stations and take your first gel around 35 min.' },
+      { km: '11–16 km', name: 'Renfrewshire Flatlands & Canal Line', cue: 'Short, light steps; take a second gel around 70 min before fatigue sets in.' },
+      { km: '16–21.1 km', name: 'Return to Paisley Finish', cue: 'Break the final 5 km into single 5-min blocks—you practised 114 min in Week 14!' }
+    ]
+  },
+  stirling: {
+    key: 'stirling',
+    name: 'Stirling Half (Waitlist Bonus)',
+    shortName: 'Stirling Half',
+    dateLabel: 'Sun 16 May 2027',
+    distKm: 21.1,
+    date: new Date('2027-05-16T09:00:00'),
+    stages: [
+      { km: '0–5 km', name: 'Start & River Forth', cue: 'Hold back deliberately. Take walk breaks right from minute 5–6 even if others sprint past.' },
+      { km: '5–11 km', name: 'Bridge of Allan & Ochil Foothills', cue: 'Conversational breathing. Sip water at aid stations and take first fuel at 35–40 min.' },
+      { km: '11–16 km', name: 'Causewayhead & Wallace Monument', cue: 'Short, light steps on gentle rises; lean slightly from the ankles, not the hips.' },
+      { km: '16–21.1 km', name: 'Approach to Stirling Castle', cue: 'Break the final 5 km into single walk/run blocks and enjoy your bonus spring half!' }
+    ]
+  }
+};
+const RACE_DATE = RACE_TARGETS.stirling.date;
 
 const DAYS_ORDER = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
@@ -1588,42 +1680,47 @@ const DEFAULT_SCHEDULE = {
 };
 
 const WEEKS = [
-  { n: 1,  dates: '28 Nov – 4 Dec 2026',  phase: 'p1', satDur: '21 min', satRatio: '1′ jog / 2′ walk × 7',   satJogSec: 60,  satWalkSec: 120, satReps: 7,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  note: 'Start gently. Walk breaks are built in so your hip tendons adapt comfortably.' },
-  { n: 2,  dates: '5 – 11 Dec 2026',      phase: 'p1', satDur: '24 min', satRatio: '1′ jog / 2′ walk × 8',   satJogSec: 60,  satWalkSec: 120, satReps: 8,  wedDur: '21 min', wedRatio: '1′ jog / 2′ walk × 7',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 7,  note: 'Keep jogs slow enough to chat easily. Focus on short, quiet steps.' },
-  { n: 3,  dates: '12 – 18 Dec 2026',     phase: 'p1', satDur: '27 min', satRatio: '90″ jog / 90″ walk × 9',  satJogSec: 90,  satWalkSec: 90,  satReps: 9,  wedDur: '24 min', wedRatio: '90″ jog / 90″ walk × 8',  wedJogSec: 90,  wedWalkSec: 90,  wedReps: 8,  note: 'First slight bump in jog time. Keep pelvis level and upright.' },
-  { n: 4,  dates: '19 – 25 Dec 2026',     phase: 'p1', satDur: '21 min', satRatio: '1′ jog / 2′ walk × 7',   satJogSec: 60,  satWalkSec: 120, satReps: 7,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  deload: true, note: 'Christmas Deload Week: lighter volume so you can enjoy festive plans guilt-free.' },
-  { n: 5,  dates: '26 Dec – 1 Jan 2027',  phase: 'p1', satDur: '30 min', satRatio: '2′ jog / 1′ walk × 10',  satJogSec: 120, satWalkSec: 60,  satReps: 10, wedDur: '24 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  note: 'New Year week: smooth 2-minute jogs on flat pavement or park paths.' },
-  { n: 6,  dates: '2 – 8 Jan 2027',       phase: 'p1', satDur: '36 min', satRatio: '2′ jog / 1′ walk × 12',  satJogSec: 120, satWalkSec: 60,  satReps: 12, wedDur: '27 min', wedRatio: '2′ jog / 1′ walk × 9',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 9,  checkpoint: true, note: 'Phase 1 Checkpoint: hips should feel settled and stable before Phase 2.' },
+  // PHASE 1 (W1-6): Foundation, Hip Strength & Long-Distance Habit
+  { n: 1,  dates: '28 Nov – 4 Dec 2026',  phase: 'p1', satDur: '24 min', satRatio: '1′ jog / 2′ walk × 8',   satJogSec: 60,  satWalkSec: 120, satReps: 8,  wedDur: '18 min', wedRatio: '1′ jog / 2′ walk × 6',   wedJogSec: 60,  wedWalkSec: 120, wedReps: 6,  note: 'Build the twice-weekly run/walk habit + 2 strength days + 15m mobility after runs.' },
+  { n: 2,  dates: '5 – 11 Dec 2026',      phase: 'p1', satDur: '30 min', satRatio: '90″ jog / 90″ walk × 10', satJogSec: 90,  satWalkSec: 90,  satReps: 10, wedDur: '21 min', wedRatio: '90″ jog / 90″ walk × 7', satJogSec2: 90, wedJogSec: 90, wedWalkSec: 90, wedReps: 7, note: 'Keep jogs slow enough to chat. Focus on glute stability on Day A.' },
+  { n: 3,  dates: '12 – 18 Dec 2026',     phase: 'p1', satDur: '36 min', satRatio: '2′ jog / 1′ walk × 12',  satJogSec: 120, satWalkSec: 60,  satReps: 12, wedDur: '24 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  note: 'Smooth 2-min jogs on flat paths. Add 10 min hip mobility after Saturday run.' },
+  { n: 4,  dates: '19 – 25 Dec 2026',     phase: 'p1', satDur: '27 min', satRatio: '90″ jog / 90″ walk × 9', satJogSec: 90,  satWalkSec: 90,  satReps: 9,  wedDur: '21 min', wedRatio: '90″ jog / 90″ walk × 7', wedJogSec: 90,  wedWalkSec: 90,  wedReps: 7,  deload: true, note: 'Christmas Deload: drop volume ~25% and keep strength to 2 light sets.' },
+  { n: 5,  dates: '26 Dec – 1 Jan 2027',  phase: 'p1', satDur: '44 min', satRatio: '3′ jog / 1′ walk × 11',  satJogSec: 180, satWalkSec: 60,  satReps: 11, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  note: 'Step up gently to 3-min jog blocks; keep cadence light to protect front of hips.' },
+  { n: 6,  dates: '2 – 8 Jan 2027',       phase: 'p1', satDur: '52 min', satRatio: '3′ jog / 1′ walk × 13',  satJogSec: 180, satWalkSec: 60,  satReps: 13, wedDur: '32 min', wedRatio: '3′ jog / 1′ walk × 8',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 8,  checkpoint: true, note: 'New Year Checkpoint: hips should feel strong & settled before Kelpies peak.' },
 
-  { n: 7,  dates: '9 – 15 Jan 2027',      phase: 'p2', satDur: '40 min', satRatio: '3′ jog / 1′ walk × 10',  satJogSec: 180, satWalkSec: 60,  satReps: 10, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  note: 'Moving to 3-minute jogs. Do not speed up; ease is the target.' },
-  { n: 8,  dates: '16 – 22 Jan 2027',     phase: 'p2', satDur: '33 min', satRatio: '2′ jog / 1′ walk × 11',  satJogSec: 120, satWalkSec: 60,  satReps: 11, wedDur: '24 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  deload: true, note: 'Deload Week: absorb January aerobic gains and let joints recover.' },
-  { n: 9,  dates: '23 – 29 Jan 2027',     phase: 'p2', satDur: '48 min', satRatio: '3′ jog / 1′ walk × 12',  satJogSec: 180, satWalkSec: 60,  satReps: 12, wedDur: '32 min', wedRatio: '3′ jog / 1′ walk × 8',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 8,  note: 'Nearly 50 minutes on your feet on Saturday—bring a small bottle of water.' },
-  { n: 10, dates: '30 Jan – 5 Feb 2027',  phase: 'p2', satDur: '55 min', satRatio: '4′ jog / 1′ walk × 11',  satJogSec: 240, satWalkSec: 60,  satReps: 11, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: '4-minute jogs. Keep stride quick and gentle, avoiding heavy heel braking.' },
-  { n: 11, dates: '6 – 12 Feb 2027',      phase: 'p2', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: 'First 1-hour long run milestone! Celebrate with good food and rest.' },
-  { n: 12, dates: '13 – 19 Feb 2027',     phase: 'p2', satDur: '44 min', satRatio: '3′ jog / 1′ walk × 11',  satJogSec: 180, satWalkSec: 60,  satReps: 11, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  deload: true, checkpoint: true, note: 'Halfway Deload & Checkpoint: assess shoes, hip comfort, and energy.' },
+  // PHASE 2 (W7-9): Kelpies 10K Peak, Taper & Race Day (Sun 24 Jan)
+  { n: 7,  dates: '9 – 15 Jan 2027',      phase: 'p2', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: 'Kelpies 10K Peak (~8.5 km): practise Saturday breakfast & preview the Helix Park loop.' },
+  { n: 8,  dates: '16 – 22 Jan 2027',     phase: 'p2', satDur: '40 min', satRatio: '3′ jog / 1′ walk × 10',  satJogSec: 180, satWalkSec: 60,  satReps: 10, wedDur: '25 min', wedRatio: '3′ jog / 1′ walk × 6',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Kelpies Taper: cut run volume, lift only 2 easy sets, and focus on 15m hip mobility.' },
+  { n: 9,  dates: '23 – 29 Jan 2027',     phase: 'p2', satDur: '10K (~70m)', satRatio: '4′ jog / 1′ walk (Sun 24 Jan Kelpies 10K)', satJogSec: 240, satWalkSec: 60, satReps: 14, wedDur: '20 min', wedRatio: '2′ jog / 1′ walk × 7 (Thu flush)', wedJogSec: 120, wedWalkSec: 60, wedReps: 7, race: 'kelpies', defaultSched: { satRun: 'Sun', liftA: 'Tue', wedRun: 'Thu', liftB: 'Fri' }, note: 'RACE 1: Kelpies Festival 10K on Sun 24 Jan! Light 20m recovery walk/jog Thu + gentle mobility.' },
 
-  { n: 13, dates: '20 – 26 Feb 2027',     phase: 'p3', satDur: '66 min', satRatio: '5′ jog / 1′ walk × 11',  satJogSec: 300, satWalkSec: 60,  satReps: 11, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Endurance Phase: eat a carb breakfast 90 min before Saturday run.' },
-  { n: 14, dates: '27 Feb – 5 Mar 2027',  phase: 'p3', satDur: '72 min', satRatio: '5′ jog / 1′ walk × 12',  satJogSec: 300, satWalkSec: 60,  satReps: 12, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Over 70 min: test 1 gel or jelly sweets around minute 35.' },
-  { n: 15, dates: '6 – 12 Mar 2027',      phase: 'p3', satDur: '84 min', satRatio: '6′ jog / 1′ walk × 12',  satJogSec: 360, satWalkSec: 60,  satReps: 12, wedDur: '42 min', wedRatio: '5′ jog / 1′ walk × 7',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 7,  note: '6-minute jog blocks. Take walk breaks before your hips feel tired.' },
-  { n: 16, dates: '13 – 19 Mar 2027',     phase: 'p3', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  deload: true, note: 'Deload Week: keep legs fresh and prioritise 8 hours sleep.' },
-  { n: 17, dates: '20 – 26 Mar 2027',     phase: 'p3', satDur: '91 min', satRatio: '6′ jog / 1′ walk × 13',  satJogSec: 360, satWalkSec: 60,  satReps: 13, wedDur: '42 min', wedRatio: '6′ jog / 1′ walk × 6',   wedJogSec: 360, wedWalkSec: 60,  wedReps: 6,  note: '90-minute milestone! Test anti-chafe balm and race-day socks.' },
-  { n: 18, dates: '27 Mar – 2 Apr 2027',  phase: 'p3', satDur: '98 min', satRatio: '6′ jog / 1′ walk × 14',  satJogSec: 360, satWalkSec: 60,  satReps: 14, wedDur: '42 min', wedRatio: '6′ jog / 1′ walk × 6',   wedJogSec: 360, wedWalkSec: 60,  wedReps: 6,  checkpoint: true, note: 'Endurance Checkpoint: practise taking fuel at 35 min and 70 min.' },
+  // PHASE 3 (W10-16): Paisley Half Marathon Build & Race (Sun 14 Mar)
+  { n: 10, dates: '30 Jan – 5 Feb 2027',  phase: 'p3', satDur: '45 min', satRatio: '3′ jog / 1′ walk × 11',  satJogSec: 180, satWalkSec: 60,  satReps: 11, wedDur: '28 min', wedRatio: '3′ jog / 1′ walk × 7',   wedJogSec: 180, wedWalkSec: 60,  wedReps: 7,  deload: true, note: 'Post-Kelpies Recovery: absorb your 10K safely with easy miles, sleep & hip mobility.' },
+  { n: 11, dates: '6 – 12 Feb 2027',      phase: 'p3', satDur: '75 min', satRatio: '4′ jog / 1′ walk × 15',  satJogSec: 240, satWalkSec: 60,  satReps: 15, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: 'Long-Distance Build (~10–11 km): bring water and 1 gel or sweets around minute 35.' },
+  { n: 12, dates: '13 – 19 Feb 2027',     phase: 'p3', satDur: '90 min', satRatio: '5′ jog / 1′ walk × 15',  satJogSec: 300, satWalkSec: 60,  satReps: 15, wedDur: '40 min', wedRatio: '4′ jog / 1′ walk × 8',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 8,  checkpoint: true, note: '90-min milestone! Test race-day socks, anti-chafe balm, and fuel at 35 & 70 min.' },
+  { n: 13, dates: '20 – 26 Feb 2027',     phase: 'p3', satDur: '65 min', satRatio: '4′ jog / 1′ walk × 13',  satJogSec: 240, satWalkSec: 60,  satReps: 13, wedDur: '32 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Mid-Build Deload: recharge hips & glutes before next week’s Paisley peak run.' },
+  { n: 14, dates: '27 Feb – 5 Mar 2027',  phase: 'p3', satDur: '114 min', satRatio: '5′ jog / 1′ walk × 19', satJogSec: 300, satWalkSec: 60,  satReps: 19, wedDur: '42 min', wedRatio: '5′ jog / 1′ walk × 7',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 7,  checkpoint: true, note: 'Paisley Peak Long Run (~16–17 km): full dress rehearsal for breakfast, hydration & gels.' },
+  { n: 15, dates: '6 – 12 Mar 2027',      phase: 'p3', satDur: '65 min', satRatio: '4′ jog / 1′ walk × 13',  satJogSec: 240, satWalkSec: 60,  satReps: 13, wedDur: '30 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Paisley Taper: drop run volume ~45%, keep strength light (2 sets), do 15m mobility.' },
+  { n: 16, dates: '13 – 19 Mar 2027',     phase: 'p3', satDur: '21.1 km', satRatio: '5′ jog / 1′ walk (Sun 14 Mar Paisley Half)', satJogSec: 300, satWalkSec: 60, satReps: 25, wedDur: '20 min', wedRatio: '2′ jog / 1′ walk × 7 (Thu flush)', wedJogSec: 120, wedWalkSec: 60, wedReps: 7, race: 'paisley', defaultSched: { satRun: 'Sun', liftA: 'Tue', wedRun: 'Thu', liftB: 'Fri' }, note: 'RACE 2: Paisley Half Marathon on Sun 14 Mar! Stick to 5:1 walk breaks; recover Thu with gentle mobility.' },
 
-  { n: 19, dates: '3 – 9 Apr 2027',       phase: 'p4', satDur: '105 min', satRatio: '6′ jog / 1′ walk × 15', satJogSec: 360, satWalkSec: 60,  satReps: 15, wedDur: '45 min', wedRatio: '6′ jog / 1′ walk × 6 + 3′', wedJogSec: 360, wedWalkSec: 60, wedReps: 6, note: 'Peak Phase begins. Keep effort easy—do not race your long runs.' },
-  { n: 20, dates: '10 – 16 Apr 2027',     phase: 'p4', satDur: '75 min',  satRatio: '4′ jog / 1′ walk × 15', satJogSec: 240, satWalkSec: 60,  satReps: 15, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',      wedJogSec: 240, wedWalkSec: 60, wedReps: 7, deload: true, note: 'Pre-Peak Deload: freshen up before your longest training day.' },
-  { n: 21, dates: '17 – 23 Apr 2027',     phase: 'p4', satDur: '120 min', satRatio: '6′ jog / 1′ walk × 17', satJogSec: 360, satWalkSec: 60,  satReps: 17, wedDur: '42 min', wedRatio: '6′ jog / 1′ walk × 6',      wedJogSec: 360, wedWalkSec: 60, wedReps: 6, checkpoint: true, note: 'Peak Long Run (2 hours): full dress rehearsal for Stirling kit, breakfast, and gels.' },
-  { n: 22, dates: '24 – 30 Apr 2027',     phase: 'p4', satDur: '98 min',  satRatio: '6′ jog / 1′ walk × 14', satJogSec: 360, satWalkSec: 60,  satReps: 14, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',      wedJogSec: 300, wedWalkSec: 60, wedReps: 6, note: 'Final solid build week. Everything from here protects freshness.' },
+  // PHASE 4 (W17-21): Post-Paisley Recovery & Spring Long-Distance Base
+  { n: 17, dates: '20 – 26 Mar 2027',     phase: 'p4', satDur: '40 min', satRatio: '3′ jog / 1′ walk × 10',  satJogSec: 180, satWalkSec: 60,  satReps: 10, wedDur: '25 min', wedRatio: '2′ jog / 1′ walk × 8',   wedJogSec: 120, wedWalkSec: 60,  wedReps: 8,  deload: true, note: 'Post-Paisley Recovery: celebrate your Half! Zero pressure—easy walks, light strength & mobility.' },
+  { n: 18, dates: '27 Mar – 2 Apr 2027',  phase: 'p4', satDur: '65 min', satRatio: '4′ jog / 1′ walk × 13',  satJogSec: 240, satWalkSec: 60,  satReps: 13, wedDur: '35 min', wedRatio: '4′ jog / 1′ walk × 7',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 7,  note: 'Gentle spring rhythm: maintain your hard-earned half-marathon fitness comfortably.' },
+  { n: 19, dates: '3 – 9 Apr 2027',       phase: 'p4', satDur: '84 min', satRatio: '6′ jog / 1′ walk × 12',  satJogSec: 360, satWalkSec: 60,  satReps: 12, wedDur: '40 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Steady endurance maintenance. Keep strength controlled and posture upright.' },
+  { n: 20, dates: '10 – 16 Apr 2027',     phase: 'p4', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '32 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Spring Deload: let joints stay fresh—extend mobility if hips feel stiff after work.' },
+  { n: 21, dates: '17 – 23 Apr 2027',     phase: 'p4', satDur: '112 min', satRatio: '6′ jog / 1′ walk × 16', satJogSec: 360, satWalkSec: 60,  satReps: 16, wedDur: '40 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  checkpoint: true, note: 'Stirling Peak (if ticket secured—or cap at 75 min easy social loop if finishing after Paisley).' },
 
-  { n: 23, dates: '1 – 7 May 2027',       phase: 'p5', satDur: '65 min', satRatio: '4′ jog / 1′ walk × 13',  satJogSec: 240, satWalkSec: 60,  satReps: 13, wedDur: '30 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Taper Begins: cut volume smoothly and keep lower strength light.' },
-  { n: 24, dates: '8 – 16 May 2027',      phase: 'p5', satDur: '25 min', satRatio: '3′ jog / 1′ walk × 6 (Sat 8 May)', satJogSec: 180, satWalkSec: 60, satReps: 6, wedDur: '15 min', wedRatio: '2′ jog / 1′ walk × 5 (Wed 12 May)', wedJogSec: 120, wedWalkSec: 60, wedReps: 5, race: true, note: 'Race Week! Sat 8 May shakeout, Wed 12 May easy flush, Sun 16 May: Stirling Half Marathon.' }
+  // PHASE 5 (W22-24): Optional Stirling Bonus / Spring Finale
+  { n: 22, dates: '24 – 30 Apr 2027',     phase: 'p5', satDur: '84 min', satRatio: '6′ jog / 1′ walk × 12',  satJogSec: 360, satWalkSec: 60,  satReps: 12, wedDur: '36 min', wedRatio: '5′ jog / 1′ walk × 6',   wedJogSec: 300, wedWalkSec: 60,  wedReps: 6,  note: 'Maintain aerobic freshness—no extra mileage needed.' },
+  { n: 23, dates: '1 – 7 May 2027',       phase: 'p5', satDur: '60 min', satRatio: '4′ jog / 1′ walk × 12',  satJogSec: 240, satWalkSec: 60,  satReps: 12, wedDur: '30 min', wedRatio: '4′ jog / 1′ walk × 6',   wedJogSec: 240, wedWalkSec: 60,  wedReps: 6,  deload: true, note: 'Spring Taper: cut volume smoothly, keep lower strength to 2 light sets, prioritize mobility.' },
+  { n: 24, dates: '8 – 16 May 2027',      phase: 'p5', satDur: '21.1 km / 10K', satRatio: '5′ jog / 1′ walk (Sun 16 May Stirling / Spring Run)', satJogSec: 300, satWalkSec: 60, satReps: 25, wedDur: '18 min', wedRatio: '2′ jog / 1′ walk × 6 (Wed flush)', wedJogSec: 120, wedWalkSec: 60, wedReps: 6, race: 'stirling', defaultSched: { satRun: 'Sun', liftA: 'Mon', wedRun: 'Wed', liftB: 'Thu' }, note: 'RACE 3 (Waitlist Bonus): Stirling Half Marathon on Sun 16 May—or celebrate with a fun 10K!' }
 ];
 
 const PHASE_INFO = {
-  p1: { title: 'Phase 1 · First Steps', desc: 'Build the twice-weekly run/walk habit while protecting hips and joints.' },
-  p2: { title: 'Phase 2 · Aerobic Base', desc: 'Gradually stretch jog intervals while keeping 3 full rest/social days.' },
-  p3: { title: 'Phase 3 · Endurance & Fuelling', desc: 'Practise pre-run meals, hydration, and gels on longer Saturdays.' },
-  p4: { title: 'Phase 4 · Peak Confidence', desc: 'Reach 2 hours on feet safely—never chase speed in training.' },
-  p5: { title: 'Phase 5 · Stirling Taper & Race', desc: 'Drop fatigue, stay rested, and arrive healthy at the start line.' }
+  p1: { title: 'Phase 1 · Strength & Base (W1–6)', desc: 'Build 2 runs + 2 strength + hip mobility steadily without overexerting.' },
+  p2: { title: 'Phase 2 · Kelpies 10K Peak (W7–9)', desc: 'Hit 60 min long run cleanly, taper Week 8, and enjoy Kelpies 10K on 24 Jan.' },
+  p3: { title: 'Phase 3 · Paisley Half Build (W10–16)', desc: 'Recover after Kelpies, build safely to 114 min in W14, and run Paisley Half on 14 Mar.' },
+  p4: { title: 'Phase 4 · Post-Paisley & Spring Base (W17–21)', desc: 'Recover first, then maintain long-distance fitness and mobility.' },
+  p5: { title: 'Phase 5 · Stirling Bonus / Finale (W22–24)', desc: 'Fresh taper into Stirling Half (if ticket secured) or a spring celebration run.' }
 };
 
 /* ================= STRENGTH DATA ================= */
@@ -1642,7 +1739,7 @@ const STRENGTH_SPLITS = [
   },
   {
     name: 'Day B — Upper Body, Desk Posture & Core',
-    safety: 'Counters 9–5 seated shoulder slump and strengthens your deep core so your pelvis stays supported late in runs.',
+    safety: 'Counters 9–5 seated shoulder slump and strengthens your deep core so your pelvis stays supported late in long-distance runs.',
     exercises: [
       { id: 'b1', name: 'Chest-Supported Row or Seated Cable Row', scheme: '3 × 8–10', cue: 'Pull elbows back smoothly to undo desk posture.' },
       { id: 'b2', name: 'Incline Dumbbell Chest Press', scheme: '3 × 8–10', cue: 'Controlled lowering; keep shoulder blades tucked steadily.' },
@@ -1654,12 +1751,14 @@ const STRENGTH_SPLITS = [
   },
   {
     name: '15-Min Hip Recovery & Mobility',
-    safety: 'Stay in comfortable range (3/10 gentle stretch max). Never force end-range hip splits or deep butterfly stretches.',
+    safety: 'Do after runs or on rest/deload days. Stay in comfortable range (3/10 gentle stretch max)—never force deep hip splits or groin pinches.',
     exercises: [
       { id: 'm1', name: 'Half-Kneeling Gentle Hip Flexor Shift', scheme: '2 × 30s / side', cue: 'Tuck tailbone under slightly and lean forward 2 cm gently.' },
       { id: 'm2', name: '90/90 Gentle Hip Windshield Wipers', scheme: '2 × 8 / side', cue: 'Move smoothly within pain-free range to lubricate joint.' },
-      { id: 'm3', name: 'Supine Hamstring Towel/Band Stretch', scheme: '2 × 30s / leg', cue: 'Keep opposite leg bent to protect lower back and pelvis.' },
-      { id: 'm4', name: 'Calf Wall Stretch (Straight & Bent)', scheme: '2 × 30s / side', cue: 'Eases lower-leg stiffness after pavement runs.' }
+      { id: 'm3', name: 'Supine Figure-4 Gentle Glute Release', scheme: '2 × 30s / side', cue: 'Rest ankle across opposite thigh; only draw knee in if totally pinch-free.' },
+      { id: 'm4', name: 'Supine Hamstring Towel/Band Stretch', scheme: '2 × 30s / leg', cue: 'Keep opposite leg bent to protect lower back and pelvis.' },
+      { id: 'm5', name: 'Side-Lying Thoracic Open Book', scheme: '2 × 8 / side', cue: 'Opens upper back stiffness from desk work so running posture stays tall.' },
+      { id: 'm6', name: 'Calf Wall Stretch (Straight & Bent)', scheme: '2 × 30s / side', cue: 'Eases lower-leg stiffness after pavement and canal runs.' }
     ]
   }
 ];
@@ -1696,34 +1795,27 @@ const SUNDAY_PREP_ITEMS = [
 ];
 
 /* ================= RACE & HIP PLAYBOOK ================= */
-const COURSE_STAGES = [
-  { km: '0–5 km', name: 'Start & River Forth', cue: 'Hold back deliberately. Take walk breaks right from minute 6 even when others sprint past.' },
-  { km: '5–11 km', name: 'Bridge of Allan & Ochil Foothills', cue: 'Conversational breathing. Sip water at aid stations and take first fuel at 35–40 min.' },
-  { km: '11–16 km', name: 'Causewayhead & Wallace Monument', cue: 'Short, light steps on gentle rises; lean slightly from the ankles, not the hips.' },
-  { km: '16–21.1 km', name: 'Approach to Stirling Castle', cue: 'Break the final 5 km into single walk/run blocks. Smile through the finish chute!' }
-];
-
 const HIP_RULES = [
   { id: 'r1', title: '1. Shorten Your Stride (Quick Cadence)', body: 'Overstriding slams braking force straight into the hip socket. Aim for quick, quiet steps landing under your hips.' },
-  { id: 'r2', title: '2. Keep Walk Breaks As Planned', body: 'Walk breaks reset pelvic posture and cut cumulative joint shear by 25–30% without losing half-marathon fitness.' },
+  { id: 'r2', title: '2. Keep Walk Breaks As Planned', body: 'Walk breaks reset pelvic posture and cut cumulative joint shear by 25–30% without losing 10K or half-marathon fitness.' },
   { id: 'r3', title: '3. Watch for the "C-Sign" Pinch', body: 'Dull glute/thigh fatigue is normal. Sharp pinching at the front groin crease or lateral socket ache means slow down or walk.' },
-  { id: 'r4', title: '4. Cushioned, Supportive Shoes', body: 'Get gait advice at a running shop and replace worn trainers around Week 16–18 before peak runs.' },
-  { id: 'r5', title: '5. Flat, Predictable Surfaces First', body: 'Stick mostly to level tarmac or smooth park paths in Phases 1–2; cambered roads and uneven trails stress one hip asymmetrically.' },
-  { id: 'r6', title: '6. 48-Hour Buffer After Hip Strength', body: 'Leave at least one rest or upper-body day between Day A (Hip Strength) and your Saturday Long Run.' }
+  { id: 'r4', title: '4. Cushioned, Supportive Shoes', body: 'Get gait advice at a running shop and replace worn trainers after Kelpies/before peak Paisley builds.' },
+  { id: 'r5', title: '5. Flat, Predictable Surfaces First', body: 'Stick mostly to level tarmac, canal towpaths, or smooth park paths; cambered roads stress one hip asymmetrically.' },
+  { id: 'r6', title: '6. 48-Hour Buffer After Hip Strength', body: 'Leave at least one rest or upper-body day between Day A (Hip Strength) and your long run.' }
 ];
 
 const TROUBLESHOOTER_ITEMS = [
   { id: 'social', q: 'Friday night out or Saturday wedding?', a: 'Tap "Adjust Days" on Today and slide Saturday Long Run to Sunday morning. Never run sleep-deprived on sore hips.' },
-  { id: 'work', q: '9–5 deadline leaves zero evening energy?', a: 'Keep Saturday Long Run + Day A Hip Strength (30 min). Skipping one midweek run during a heavy workweek will not hurt race day.' },
+  { id: 'work', q: '9–5 deadline leaves zero evening energy?', a: 'Keep Long Run + Day A Hip Strength (30 min) + 15m Mobility. Skipping one midweek run will not hurt Kelpies or Paisley.' },
   { id: 'missed', q: 'Missed a run due to weather or travel?', a: 'Skip it cleanly and move to the next session. Never stack two runs back-to-back to "catch up".' },
-  { id: 'niggle', q: 'Front of hip feels tight after sitting all day?', a: 'Do the 5-min Desk Warm-Up first. If still >3/10 after 5 min walking, turn it into a brisk walk and tap "Repeat / Easy Week".' },
+  { id: 'niggle', q: 'Front of hip feels tight after sitting all day?', a: 'Do the 5-min Desk Warm-Up + 15m Mobility first. If >3/10 pain after walking, turn it into a brisk walk and tap "Repeat / Easy Week".' },
   { id: 'festive', q: 'Christmas or holiday disruption?', a: 'Week 4 is already a light Christmas deload. If away for a full week, repeat the previous week on return.' }
 ];
 
 const LONGRUN_BAG_CHK = [
   'Charged phone + headphones (interval timer)',
   'Small water bottle / soft flask (runs over 45 min)',
-  'Tested gel, chews, or jelly sweets (Week 14+)',
+  'Tested gel, chews, or jelly sweets (Week 11+)',
   'Cushioned trainers + blister-free socks',
   'Anti-chafe balm',
   'House keys + contactless card',
@@ -1731,16 +1823,39 @@ const LONGRUN_BAG_CHK = [
 ];
 
 const RACEWEEK_CHK = [
-  'Confirm Stirling start pen, bag drop & train/parking',
-  'Test full race-day kit & socks on Week 21 run',
+  'Confirm start wave, bag drop & car park (Helix / Paisley / Stirling)',
+  'Test full race-day kit & socks on peak long run (W7 / W14)',
   'Lay out race bib, pins, trainers & gels Saturday night',
-  'Familiar Sunday breakfast (porridge or bagel)',
+  'Familiar race-morning breakfast (porridge or bagel)',
   'No new stretches, shoes, or heavy leg lifts in Race Week'
 ];
 
 /* ================= ROUTES CATALOGUE (ALL CAR-PARK CLOSED LOOPS) ================= */
 const ROUTES = [
-  // STIRLING CAR-PARK LOOPS (every 2 weeks on even weeks)
+  // KELPIES & STIRLING CAR-PARK LOOPS
+  {
+    id: 'kelpies-helix-loop',
+    region: 'stirling',
+    regionLabel: 'Grangemouth · Kelpies',
+    name: 'The Kelpies & Helix Park Canal Loop',
+    area: 'Grangemouth · FK2',
+    dist: '6.1 km car-park loop (1.5× for 10K prep)',
+    surface: 'Flat, smooth tarmac & canal towpath · picturesque Kelpies views',
+    lit: true,
+    treadmill: false,
+    isLoop: true,
+    parkingSpot: 'The Helix Park Car Park, Falkirk',
+    mapStops: [
+      'The Helix Park Car Park, Falkirk, Scotland',
+      'The Kelpies, Grangemouth, Scotland',
+      'Forth and Clyde Canal, Dalgrain Road, Grangemouth, Scotland',
+      'Falkirk Stadium, Falkirk, Scotland',
+      'The Helix Park Car Park, Falkirk, Scotland'
+    ],
+    facilities: 'Large Helix Park car park, Visitor Centre café & toilets at start/finish',
+    hipNote: 'Rehearses your 24 Jan Kelpies 10K! Completely flat loop past the giant horse sculptures and back to your car.',
+    weeks: [7, 9]
+  },
   {
     id: 'stirling-kings-park',
     region: 'stirling',
@@ -2093,8 +2208,8 @@ function getRecommendedRoutesForWeek(wk) {
 
   let wedRoute;
   if (useTreadmillBackup || wk <= 8) {
-    wedRoute = wk % 4 === 1 ? ROUTES.find(r => r.id === 'paisley-white-cart') : ROUTES.find(r => r.id === 'tm-winter-starter');
-  } else if (wk <= 14) {
+    wedRoute = wk % 3 === 1 ? ROUTES.find(r => r.id === 'paisley-white-cart') : ROUTES.find(r => r.id === 'tm-winter-starter');
+  } else if (wk <= 15) {
     wedRoute = wk % 2 === 1 ? ROUTES.find(r => r.id === 'renfrew-waterfront') : ROUTES.find(r => r.id === 'tm-cadence-builder');
   } else {
     wedRoute = wk % 2 === 1 ? ROUTES.find(r => r.id === 'paisley-white-cart') : ROUTES.find(r => r.id === 'renfrew-robertson-park');
@@ -2118,7 +2233,12 @@ let STATE = {
   warmups: {},
   sundayPrep: {},
   longRunBag: {},
-  raceWeekBag: {}
+  raceWeekBag: {},
+  runNotes: {},
+  coachEasyOverride: {},
+  coachVoice: true,
+  coachWakeLock: true,
+  selectedTargetRace: null
 };
 
 let viewingWeek = 1;
@@ -2130,6 +2250,7 @@ let activeRouteFilter = 'all';
 let activeStrengthSplit = 0;
 let activeFuelCategory = 'all';
 let swapPanelOpen = false;
+let runNotesPanelOpen = false;
 let coachOpen = false;
 let expandedRouteId = null;
 let expandedHipRuleId = null;
@@ -2154,7 +2275,9 @@ function getWeekLog(wk) {
 }
 
 function getWeekSchedule(wk) {
-  return Object.assign({}, DEFAULT_SCHEDULE, STATE.schedules[wk] || {});
+  const w = WEEKS[wk - 1];
+  const base = (w && w.defaultSched) ? w.defaultSched : DEFAULT_SCHEDULE;
+  return Object.assign({}, base, STATE.schedules[wk] || {});
 }
 
 function realCurrentWeek() {
@@ -2219,16 +2342,55 @@ function playCue(type) {
   }
 }
 
-/* ================= COUNTDOWN ================= */
+function speakCue(text) {
+  if (!STATE.coachVoice || !text) return;
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB';
+      u.rate = 0.98;
+      window.speechSynthesis.speak(u);
+    }
+  } catch (e) {}
+}
+
+/* ================= MULTI-RACE COUNTDOWN ================= */
+function getAutoNextRaceKey() {
+  const now = Date.now();
+  if (now <= RACE_TARGETS.kelpies.date.getTime()) return 'kelpies';
+  if (now <= RACE_TARGETS.paisley.date.getTime()) return 'paisley';
+  return 'stirling';
+}
+
+function getActiveTargetRace() {
+  const key = STATE.selectedTargetRace && RACE_TARGETS[STATE.selectedTargetRace]
+    ? STATE.selectedTargetRace
+    : getAutoNextRaceKey();
+  return RACE_TARGETS[key];
+}
+
 function updateCountdown() {
   const now = new Date();
-  const diff = RACE_DATE.getTime() - now.getTime();
+  const target = getActiveTargetRace();
+  const diff = target.date.getTime() - now.getTime();
+
+  document.getElementById('heroRaceTitle').textContent = target.name;
+  document.getElementById('cdDateLbl').textContent = `To ${target.dateLabel.replace('Sun ', '')}`;
+
+  document.querySelectorAll('#milestoneChipBar [data-target-race]').forEach(btn => {
+    const active = btn.dataset.targetRace === target.key;
+    btn.style.borderColor = active ? 'rgba(247,212,136,0.75)' : 'rgba(255,255,255,0.28)';
+    btn.style.color = active ? '#F7D488' : '#FFFFFF';
+    btn.style.background = active ? 'rgba(247,212,136,0.14)' : 'rgba(255,255,255,0.08)';
+  });
+
   const metricEl = document.getElementById('cdDaysMetric');
   const statusEl = document.getElementById('heroStatusLine');
 
   if (diff <= 0) {
-    metricEl.textContent = 'Race Day';
-    statusEl.textContent = 'Run easy and enjoy Stirling today.';
+    metricEl.textContent = 'Completed';
+    statusEl.textContent = 'Switch above to your next milestone target.';
     return;
   }
 
@@ -2237,18 +2399,39 @@ function updateCountdown() {
 
   const daysUntilStart = Math.ceil((START_DATE.getTime() - now.getTime()) / 86400000);
   if (daysUntilStart > 0) {
-    statusEl.textContent = `Starts in ${daysUntilStart} day${daysUntilStart === 1 ? '' : 's'} (Sat 28 Nov) · 2 runs + 2 strength/wk`;
+    statusEl.textContent = `Starts in ${daysUntilStart} day${daysUntilStart === 1 ? '' : 's'} (Sat 28 Nov) · Strength, long runs & mobility`;
   } else {
-    statusEl.textContent = `Week ${realCurrentWeek()} of 24 · 2 runs + 2 strength + 3 open days`;
+    statusEl.textContent = `Week ${realCurrentWeek()} of 24 · 2 runs + 2 strength + 15m mobility`;
   }
 }
 
-/* ================= RUN/WALK INTERVAL COACH ENGINE ================= */
+/* ================= RUN/WALK INTERVAL COACH ENGINE (TIMESTAMP + WAKE LOCK + VOICE) ================= */
 let coachSteps = [];
 let coachStepIdx = 0;
 let coachSecondsLeft = 0;
+let coachStepEndTime = 0;
 let coachRunning = false;
 let coachTimer = null;
+let coachWakeSentinel = null;
+
+async function requestCoachWakeLock() {
+  if (!STATE.coachWakeLock || !coachRunning) return;
+  try {
+    if ('wakeLock' in navigator && !coachWakeSentinel) {
+      coachWakeSentinel = await navigator.wakeLock.request('screen');
+      coachWakeSentinel.addEventListener('release', () => { coachWakeSentinel = null; });
+    }
+  } catch (e) {}
+}
+
+function releaseCoachWakeLock() {
+  try {
+    if (coachWakeSentinel) {
+      coachWakeSentinel.release();
+      coachWakeSentinel = null;
+    }
+  } catch (e) {}
+}
 
 function setCoachOpen(open, runType = null) {
   coachOpen = open;
@@ -2265,27 +2448,64 @@ function setCoachOpen(open, runType = null) {
 
 function buildCoachStepsForWeek(wk, runType) {
   const w = WEEKS[wk - 1];
-  const jogSec = runType === 'sat' ? w.satJogSec : w.wedJogSec;
-  const walkSec = runType === 'sat' ? w.satWalkSec : w.wedWalkSec;
-  const reps = runType === 'sat' ? w.satReps : w.wedReps;
+  const easyMode = STATE.coachEasyOverride?.[wk] || null;
+  const hip = STATE.hipStatus?.[wk] || 'green';
 
-  const steps = [{ name: 'Warm-Up Brisk Walk', kind: 'walk', duration: 300 }];
-  for (let i = 1; i <= reps; i++) {
-    steps.push({ name: `Easy Jog (${i} of ${reps})`, kind: 'jog', duration: jogSec });
-    steps.push({ name: `Recovery Walk (${i} of ${reps})`, kind: 'walk', duration: walkSec });
+  if (easyMode === 'walk' || hip === 'red') {
+    const walkMins = runType === 'sat' ? 25 : 20;
+    return [
+      { name: 'Gentle Hip Warm-Up Walk', kind: 'walk', duration: 300, speak: 'Start a 5 minute gentle warm up walk' },
+      { name: `Pain-Free Recovery Walk (${walkMins} min)`, kind: 'walk', duration: walkMins * 60, speak: `Recovery brisk walk for ${walkMins} minutes. Stop immediately if any hip pinch appears.` },
+      { name: 'Slow Cool-Down Walk', kind: 'walk', duration: 180, speak: 'Cool down walk for 3 minutes' }
+    ];
   }
-  steps.push({ name: 'Cool-Down Walk', kind: 'walk', duration: 300 });
+
+  let jogSec = runType === 'sat' ? w.satJogSec : w.wedJogSec;
+  let walkSec = runType === 'sat' ? w.satWalkSec : w.wedWalkSec;
+  let reps = runType === 'sat' ? w.satReps : w.wedReps;
+
+  if (easyMode === 'amber') {
+    walkSec += 30;
+    reps = Math.max(4, Math.round(reps * 0.75));
+  }
+
+  const steps = [{ name: 'Warm-Up Brisk Walk', kind: 'walk', duration: 300, speak: 'Start 5 minute brisk warm up walk' }];
+  for (let i = 1; i <= reps; i++) {
+    const jLbl = jogSec >= 60 ? `${(jogSec / 60).toFixed(jogSec % 60 ? 1 : 0)} minute` : `${jogSec} second`;
+    const wLbl = walkSec >= 60 ? `${(walkSec / 60).toFixed(walkSec % 60 ? 1 : 0)} minute` : `${walkSec} second`;
+    steps.push({ name: `Easy Jog (${i} of ${reps})`, kind: 'jog', duration: jogSec, speak: `Easy jog ${i} of ${reps} for ${jLbl}` });
+    steps.push({ name: `Recovery Walk (${i} of ${reps})`, kind: 'walk', duration: walkSec, speak: `Recovery walk for ${wLbl}` });
+  }
+  steps.push({ name: 'Cool-Down Walk', kind: 'walk', duration: 300, speak: 'Cool down walk for 5 minutes' });
   return steps;
+}
+
+function updateCoachToggleLabels() {
+  const vBtn = document.getElementById('coachVoiceBtn');
+  const wBtn = document.getElementById('coachWakeBtn');
+  if (vBtn) vBtn.textContent = STATE.coachVoice ? 'Voice: On' : 'Voice: Off';
+  if (wBtn) wBtn.textContent = STATE.coachWakeLock ? 'Screen Awake: On' : 'Screen Awake: Off';
 }
 
 function loadCoachRun() {
   clearInterval(coachTimer);
   coachRunning = false;
+  coachStepEndTime = 0;
+  releaseCoachWakeLock();
   const runType = document.getElementById('coachRunSelector').value;
   coachSteps = buildCoachStepsForWeek(viewingWeek, runType);
   coachStepIdx = 0;
   coachSecondsLeft = coachSteps[0].duration;
+  const easyMode = STATE.coachEasyOverride?.[viewingWeek] || null;
+  const hip = STATE.hipStatus?.[viewingWeek] || 'green';
+  const hdr = document.getElementById('coachHeaderLabel');
+  if (hdr) {
+    hdr.textContent = (easyMode === 'walk' || hip === 'red')
+      ? 'Interval Timer · Recovery Walk Mode'
+      : (easyMode === 'amber' ? 'Interval Timer · Amber (+30s Walk)' : 'Run/Walk Interval Timer');
+  }
   document.getElementById('coachPlayBtn').textContent = 'Start Run';
+  updateCoachToggleLabels();
   renderCoachDisplay();
 }
 
@@ -2305,20 +2525,67 @@ function renderCoachDisplay() {
   document.getElementById('coachProgressBar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
 }
 
+function finishCoachSession() {
+  clearInterval(coachTimer);
+  coachRunning = false;
+  coachStepEndTime = 0;
+  releaseCoachWakeLock();
+  document.getElementById('coachCurrentStepName').textContent = 'Session Complete';
+  document.getElementById('coachTimeLeft').textContent = '00:00';
+  document.getElementById('coachProgressBar').style.width = '100%';
+  document.getElementById('coachPlayBtn').textContent = 'Done';
+  playCue('walk');
+  speakCue('Session complete. Great job protecting your hips.');
+}
+
 function advanceCoachStep() {
   if (coachStepIdx < coachSteps.length - 1) {
     coachStepIdx++;
     coachSecondsLeft = coachSteps[coachStepIdx].duration;
+    if (coachRunning) {
+      coachStepEndTime = Date.now() + coachSecondsLeft * 1000;
+    }
     playCue(coachSteps[coachStepIdx].kind);
+    speakCue(coachSteps[coachStepIdx].speak);
     renderCoachDisplay();
   } else {
-    clearInterval(coachTimer);
-    coachRunning = false;
-    document.getElementById('coachCurrentStepName').textContent = 'Session Complete';
-    document.getElementById('coachTimeLeft').textContent = '00:00';
-    document.getElementById('coachProgressBar').style.width = '100%';
-    document.getElementById('coachPlayBtn').textContent = 'Done';
-    playCue('walk');
+    finishCoachSession();
+  }
+}
+
+function syncCoachClock() {
+  if (!coachRunning || !coachStepEndTime) return;
+  let now = Date.now();
+  let remainingMs = coachStepEndTime - now;
+
+  if (remainingMs <= 0) {
+    let overdueMs = -remainingMs;
+    let advanced = false;
+    while (overdueMs >= 0) {
+      if (coachStepIdx < coachSteps.length - 1) {
+        coachStepIdx++;
+        advanced = true;
+        const nextDurMs = coachSteps[coachStepIdx].duration * 1000;
+        if (overdueMs < nextDurMs) {
+          coachStepEndTime = now + (nextDurMs - overdueMs);
+          coachSecondsLeft = Math.max(1, Math.ceil((nextDurMs - overdueMs) / 1000));
+          playCue(coachSteps[coachStepIdx].kind);
+          speakCue(coachSteps[coachStepIdx].speak);
+          break;
+        }
+        overdueMs -= nextDurMs;
+      } else {
+        finishCoachSession();
+        return;
+      }
+    }
+    if (advanced) renderCoachDisplay();
+  } else {
+    const nextSec = Math.max(1, Math.ceil(remainingMs / 1000));
+    if (nextSec !== coachSecondsLeft) {
+      coachSecondsLeft = nextSec;
+      renderCoachDisplay();
+    }
   }
 }
 
@@ -2361,11 +2628,19 @@ function renderToday() {
   }).join('');
 
   const recRoutes = getRecommendedRoutesForWeek(viewingWeek);
+  const satTitle = w.race === 'kelpies'
+    ? 'Race 1: Kelpies 10K (Sun 24 Jan)'
+    : w.race === 'paisley'
+      ? 'Race 2: Paisley Half (Sun 14 Mar)'
+      : w.race === 'stirling'
+        ? 'Race 3: Stirling / Spring Run (Sun 16 May)'
+        : `Long Run · ${w.satDur}`;
+
   const sessionDefs = [
-    { key: 'satRun', day: sched.satRun, title: w.race ? 'Taper Shakeout + Sun 16 May Race' : `Long Run · ${w.satDur}`, detail: `${w.satRatio} · ${recRoutes.satRoute.name}`, hasCoach: true, coachType: 'sat', routeId: recRoutes.satRoute.id, isRace: !!w.race },
-    { key: 'liftA',  day: sched.liftA,  title: 'Strength A · Hip & Lower', detail: '35 min · Glute medius, bridges, box squat', goStrength: 0 },
+    { key: 'satRun', day: sched.satRun, title: satTitle, detail: `${w.satRatio} · ${recRoutes.satRoute.name}`, hasCoach: true, coachType: 'sat', routeId: recRoutes.satRoute.id, isRace: !!w.race },
+    { key: 'liftA',  day: sched.liftA,  title: 'Strength A · Hip & Lower', detail: (w.deload || w.race) ? '25 min (2 light sets) + 15m Mobility' : '35 min · Glute medius, bridges, box squat', goStrength: 0 },
     { key: 'wedRun', day: sched.wedRun, title: `Midweek Run · ${w.wedDur}`, detail: `${w.wedRatio} · ${recRoutes.wedRoute.name}`, hasCoach: true, coachType: 'wed', routeId: recRoutes.wedRoute.id },
-    { key: 'liftB',  day: sched.liftB,  title: 'Strength B · Upper & Core', detail: '35 min · Rows, press, dead bugs & side plank', goStrength: 1 }
+    { key: 'liftB',  day: sched.liftB,  title: 'Strength B · Upper, Core & Mobility', detail: '30 min · Rows, dead bugs + 15m Hip Mobility', goStrength: 1 }
   ].sort((a, b) => DAYS_ORDER.indexOf(a.day) - DAYS_ORDER.indexOf(b.day));
 
   // Next Up Focus Card
@@ -2380,8 +2655,9 @@ function renderToday() {
         <button class="btn btn-primary btn-sm" id="nextCompleteBtn" type="button">Mark Done</button>
         ${nextItem.hasCoach
           ? `<button class="btn btn-secondary btn-sm" id="nextTimerBtn" type="button">Start Timer</button>
-             <button class="btn btn-ghost btn-sm" id="nextMapBtn" type="button">Route Map</button>`
-          : `<button class="btn btn-secondary btn-sm" id="nextStrengthBtn" type="button">Open Exercises</button>`
+             <button class="btn btn-ghost btn-sm" id="nextMapBtn" type="button">Loop Map</button>`
+          : `<button class="btn btn-secondary btn-sm" id="nextStrengthBtn" type="button">Open Exercises</button>
+             <button class="btn btn-ghost btn-sm" id="nextMobilityBtn" type="button">15m Mobility</button>`
         }
       </div>
     `;
@@ -2401,6 +2677,11 @@ function renderToday() {
     } else {
       document.getElementById('nextStrengthBtn').addEventListener('click', () => {
         activeStrengthSplit = nextItem.goStrength;
+        switchTab('strength');
+        renderStrength();
+      });
+      document.getElementById('nextMobilityBtn').addEventListener('click', () => {
+        activeStrengthSplit = 2;
         switchTab('strength');
         renderStrength();
       });
@@ -2515,7 +2796,18 @@ function renderToday() {
     ? `<div class="callout-note callout-thistle">Repeat Week active: hold this week's durations next week before advancing.</div>`
     : '';
 
+  // Run Notes Panel sync
+  const wkNotes = STATE.runNotes?.[viewingWeek] || { sat: '', wed: '' };
+  document.getElementById('runNotesPanelTitle').textContent = `Week ${viewingWeek} Run Reflections`;
+  const satNoteEl = document.getElementById('satRunNoteInput');
+  const wedNoteEl = document.getElementById('wedRunNoteInput');
+  if (document.activeElement !== satNoteEl) satNoteEl.value = wkNotes.sat || '';
+  if (document.activeElement !== wedNoteEl) wedNoteEl.value = wkNotes.wed || '';
+  const hasNotes = Boolean((wkNotes.sat || '').trim() || (wkNotes.wed || '').trim());
+  document.getElementById('toggleRunNotesBtn').textContent = hasNotes ? 'Run Notes ✓' : 'Run Notes';
+
   const currentHip = STATE.hipStatus[viewingWeek] || 'green';
+  const easyOverride = STATE.coachEasyOverride?.[viewingWeek] || null;
   document.querySelectorAll('.hip-state-btn').forEach(btn => {
     const h = btn.dataset.hip;
     btn.classList.remove('active-green', 'active-amber', 'active-red');
@@ -2524,10 +2816,65 @@ function renderToday() {
 
   const hipAdvice = {
     green: `<div class="callout-note callout-green"><strong>Green:</strong> Follow this week's intervals and strength as planned.</div>`,
-    amber: `<div class="callout-note callout-gold"><strong>Amber:</strong> Do 5-min Desk Warm-Up first, add +30s walk breaks, skip heavy leg lifts.</div>`,
-    red: `<div class="callout-note callout-danger"><strong>Red:</strong> Stop running 4–5 days, stick to pain-free walking, and mark Repeat Week.</div>`
+    amber: `
+      <div class="callout-note callout-gold">
+        <div><strong>Amber:</strong> Do 5-min Desk Warm-Up first, add +30s walk breaks, and keep strength to 2 light sets.</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+          <button type="button" class="btn btn-secondary btn-sm" id="applyAmberModeBtn">${easyOverride === 'amber' ? 'Amber Timer Active ✓' : 'Apply Amber Timer (+30s Walk)'}</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="hipOpenWarmupBtn">Open 5m Warm-Up</button>
+        </div>
+      </div>`,
+    red: `
+      <div class="callout-note callout-danger">
+        <div><strong>Red:</strong> Pause running for 4–5 days, stick to pain-free walking &amp; 15m mobility, and hold volume.</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+          <button type="button" class="btn btn-secondary btn-sm" id="applyRedRecoveryBtn">${(easyOverride === 'walk' && isRepeated) ? 'Recovery Walk & Repeat Active ✓' : 'Switch to Recovery Walk + Repeat'}</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="hipOpenMobilityBtn">15m Mobility</button>
+        </div>
+      </div>`
   };
   document.getElementById('hipGuidanceBox').innerHTML = hipAdvice[currentHip];
+
+  const amberBtn = document.getElementById('applyAmberModeBtn');
+  if (amberBtn) {
+    amberBtn.addEventListener('click', () => {
+      if (!STATE.coachEasyOverride) STATE.coachEasyOverride = {};
+      STATE.coachEasyOverride[viewingWeek] = easyOverride === 'amber' ? null : 'amber';
+      saveState();
+      renderToday();
+      renderStrength();
+    });
+  }
+  const warmBtn = document.getElementById('hipOpenWarmupBtn');
+  if (warmBtn) {
+    warmBtn.addEventListener('click', () => {
+      activeStrengthSplit = 0;
+      switchTab('strength');
+      renderStrength();
+      document.getElementById('deskWarmupDrawer').style.display = 'block';
+      document.getElementById('deskWarmupToggleLbl').textContent = 'Hide';
+    });
+  }
+  const redBtn = document.getElementById('applyRedRecoveryBtn');
+  if (redBtn) {
+    redBtn.addEventListener('click', () => {
+      if (!STATE.coachEasyOverride) STATE.coachEasyOverride = {};
+      const active = easyOverride === 'walk' && isRepeated;
+      STATE.coachEasyOverride[viewingWeek] = active ? null : 'walk';
+      STATE.repeatedWeeks[viewingWeek] = !active;
+      saveState();
+      renderToday();
+      renderStrength();
+    });
+  }
+  const mobBtn = document.getElementById('hipOpenMobilityBtn');
+  if (mobBtn) {
+    mobBtn.addEventListener('click', () => {
+      activeStrengthSplit = 2;
+      switchTab('strength');
+      renderStrength();
+    });
+  }
 
   let totalDone = 0;
   for (let i = 1; i <= 24; i++) {
@@ -2586,6 +2933,12 @@ function renderPlan() {
           <div class="week-accordion-body">
             <div class="meta-line" style="margin-top:8px;">Long: ${w.satRatio} · Midweek: ${w.wedRatio}</div>
             <p style="font-size:12.5px; color:var(--ink-dim); margin:8px 0 10px;">${w.note}</p>
+            ${(STATE.runNotes?.[w.n]?.sat || STATE.runNotes?.[w.n]?.wed) ? `
+              <div class="callout-note callout-green" style="margin-bottom:10px; font-size:12px;">
+                ${STATE.runNotes[w.n].sat ? `<div><strong>Long Note:</strong> ${STATE.runNotes[w.n].sat.replace(/</g, '&lt;')}</div>` : ''}
+                ${STATE.runNotes[w.n].wed ? `<div><strong>Midweek Note:</strong> ${STATE.runNotes[w.n].wed.replace(/</g, '&lt;')}</div>` : ''}
+              </div>
+            ` : ''}
             <button class="btn btn-primary btn-sm" data-jump-wk="${w.n}">Open Week ${w.n} in Today</button>
           </div>
         ` : ''}
@@ -2613,20 +2966,39 @@ function renderPlan() {
 }
 
 /* ================= RENDER: STRENGTH ================= */
+function getLiftSetKey(wk, exId) {
+  return `${wk}:${exId}`;
+}
+
+function getLiftSetsForWeek(wk, exId) {
+  const key = getLiftSetKey(wk, exId);
+  if (STATE.liftSets[key]) return STATE.liftSets[key];
+  if (wk === 1 && Array.isArray(STATE.liftSets[exId])) return STATE.liftSets[exId];
+  return [false, false, false];
+}
+
 function renderStrength() {
+  const w = WEEKS[viewingWeek - 1];
+  const hip = STATE.hipStatus?.[viewingWeek] || 'green';
+  const isLightWeek = !!(w?.deload || w?.race || STATE.repeatedWeeks?.[viewingWeek] || hip === 'amber' || hip === 'red');
   const split = STRENGTH_SPLITS[activeStrengthSplit];
   document.querySelectorAll('#strengthTabBar .filter-tab').forEach((t, i) => {
     t.classList.toggle('active', i === activeStrengthSplit);
   });
 
+  document.getElementById('strengthPhaseGuide').textContent = isLightWeek
+    ? `Week ${viewingWeek} (${w.race ? 'Race Week' : (hip !== 'green' ? 'Hip Care' : 'Deload')}): Do 2 light sets (Set 3 optional), avoid soreness, and spend 15 min on Hip Mobility.`
+    : `Week ${viewingWeek} (Build): Controlled 3-sec lowers, stop 2 reps before failure so hips stay fresh for your long run.`;
+
   document.getElementById('strengthSafetyNote').textContent = split.safety;
 
   const card = document.getElementById('strengthExercisesCard');
   card.innerHTML = `
-    <div style="font-weight:600; font-size:15px; margin-bottom:2px;">${split.name}</div>
+    <div style="font-weight:600; font-size:15px; margin-bottom:2px;">${split.name} · Week ${viewingWeek}</div>
     ${split.exercises.map(ex => {
-      const sets = STATE.liftSets[ex.id] || [false, false, false];
+      const sets = getLiftSetsForWeek(viewingWeek, ex.id);
       const note = STATE.liftNotes[ex.id] || '';
+      const set3Opt = isLightWeek || activeStrengthSplit === 2;
       return `
         <div class="exercise-row">
           <div class="exercise-head">
@@ -2637,8 +3009,8 @@ function renderStrength() {
           <div class="exercise-controls">
             <button class="set-btn ${sets[0] ? 'done' : ''}" data-ex="${ex.id}" data-set="0">Set 1</button>
             <button class="set-btn ${sets[1] ? 'done' : ''}" data-ex="${ex.id}" data-set="1">Set 2</button>
-            <button class="set-btn ${sets[2] ? 'done' : ''}" data-ex="${ex.id}" data-set="2">Set 3</button>
-            <input type="text" class="load-note-input" data-note-ex="${ex.id}" placeholder="Weight / reps note" value="${note.replace(/"/g, '&quot;')}">
+            <button class="set-btn ${set3Opt ? 'optional-set' : ''} ${sets[2] ? 'done' : ''}" data-ex="${ex.id}" data-set="2">${set3Opt ? 'Set 3 (Opt)' : 'Set 3'}</button>
+            <input type="text" class="load-note-input" data-note-ex="${ex.id}" placeholder="Last weight / reps note" value="${note.replace(/"/g, '&quot;')}">
           </div>
         </div>
       `;
@@ -2649,10 +3021,13 @@ function renderStrength() {
     btn.addEventListener('click', () => {
       const id = btn.dataset.ex;
       const idx = +btn.dataset.set;
-      if (!STATE.liftSets[id]) STATE.liftSets[id] = [false, false, false];
-      STATE.liftSets[id][idx] = !STATE.liftSets[id][idx];
+      const key = getLiftSetKey(viewingWeek, id);
+      if (!STATE.liftSets[key]) {
+        STATE.liftSets[key] = getLiftSetsForWeek(viewingWeek, id).slice();
+      }
+      STATE.liftSets[key][idx] = !STATE.liftSets[key][idx];
       saveState();
-      playCue(STATE.liftSets[id][idx] ? 'check' : 'walk');
+      playCue(STATE.liftSets[key][idx] ? 'check' : 'walk');
       renderStrength();
     });
   });
@@ -2663,6 +3038,43 @@ function renderStrength() {
       saveState();
     });
   });
+
+  // Quick Mark Session Done bar (syncs directly with Today's Strength A / B ticks)
+  const wkLog = getWeekLog(viewingWeek);
+  const compBar = document.getElementById('strengthCompleteBar');
+  if (activeStrengthSplit === 0 || activeStrengthSplit === 1) {
+    const sessKey = activeStrengthSplit === 0 ? 'liftA' : 'liftB';
+    const sessLbl = activeStrengthSplit === 0 ? 'Strength A' : 'Strength B';
+    const isDone = !!wkLog[sessKey];
+    compBar.innerHTML = `
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-subtle);">
+        <button type="button" class="btn ${isDone ? 'btn-secondary' : 'btn-primary'} btn-sm" id="strengthDoneToggleBtn">
+          ${isDone ? `Week ${viewingWeek} ${sessLbl} Done ✓` : `Mark Week ${viewingWeek} ${sessLbl} Done`}
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" id="strengthJumpMobilityBtn">Do 15m Mobility Next →</button>
+      </div>
+    `;
+    document.getElementById('strengthDoneToggleBtn').addEventListener('click', () => {
+      wkLog[sessKey] = !wkLog[sessKey];
+      saveState();
+      playCue(wkLog[sessKey] ? 'check' : 'walk');
+      renderStrength();
+      renderToday();
+      renderPlan();
+    });
+    document.getElementById('strengthJumpMobilityBtn').addEventListener('click', () => {
+      activeStrengthSplit = 2;
+      renderStrength();
+    });
+  } else {
+    compBar.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; padding-top:10px; border-top:1px solid var(--border-subtle);">
+        <span class="meta-line" style="margin-top:0;">Do after runs or on rest/deload days for smooth hip sockets.</span>
+        <button type="button" class="btn btn-ghost btn-sm" id="mobilityBackToTodayBtn">Back to Today</button>
+      </div>
+    `;
+    document.getElementById('mobilityBackToTodayBtn').addEventListener('click', () => switchTab('today'));
+  }
 
   renderSimpleChecklist('deskWarmupChecklist', DESK_WARMUP_ITEMS, 'warmups', () => {
     const done = DESK_WARMUP_ITEMS.filter((_, i) => STATE.warmups?.[i]).length;
@@ -2748,6 +3160,8 @@ function updateFuelCalc() {
 
 /* ================= RENDER: RACE & HIP ================= */
 function updatePacePlanner() {
+  const raceKey = document.getElementById('raceTargetSelect').value || 'paisley';
+  const race = RACE_TARGETS[raceKey] || RACE_TARGETS.paisley;
   const ratio = document.getElementById('paceRatioSelect').value;
   const jogPace = parseFloat(document.getElementById('jogPaceSelect').value);
   const walkPace = 10.5;
@@ -2761,17 +3175,15 @@ function updatePacePlanner() {
     summary = `${j}m jog / ${w}m walk · avg ${Math.floor(effectivePace)}:${String(Math.round((effectivePace % 1) * 60)).padStart(2, '0')} /km`;
   }
 
-  const totalMins = Math.round(21.1 * effectivePace);
+  const totalMins = Math.round(race.distKm * effectivePace);
   const hrs = Math.floor(totalMins / 60);
   const mins = totalMins % 60;
-  document.getElementById('estimatedFinishTime').textContent = `${hrs}h ${String(mins).padStart(2, '0')}m`;
+  document.getElementById('paceEstimateTitle').textContent = `Estimated ${race.shortName} (${race.distKm} km)`;
+  document.getElementById('estimatedFinishTime').textContent = hrs > 0 ? `${hrs}h ${String(mins).padStart(2, '0')}m` : `${mins} min`;
   document.getElementById('paceEffectiveSummary').textContent = summary;
-}
 
-function renderRaceAndHip() {
-  updatePacePlanner();
-
-  document.getElementById('stirlingCourseStages').innerHTML = COURSE_STAGES.map(s => `
+  document.getElementById('courseStagesTitle').textContent = `${race.shortName} Course Stages`;
+  document.getElementById('stirlingCourseStages').innerHTML = race.stages.map(s => `
     <div style="padding:9px 0; border-bottom:1px solid var(--border-subtle);">
       <div class="meta-line tabular" style="margin-top:0;">
         <strong style="color:var(--stirling-green);">${s.km}</strong>
@@ -2781,6 +3193,10 @@ function renderRaceAndHip() {
       <div style="font-size:12.5px; color:var(--ink-dim); margin-top:3px;">${s.cue}</div>
     </div>
   `).join('');
+}
+
+function renderRaceAndHip() {
+  updatePacePlanner();
 
   const rulesEl = document.getElementById('hipRulesList');
   rulesEl.innerHTML = HIP_RULES.map(r => {
@@ -3355,6 +3771,24 @@ document.getElementById('toggleSwapBtn').addEventListener('click', () => {
   document.getElementById('toggleSwapBtn').textContent = swapPanelOpen ? 'Done Adjusting' : 'Adjust Days';
 });
 
+document.getElementById('toggleRunNotesBtn').addEventListener('click', () => {
+  runNotesPanelOpen = !runNotesPanelOpen;
+  document.getElementById('runNotesPanel').style.display = runNotesPanelOpen ? 'block' : 'none';
+});
+
+function saveRunNoteField(kind, val) {
+  if (!STATE.runNotes) STATE.runNotes = {};
+  if (!STATE.runNotes[viewingWeek]) STATE.runNotes[viewingWeek] = { sat: '', wed: '' };
+  STATE.runNotes[viewingWeek][kind] = val;
+  saveState();
+  const hasNotes = Boolean((STATE.runNotes[viewingWeek].sat || '').trim() || (STATE.runNotes[viewingWeek].wed || '').trim());
+  document.getElementById('toggleRunNotesBtn').textContent = hasNotes ? 'Run Notes ✓' : 'Run Notes';
+  renderPlan();
+}
+
+document.getElementById('satRunNoteInput').addEventListener('input', (e) => saveRunNoteField('sat', e.target.value));
+document.getElementById('wedRunNoteInput').addEventListener('input', (e) => saveRunNoteField('wed', e.target.value));
+
 document.getElementById('resetDaysBtn').addEventListener('click', () => {
   delete STATE.schedules[viewingWeek];
   saveState();
@@ -3365,37 +3799,62 @@ document.getElementById('toggleRepeatWeekBtn').addEventListener('click', () => {
   STATE.repeatedWeeks[viewingWeek] = !STATE.repeatedWeeks[viewingWeek];
   saveState();
   renderToday();
+  renderStrength();
 });
 
 document.querySelectorAll('.hip-state-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     STATE.hipStatus[viewingWeek] = btn.dataset.hip;
+    if (btn.dataset.hip === 'green' && STATE.coachEasyOverride) {
+      delete STATE.coachEasyOverride[viewingWeek];
+    }
     saveState();
     renderToday();
+    renderStrength();
   });
 });
 
 document.getElementById('coachRunSelector').addEventListener('change', loadCoachRun);
 
+document.getElementById('coachVoiceBtn').addEventListener('click', () => {
+  STATE.coachVoice = !STATE.coachVoice;
+  saveState();
+  updateCoachToggleLabels();
+});
+
+document.getElementById('coachWakeBtn').addEventListener('click', () => {
+  STATE.coachWakeLock = !STATE.coachWakeLock;
+  saveState();
+  if (STATE.coachWakeLock && coachRunning) void requestCoachWakeLock();
+  else releaseCoachWakeLock();
+  updateCoachToggleLabels();
+});
+
 document.getElementById('coachPlayBtn').addEventListener('click', () => {
   if (coachRunning) {
+    syncCoachClock();
     clearInterval(coachTimer);
     coachRunning = false;
+    coachStepEndTime = 0;
+    releaseCoachWakeLock();
     document.getElementById('coachPlayBtn').textContent = 'Resume';
   } else {
     if (coachStepIdx === 0 && coachSecondsLeft === coachSteps[0].duration) {
       playCue(coachSteps[0].kind);
+      speakCue(coachSteps[0].speak);
     }
     coachRunning = true;
+    coachStepEndTime = Date.now() + coachSecondsLeft * 1000;
+    void requestCoachWakeLock();
     document.getElementById('coachPlayBtn').textContent = 'Pause';
-    coachTimer = setInterval(() => {
-      coachSecondsLeft--;
-      if (coachSecondsLeft <= 0) {
-        advanceCoachStep();
-      } else {
-        renderCoachDisplay();
-      }
-    }, 1000);
+    coachTimer = setInterval(syncCoachClock, 250);
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && coachRunning) {
+    syncCoachClock();
+    void requestCoachWakeLock();
   }
 });
 
@@ -3444,8 +3903,112 @@ document.querySelectorAll('#fuelFilterBar .filter-tab').forEach(tab => {
 document.getElementById('fuelSearchInput').addEventListener('input', renderFuel);
 document.getElementById('fuelDurationSlider').addEventListener('input', updateFuelCalc);
 
+document.getElementById('raceTargetSelect').addEventListener('change', updatePacePlanner);
 document.getElementById('paceRatioSelect').addEventListener('change', updatePacePlanner);
 document.getElementById('jogPaceSelect').addEventListener('change', updatePacePlanner);
+
+document.querySelectorAll('#milestoneChipBar [data-target-race]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    STATE.selectedTargetRace = btn.dataset.targetRace;
+    saveState();
+    updateCountdown();
+    const sel = document.getElementById('raceTargetSelect');
+    if (sel) {
+      sel.value = btn.dataset.targetRace;
+      updatePacePlanner();
+    }
+  });
+});
+
+function triggerFileDownload(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 100);
+}
+
+document.getElementById('exportIcsBtn').addEventListener('click', () => {
+  const events = [
+    { uid: 'kelpies-10k-2027@routetostirling', start: '20270124T093000', end: '20270124T113000', summary: 'The Kelpies Festival 10K', loc: 'The Helix Park, Falkirk FK2 7ZT', desc: '4 min jog / 1 min walk rhythm. Start at Helix car park!' },
+    { uid: 'paisley-half-2027@routetostirling', start: '20270314T090000', end: '20270314T123000', summary: 'Paisley Half Marathon', loc: 'Paisley Town Centre, PA1', desc: '5 min jog / 1 min walk rhythm from minute 5. Gel at 35 & 70 min.' },
+    { uid: 'stirling-half-2027@routetostirling', start: '20270516T090000', end: '20270516T123000', summary: 'Stirling Half Marathon (Waitlist Bonus)', loc: 'Stirling, Scotland', desc: 'Optional spring bonus half marathon or 10K celebration.' }
+  ];
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Route to Stirling//Training Companion//EN',
+    'CALSCALE:GREGORIAN',
+    ...events.flatMap(ev => [
+      'BEGIN:VEVENT',
+      `UID:${ev.uid}`,
+      `DTSTAMP:20261127T110000Z`,
+      `DTSTART;TZID=Europe/London:${ev.start}`,
+      `DTEND;TZID=Europe/London:${ev.end}`,
+      `SUMMARY:${ev.summary}`,
+      `LOCATION:${ev.loc}`,
+      `DESCRIPTION:${ev.desc}`,
+      'BEGIN:VALARM',
+      'TRIGGER:-P1D',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:Race tomorrow: ${ev.summary}`,
+      'END:VALARM',
+      'END:VEVENT'
+    ]),
+    'END:VCALENDAR'
+  ];
+  triggerFileDownload('route-to-stirling-races.ics', lines.join('\r\n'), 'text/calendar;charset=utf-8');
+  document.getElementById('backupStatusMsg').textContent = 'Calendar file downloaded — tap it on iPhone to add all 3 race dates.';
+});
+
+document.getElementById('exportJsonBtn').addEventListener('click', () => {
+  const stamp = new Date().toISOString().slice(0, 10);
+  triggerFileDownload(`route-to-stirling-backup-${stamp}.json`, JSON.stringify(STATE, null, 2), 'application/json');
+  document.getElementById('backupStatusMsg').textContent = 'Progress backup exported.';
+});
+
+document.getElementById('importJsonBtn').addEventListener('click', () => {
+  document.getElementById('importJsonInput').click();
+});
+
+document.getElementById('importJsonInput').addEventListener('change', (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(String(reader.result || '{}'));
+      if (!parsed || typeof parsed !== 'object' || !parsed.log) {
+        throw new Error('Invalid backup format');
+      }
+      STATE = Object.assign({
+        log: {}, schedules: {}, hipStatus: {}, repeatedWeeks: {}, treadmillWeeks: {},
+        routeRuns: {}, liftSets: {}, liftNotes: {}, warmups: {}, sundayPrep: {},
+        longRunBag: {}, raceWeekBag: {}, runNotes: {}, coachEasyOverride: {},
+        coachVoice: true, coachWakeLock: true, selectedTargetRace: null
+      }, parsed);
+      saveState();
+      updateCountdown();
+      renderToday();
+      renderRoutes();
+      renderPlan();
+      renderStrength();
+      renderFuel();
+      renderRaceAndHip();
+      document.getElementById('backupStatusMsg').textContent = 'Backup restored successfully!';
+    } catch {
+      document.getElementById('backupStatusMsg').textContent = 'Could not read that backup file. Please pick a valid Route to Stirling JSON export.';
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
 
 document.getElementById('resetInitBtn').addEventListener('click', () => {
   document.getElementById('resetConfirmBar').style.display = 'flex';
@@ -3454,9 +4017,10 @@ document.getElementById('resetCancelBtn').addEventListener('click', () => {
   document.getElementById('resetConfirmBar').style.display = 'none';
 });
 document.getElementById('resetConfirmBtn').addEventListener('click', () => {
-  STATE = { log: {}, schedules: {}, hipStatus: {}, repeatedWeeks: {}, treadmillWeeks: {}, routeRuns: {}, liftSets: {}, liftNotes: {}, warmups: {}, sundayPrep: {}, longRunBag: {}, raceWeekBag: {} };
+  STATE = { log: {}, schedules: {}, hipStatus: {}, repeatedWeeks: {}, treadmillWeeks: {}, routeRuns: {}, liftSets: {}, liftNotes: {}, warmups: {}, sundayPrep: {}, longRunBag: {}, raceWeekBag: {}, runNotes: {}, coachEasyOverride: {}, coachVoice: true, coachWakeLock: true, selectedTargetRace: null };
   saveState();
   document.getElementById('resetConfirmBar').style.display = 'none';
+  updateCountdown();
   renderToday();
   renderRoutes();
   renderPlan();
@@ -3469,6 +4033,9 @@ document.getElementById('resetConfirmBtn').addEventListener('click', () => {
 (function init() {
   loadState();
   viewingWeek = realCurrentWeek();
+  const autoKey = getActiveTargetRace().key;
+  const raceSel = document.getElementById('raceTargetSelect');
+  if (raceSel) raceSel.value = autoKey;
   updateCountdown();
   setInterval(updateCountdown, 60000);
   renderToday();
